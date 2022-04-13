@@ -1,14 +1,13 @@
 import { User } from '../../types/user'
 import { UserDesc } from '../../components/UserDesc'
 import PongGame from '../../components/PongGame'
+import { useState } from 'react'
+import FindMatch from '../../components/FindMatch'
 
 function Game({ currUser }: { currUser: User }) {
   const instructions =
     'Use the arrow keys to move. Score 10 points to win the game'
-
-  // useEffect(() => () => {
-  //   document.removeEventListener('keydown', (e) => game.playerMoveKB(e))
-  // }, [])
+  const [match, setMatch] = useState(false)
 
   return (
     <div>
@@ -16,7 +15,7 @@ function Game({ currUser }: { currUser: User }) {
         <h2>How to play</h2>
         <p>{instructions}</p>
       </div>
-      <PongGame />
+      {match ? <PongGame /> : <FindMatch setMatch={setMatch} />}
       <div className="oppenent">
         <div>Oppenent</div>
         <UserDesc user={currUser} />
