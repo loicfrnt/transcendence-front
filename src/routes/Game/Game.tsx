@@ -13,10 +13,18 @@ function Game({ currUser }: { currUser: User }) {
       'canvas#pongCanvas'
     ) as HTMLCanvasElement
     let game = new GameCanvas(canvas)
+    function listener(e: KeyboardEvent) {
+      game.playerMoveKB(e)
+    }
 
-    document.addEventListener('keydown', (e) => game.playerMoveKB(e))
+    document.addEventListener('keydown', listener)
     game.draw()
     game.play()
+    return () => {
+      game.run = false
+      document.removeEventListener('keydown', listener)
+      console.log('game unloaded')
+    }
   }, [])
 
   // useEffect(() => () => {

@@ -4,6 +4,7 @@ interface Player {
 }
 
 export interface GameCanvas {
+  run: boolean
   canvas: HTMLCanvasElement
   player: Player
   oppenent: Player
@@ -34,6 +35,7 @@ class Player {
 
 export class GameCanvas {
   constructor(canvas: HTMLCanvasElement) {
+    this.run = true
     this.canvas = canvas
     this.player = new Player(canvas)
     this.oppenent = new Player(canvas)
@@ -46,7 +48,6 @@ export class GameCanvas {
       },
     }
     this.canvas.addEventListener('mousemove', (e) => this.playerMove(e)) // ca c nul
-    document.addEventListener('keydown', (e) => this.playerMoveKB(e))
   }
 
   draw() {
@@ -174,10 +175,11 @@ export class GameCanvas {
   }
 
   play() {
+    console.log('game running')
     this.draw()
     this.computerMove()
     this.ballMove()
-    requestAnimationFrame(() => this.play())
+    this.run && requestAnimationFrame(() => this.play())
   }
 }
 

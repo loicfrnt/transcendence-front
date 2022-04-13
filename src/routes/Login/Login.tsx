@@ -1,5 +1,3 @@
-import { User } from '../../types/user'
-
 export interface LoginProps {
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
 }
