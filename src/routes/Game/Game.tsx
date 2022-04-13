@@ -6,14 +6,10 @@ import PlayMatch from './PlayMatch'
 function Game({ currUser }: { currUser: User }) {
   const [match, setMatch] = useState(false)
 
-  return (
-    <div>
-      {match ? (
-        <PlayMatch currUser={currUser} />
-      ) : (
-        <FindMatch setMatch={setMatch} />
-      )}
-    </div>
+  return match ? (
+    <PlayMatch currUser={currUser} />
+  ) : (
+    <FindMatch setMatch={setMatch} />
   )
 }
 
