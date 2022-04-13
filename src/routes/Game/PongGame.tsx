@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { GameCanvas } from '../pong/pong'
+import { GameCanvas } from '../../pong/pong'
 
 export default function PongGame() {
   useEffect(() => {
