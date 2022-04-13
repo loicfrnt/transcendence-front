@@ -1,5 +1,6 @@
 import { User } from '../types/user'
 import { Link } from 'react-router-dom'
+import Avatar from './Avatar'
 
 export default function UserDesc({ user }: { user: User }) {
   function ratio(victories: number, defeats: number): number {
@@ -10,12 +11,7 @@ export default function UserDesc({ user }: { user: User }) {
   }
   return (
     <div>
-      <Link to={'/profile/' + user.id}>
-        <img
-          src={'http://localhost:3000/local-files/' + user.avatarId}
-          alt={'Profile picture of ' + user.username}
-        />
-      </Link>
+      <Avatar username={user.username} avatarId={user.avatarId} />
       <h2>{user.username}</h2>
       <div>
         <div>{user.victories} Wins</div>
