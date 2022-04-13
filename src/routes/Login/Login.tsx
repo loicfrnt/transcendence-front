@@ -9,8 +9,7 @@ export function Login({ setConnected }: LoginProps) {
   return (
     <div>
       <div>Welcome to Transcendence</div>
-      <button onClick={(e) => handleClick()}>Login</button>
-      <div>Sign in with 42's API</div>
+      <button onClick={(e) => handleClick()}>Sign in with 42's API</button>
     </div>
   )
 }
