@@ -1,5 +1,4 @@
 import { User } from '../types/user'
-import { Link } from 'react-router-dom'
 import Avatar from './Avatar'
 
 export default function UserDesc({ user }: { user: User }) {
