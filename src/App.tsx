@@ -29,7 +29,9 @@ function App() {
   )
 
   useEffect(() => {
-    document.body.classList.add('bg-gray-light')
+    let root = document.querySelector('#root') as HTMLElement
+    document.body.classList.add('overflow-hidden')
+    root.classList.add('bg-gray-light', 'h-screen', 'overflow-hidden')
   }, [])
 
   useEffect(() => {

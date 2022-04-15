@@ -8,7 +8,7 @@ import chat from './chat.svg'
 function Navbar() {
   function renderLink(to: string, img: string) {
     return (
-      <Link to={to} className="flex-basis-16 justify-center">
+      <Link to={to} className="flex-basis-16 justify-center flex items-center">
         <div>
           <img src={img} alt={to} />
         </div>
@@ -17,8 +17,8 @@ function Navbar() {
   }
 
   return (
-    <div>
-      <nav className="bg-white fixed space-y-6 flex flex-col w-20 h-screen">
+    <div className="flex h-full">
+      <nav className="bg-white  space-y-6 flex flex-col w-20 ">
         {renderLink('', home)}
         {renderLink('game', game)}
         {renderLink('profile', profile)}
