@@ -29,12 +29,6 @@ function App() {
     savedConnected ? JSON.parse(savedConnected) : false
   )
 
-  useEffect(() => {
-    let root = document.querySelector('#root') as HTMLElement
-    document.body.classList.add('overflow-hidden')
-    root.classList.add('bg-gray-light', 'h-screen', 'overflow-hidden')
-  }, [])
-
   // Cache connected state
   useEffect(() => {
     localStorage.setItem('connected', JSON.stringify(connected))
