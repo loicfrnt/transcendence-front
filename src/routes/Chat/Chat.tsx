@@ -1,9 +1,11 @@
+import MainContainer from '../../components/MainContainer'
+
 function Chat() {
   return (
-    <div>
+    <MainContainer>
       <h1>Chat</h1>
       <p>la yaura le chat</p>
-    </div>
+    </MainContainer>
   )
 }
 

@@ -1,4 +1,5 @@
 import LogOut from '../../components/LogOut'
+import MainContainer from '../../components/MainContainer'
 
 interface UserProfileProps {
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
@@ -6,10 +7,10 @@ interface UserProfileProps {
 
 export default function UserProfile({ setConnected }: UserProfileProps) {
   return (
-    <div>
+    <MainContainer>
       <h1>Profile</h1>
       <p>la les profils ue</p>
       <LogOut setConnected={setConnected} />
-    </div>
+    </MainContainer>
   )
 }

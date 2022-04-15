@@ -22,12 +22,15 @@ import UserProfile from './routes/Profile/UserProfile'
 import OtherProfile from './routes/Profile/OtherProfile'
 
 function App() {
-  //if not logged return Login?
   const [currUser, setCurrUser] = useState(thisUser)
   const savedConnected = localStorage.getItem('cart')
   const [connected, setConnected] = useState(
     savedConnected ? JSON.parse(savedConnected) : false
   )
+
+  useEffect(() => {
+    document.body.classList.add('bg-gray-light')
+  }, [])
 
   useEffect(() => {
     localStorage.setItem('connected', JSON.stringify(connected))
