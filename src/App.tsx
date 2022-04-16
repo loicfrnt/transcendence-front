@@ -50,7 +50,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
-          <Route path="game" element={<Game currUser={currUser} />} />
+          <Route path="play" element={<Game currUser={currUser} />} />
           <Route path="profile" element={<Outlet />}>
             <Route
               index

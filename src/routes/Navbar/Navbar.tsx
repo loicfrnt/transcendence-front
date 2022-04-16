@@ -22,8 +22,9 @@ function Navbar() {
           return (
             <div
               className={
-                'ease-in-out duration-300 group h-[77px] w-[77px] rounded-lg hover:bg-gray-light flex flex-col justify-center' +
-                (isActive ? ' bg-gray-light' : '')
+                'ease-in-out duration-300 group h-[76px] w-[76px] rounded-lg hover:bg-gray-light flex flex-col justify-between' +
+                (isActive ? ' bg-gray-light' : '') +
+                (Svg !== Home ? ' py-[10px]' : ' pt-[7px]')
               }
             >
               <div className="flex justify-center">
@@ -54,10 +55,10 @@ function Navbar() {
   }
 
   return (
-    <div className="flex h-full">
-      <nav className="bg-white  space-y-6 flex flex-col w-[89px] px-[5px] pt-3 ">
+    <div className="flex h-full font-body text-sm">
+      <nav className="bg-white  space-y-6 flex flex-col w-[88px] px-[5px] pt-3 ">
         {renderLink('', Home)}
-        {renderLink('game', Game)}
+        {renderLink('play', Game)}
         {renderLink('profile', Profile)}
         {renderLink('chat', Chat)}
       </nav>

@@ -12,7 +12,11 @@ module.exports = {
       'gray-light': '#EFEFEF',
     },
     fontFamily: {},
-    extend: {},
+    extend: {
+      fontFamily: {
+        body: ['"IBM Plex Sans"', 'regular'],
+      },
+    },
   },
   plugins: [],
 }
