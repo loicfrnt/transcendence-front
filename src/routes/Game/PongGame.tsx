@@ -21,5 +21,12 @@ export default function PongGame() {
       console.log('game unloaded')
     }
   }, [])
-  return <canvas id="pongCanvas" width="640" height="480"></canvas>
+  return (
+    <canvas
+      id="pongCanvas"
+      className="rounded-2xl"
+      width="640"
+      height="480"
+    ></canvas>
+  )
 }

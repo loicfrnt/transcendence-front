@@ -14,7 +14,7 @@ module.exports = {
     fontFamily: {},
     extend: {
       fontFamily: {
-        body: ['"IBM Plex Sans"', 'regular'],
+        body: ['"IBM Plex Sans"'],
       },
     },
   },

@@ -22,7 +22,7 @@ function Navbar() {
           return (
             <div
               className={
-                'ease-in-out duration-300 group h-[76px] w-[76px] rounded-lg hover:bg-gray-light flex flex-col justify-between' +
+                'ease-in-out duration-300 group h-[76px] w-[76px] rounded-xl hover:bg-gray-light flex flex-col justify-between' +
                 (isActive ? ' bg-gray-light' : '') +
                 (Svg !== Home ? ' py-[10px]' : ' pt-[7px]')
               }
