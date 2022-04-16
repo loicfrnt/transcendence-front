@@ -22,14 +22,17 @@ function Navbar() {
           return (
             <div
               className={
-                'h-[77px] w-[77px] rounded-lg py-[4px] hover:bg-gray-light' +
+                'ease-in-out duration-300 group h-[77px] w-[77px] rounded-lg py-[4px] hover:bg-gray-light' +
                 (isActive ? ' bg-gray-light' : '')
               }
             >
               <div className="flex justify-center">
                 <Svg
                   className={
-                    isActive ? 'fill-violet' : 'fill-gray hover:fill-violet'
+                    'ease-in-out duration-300 ' +
+                    (isActive
+                      ? 'fill-violet'
+                      : 'fill-gray group-hover:fill-violet')
                   }
                 />
               </div>
