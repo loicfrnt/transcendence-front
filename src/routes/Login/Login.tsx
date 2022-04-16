@@ -1,5 +1,3 @@
-import MainContainer from '../../components/MainContainer'
-
 export interface LoginProps {
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
 }

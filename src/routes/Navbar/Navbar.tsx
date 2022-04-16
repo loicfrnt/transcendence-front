@@ -16,7 +16,7 @@ function Navbar() {
     return (
       <NavLink
         to={to}
-        className={'flex justify-center' + (Svg === Home ? ' mb-10' : '')}
+        className={'flex justify-center' + (Svg === Home ? ' mb-3' : '')}
       >
         {({ isActive }) => {
           return (
