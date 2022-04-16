@@ -36,7 +36,14 @@ function Navbar() {
                   }
                 />
               </div>
-              <p className="text-center">
+              <p
+                className={
+                  'text-center ease-in-out duration-300 ' +
+                  (isActive
+                    ? 'text-violet'
+                    : 'text-gray group-hover:text-violet')
+                }
+              >
                 {to.charAt(0).toUpperCase() + to.slice(1)}
               </p>
             </div>
