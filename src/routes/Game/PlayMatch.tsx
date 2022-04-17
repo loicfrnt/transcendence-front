@@ -1,6 +1,6 @@
 import { User } from '../../types/user'
 import PongGame from './PongGame'
-import UserDesc from '../../components/UserDesc'
+import UserDesc from './UserDesc'
 import ContentBox from '../../components/ContentBox'
 
 export default function PlayMatch({ currUser }: { currUser: User }) {
@@ -8,7 +8,7 @@ export default function PlayMatch({ currUser }: { currUser: User }) {
     'Use the arrow keys to move. Score 10 points to win the game'
   return (
     <div className="flex flex-wrap items-center justify-evenly h-full w-full">
-      <ContentBox className="max-w-[255px]">
+      <ContentBox className="max-w-[255px] pt-[6px]">
         <h2 className="font-body font-semibold text-[2rem] leading-[2.625rem]">
           How to play
         </h2>
@@ -17,10 +17,7 @@ export default function PlayMatch({ currUser }: { currUser: User }) {
         </p>
       </ContentBox>
       <PongGame />
-      <ContentBox>
-        <div>Oppenent</div>
-        <UserDesc user={currUser} />
-      </ContentBox>
+      <UserDesc user={currUser} role="Oppenent" />
     </div>
   )
 }
