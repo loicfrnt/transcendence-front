@@ -17,6 +17,11 @@ module.exports = {
         body: ['"IBM Plex Sans"'],
         title: ['Protomo'],
       },
+      screens: {
+        prof_sm: '966px',
+        prof_md: '1412px',
+        prof_lg: '1838px',
+      },
     },
   },
   plugins: [],
