@@ -13,7 +13,7 @@ export default function MainUser({ user, children }: MyProps) {
   const statsStyle = 'text-[1.375rem] leading-[2.625rem] font-normal'
 
   return (
-    <ContentBox className="w-[400px] flex flex-col items-center py-7">
+    <ContentBox className="w-[400px] flex flex-col items-center py-7 grid-item">
       <Avatar
         username={user.username}
         avatarId={user.avatarId}

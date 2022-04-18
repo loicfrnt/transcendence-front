@@ -1,6 +1,7 @@
 import MainContainer from '../../components/MainContainer'
 import { User } from '../../types/user'
 import MainUser from './MainUser'
+import ProfileMasonry from './ProfileMasonry'
 import SocialButton from './SocialButton'
 
 interface Props {
@@ -15,12 +16,12 @@ export default function UserProfile({ user, setConnected }: Props) {
 
   return (
     <MainContainer>
-      <div>
+      <ProfileMasonry>
         <MainUser user={user}>
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => null} />
         </MainUser>
-      </div>
+      </ProfileMasonry>
     </MainContainer>
   )
 }
