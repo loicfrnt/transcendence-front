@@ -4,20 +4,20 @@ import avatar from './avatar.png'
 interface AvatarProps {
   avatarId: number
   username: string
-  link?: boolean
+  noLink?: boolean
   size?: string
 }
 
 export default function Avatar({
   avatarId,
   username,
-  link = true,
+  noLink = false,
   size = 'h-16 w-16',
 }: AvatarProps) {
   const classes = `block bg-cover rounded-full ${size}`
   //const avatar = 'http://localhost:3000/local-files/' + avatarId
 
-  if (link) {
+  if (!noLink) {
     return (
       <Link
         className={classes}

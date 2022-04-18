@@ -18,7 +18,7 @@ import Game from './routes/Game/Game'
 import Chat from './routes/Chat/Chat'
 //tmp
 import { thisUser } from './data/users'
-import UserProfile from './routes/Profile/UserProfile'
+import UserProfile from './routes/Profile/MyProfile'
 import OtherProfile from './routes/Profile/OtherProfile'
 
 function App() {
@@ -54,7 +54,9 @@ function App() {
           <Route path="profile" element={<Outlet />}>
             <Route
               index
-              element={<UserProfile setConnected={setConnected} />}
+              element={
+                <UserProfile user={currUser} setConnected={setConnected} />
+              }
             />
             <Route path=":username" element={<OtherProfile />} />
           </Route>
