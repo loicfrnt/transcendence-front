@@ -1,4 +1,3 @@
-import LogOut from '../../components/LogOut'
 import MainContainer from '../../components/MainContainer'
 import { User } from '../../types/user'
 import MainUser from './MainUser'
