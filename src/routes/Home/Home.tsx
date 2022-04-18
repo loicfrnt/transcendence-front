@@ -1,10 +1,14 @@
+import ContentBox from '../../components/ContentBox'
 import MainContainer from '../../components/MainContainer'
 
 function Home() {
   return (
     <MainContainer>
-      <h1 className="">Home</h1>
-      <p>Bonjour bienvenue fait comme chez toi hein</p>
+      <div className="flex flex-col items-center justify-center w-full h-full gap-10">
+        <div className="font-title text-[3rem] text-violet text-center">
+          TRANSCENDENCE
+        </div>
+      </div>
     </MainContainer>
   )
 }
