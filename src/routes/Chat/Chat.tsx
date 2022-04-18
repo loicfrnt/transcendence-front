@@ -3,8 +3,11 @@ import MainContainer from '../../components/MainContainer'
 function Chat() {
   return (
     <MainContainer>
-      <h1>Chat</h1>
-      <p>la yaura le chat</p>
+      <div className="flex flex-col items-center justify-center w-full h-full gap-10">
+        <div className="font-title text-[3rem] text-violet text-center">
+          WIP
+        </div>
+      </div>
     </MainContainer>
   )
 }
