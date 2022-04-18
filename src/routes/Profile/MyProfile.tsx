@@ -3,6 +3,8 @@ import { User } from '../../types/user'
 import MainUser from './MainUser'
 import ProfileMasonry from './ProfileMasonry'
 import SocialButton from './SocialButton'
+import Friends from './Friends'
+//import History from './History'
 
 interface Props {
   user: User
@@ -21,6 +23,8 @@ export default function UserProfile({ user, setConnected }: Props) {
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => null} />
         </MainUser>
+        <Friends />
+        {/* TODO <History user={user} /> */}
       </ProfileMasonry>
     </MainContainer>
   )

@@ -18,6 +18,13 @@ export interface Relationship {
   status: RelStatus
 }
 
+export interface MatchHistory {
+  oppenent: User
+  won: boolean
+  scoreOppenent: number
+  scorePlayer: number
+}
+
 export interface User {
   id: number
   email: string
@@ -26,6 +33,7 @@ export interface User {
   status: UserStatus
   victories: number
   defeats: number
+  history: MatchHistory[]
   sentRelationships: Relationship[]
   receivedRelationships: Relationship[]
 }
