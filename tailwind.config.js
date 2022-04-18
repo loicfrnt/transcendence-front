@@ -10,6 +10,8 @@ module.exports = {
       violet: '#A8529F',
       gray: '#C9C9C9',
       'gray-light': '#EFEFEF',
+      green: '#399500',
+      red: '#BA0000',
     },
     fontFamily: {},
     extend: {
@@ -18,9 +20,9 @@ module.exports = {
         title: ['Protomo'],
       },
       screens: {
-        prof_sm: '966px',
-        prof_md: '1412px',
-        prof_lg: '1838px',
+        prof_sm: '967px',
+        prof_md: '1413px',
+        prof_lg: '1839px',
       },
     },
   },

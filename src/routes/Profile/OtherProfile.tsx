@@ -6,6 +6,7 @@ import { thisUser as user } from '../../data/users' // TMP
 import SocialButton from './SocialButton'
 import ProfileMasonry from './ProfileMasonry'
 import Friends from './Friends'
+import History from './History'
 
 export default function OtherProfile() {
   const params = useParams()
@@ -23,6 +24,7 @@ export default function OtherProfile() {
           <SocialButton content="Block" handleClick={(e) => null} />
         </MainUser>
         <Friends />
+        <History user={user} />
         <MainUser user={user} />
         <MainUser user={user} />
         <MainUser user={user} />

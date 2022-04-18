@@ -4,7 +4,7 @@ import MainUser from './MainUser'
 import ProfileMasonry from './ProfileMasonry'
 import SocialButton from './SocialButton'
 import Friends from './Friends'
-//import History from './History'
+import History from './History'
 
 interface Props {
   user: User
@@ -24,7 +24,7 @@ export default function UserProfile({ user, setConnected }: Props) {
           <SocialButton content="Edit" handleClick={(e) => null} />
         </MainUser>
         <Friends />
-        {/* TODO <History user={user} /> */}
+        <History user={user} />
       </ProfileMasonry>
     </MainContainer>
   )
