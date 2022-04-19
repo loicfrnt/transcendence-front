@@ -31,7 +31,6 @@ function App() {
 
   // Cache connected state
   useEffect(() => {
-    console.log('changed connected state to ' + connected)
     localStorage.setItem('connected', JSON.stringify(connected))
   }, [connected])
 
