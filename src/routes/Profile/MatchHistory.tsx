@@ -1,15 +1,16 @@
-import { userInfo } from 'os'
 import { Link } from 'react-router-dom'
 import Avatar from '../../components/Avatar'
-import ContentBox from '../../components/ContentBox'
-import { User, MatchHistory } from '../../types/user'
+import { User, History } from '../../types/user'
+import SocialItemContainer from './SocialItemContainer'
+import SocialItemList from './SocialItemList'
+import SocialNoItem from './SocialNoItem'
 
 interface Props {
   user: User
 }
 
-export default function History({ user }: Props) {
-  function renderMatch(match: MatchHistory, id: number) {
+export default function MatchHistory({ user }: Props) {
+  function renderMatch(match: History, id: number) {
     const winText = match.won ? 'Won' : 'Lost'
     const winClass = 'font-semibold ' + (match.won ? 'text-green' : 'text-red')
     return (
@@ -45,14 +46,16 @@ export default function History({ user }: Props) {
       </div>
     )
   }
+
   return (
-    <ContentBox className="w-[400px] flex flex-col  pt-3 px-6 grid-item mb-10 max-h-[75vh]">
-      <h1 className={'mb-4 text-[2rem] leading-[2.625rem] font-semibold'}>
-        Match History
-      </h1>
-      <div className="duration-300 overflow-hidden hover:overflow-auto flex flex-col gap-3 pr-0 scrollbar">
-        {user.history.map((match, index) => renderMatch(match, index))}
-      </div>
-    </ContentBox>
+    <SocialItemContainer title="Match History">
+      {!user.history ? (
+        <SocialNoItem msg="No match played" />
+      ) : (
+        <SocialItemList>
+          <>{user.history.map(renderMatch)}</>
+        </SocialItemList>
+      )}
+    </SocialItemContainer>
   )
 }
