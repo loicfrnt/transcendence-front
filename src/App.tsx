@@ -23,7 +23,7 @@ import OtherProfile from './routes/Profile/OtherProfile'
 
 function App() {
   const [currUser, setCurrUser] = useState(thisUser)
-  const savedConnected = localStorage.getItem('cart')
+  const savedConnected = localStorage.getItem('connected')
   const [connected, setConnected] = useState(
     // Recover Connected state from cache
     savedConnected ? JSON.parse(savedConnected) : false

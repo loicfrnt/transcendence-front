@@ -18,7 +18,7 @@ export interface Relationship {
   status: RelStatus
 }
 
-export interface MatchHistory {
+export interface History {
   oppenent: User
   won: boolean
   scoreOppenent: number
@@ -33,7 +33,7 @@ export interface User {
   status: UserStatus
   victories: number
   defeats: number
-  history: MatchHistory[]
+  history: History[]
   sentRelationships: Relationship[]
   receivedRelationships: Relationship[]
 }

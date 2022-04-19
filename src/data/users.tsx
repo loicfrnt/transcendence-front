@@ -48,6 +48,14 @@ export const thisUser: User = {
     { oppenent: mechant, won: false, scoreOppenent: 10, scorePlayer: 8 },
     { oppenent: mechant, won: false, scoreOppenent: 10, scorePlayer: 9 },
     { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
   ],
 }
 

@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom'
 import Avatar from '../../components/Avatar'
-import { userList } from '../../data/users'
 import { User } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
 
-export default function Friends() {
-  function renderFriend(user: User, id: number) {
+interface Props {
+  requests: User[]
+}
+
+export default function FriendRequests({ requests }: Props) {
+  function renderRequest(user: User, id: number) {
     return (
       <div key={id}>
         <Link
@@ -27,12 +30,12 @@ export default function Friends() {
   }
 
   return (
-    <SocialItemContainer title="Friends">
-      {!userList ? (
-        <SocialNoItem msg="No one here :c" />
+    <SocialItemContainer title="Friend Requests">
+      {!requests ? (
+        <SocialNoItem msg="No requests.. (yet!)" />
       ) : (
         <SocialItemList>
-          <>{userList.map(renderFriend)}</>
+          <>{requests.map(renderRequest)}</>
         </SocialItemList>
       )}
     </SocialItemContainer>

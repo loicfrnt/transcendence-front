@@ -1,10 +1,14 @@
+// TMP static vars
+import { userList } from '../../data/users'
+
 import MainContainer from '../../components/MainContainer'
 import { User } from '../../types/user'
 import MainUser from './MainUser'
 import ProfileMasonry from './ProfileMasonry'
 import SocialButton from './SocialButton'
 import Friends from './Friends'
-import History from './History'
+import MatchHistory from './MatchHistory'
+import FriendRequests from './FriendRequests'
 
 interface Props {
   user: User
@@ -24,7 +28,8 @@ export default function UserProfile({ user, setConnected }: Props) {
           <SocialButton content="Edit" handleClick={(e) => null} />
         </MainUser>
         <Friends />
-        <History user={user} />
+        <MatchHistory user={user} />
+        <FriendRequests requests={userList} />
       </ProfileMasonry>
     </MainContainer>
   )
