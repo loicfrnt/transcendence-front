@@ -1,12 +1,13 @@
+import ContentBox from '../../components/ContentBox'
 import MainContainer from '../../components/MainContainer'
 
 function Chat() {
   return (
     <MainContainer>
-      <div className="flex flex-col items-center justify-center w-full h-full gap-10">
-        <div className="font-title text-[3rem] text-violet text-center">
-          WIP
-        </div>
+      <div className="flex items-center justify-center sm:justify-start w-full h-full flex-wrap">
+        <ContentBox className="w-[400px]"></ContentBox>
+        <ContentBox className="w-[400px] sm:max-w-[836px]  sm:grow"></ContentBox>
+        <ContentBox className="w-[400px]"></ContentBox>
       </div>
     </MainContainer>
   )
