@@ -20,9 +20,9 @@ module.exports = {
         title: ['Protomo'],
       },
       screens: {
-        prof_sm: '967px',
-        prof_md: '1413px',
-        prof_lg: '1839px',
+        sm: '966px',
+        md: '1413px',
+        lg: '1839px',
       },
     },
   },
