@@ -14,7 +14,7 @@ export default function ProfileMasonry({ children }: Props) {
   return (
     <Masonry
       breakpointCols={breakpoints}
-      className="flex justify-center sm:justify-start ml-3 mt-8 w-[440px] sm:w-[876px] md:w-[1312px] lg:w-[1748px] "
+      className="flex justify-center sm:justify-start mt-8 max-w-[440px] sm:max-w-[876px] md:max-w-[1312px] lg:max-w-[1748px] w-full shrink"
     >
       {children}
     </Masonry>
