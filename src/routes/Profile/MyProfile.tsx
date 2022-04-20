@@ -9,6 +9,7 @@ import SocialButton from './SocialButton'
 import Friends from './Friends'
 import MatchHistory from './MatchHistory'
 import FriendRequests from './FriendRequests'
+import Blocked from './Blocked'
 
 interface Props {
   user: User
@@ -30,6 +31,7 @@ export default function UserProfile({ user, setConnected }: Props) {
         <Friends />
         <MatchHistory user={user} />
         <FriendRequests requests={userList} />
+        <Blocked blocked={[userList[1]]} />
       </ProfileMasonry>
     </MainContainer>
   )
