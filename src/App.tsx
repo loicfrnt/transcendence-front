@@ -20,8 +20,13 @@ import Chat from './routes/Chat/Chat'
 import { thisUser } from './data/users'
 import UserProfile from './routes/Profile/MyProfile'
 import OtherProfile from './routes/Profile/OtherProfile'
+import Profile from './routes/Profile/Profile'
+import { dummyChannel, dummyDm } from './data/channels'
 
-function App() {
+export default function App() {
+  //TMP
+  thisUser.channels = [dummyDm, dummyChannel]
+
   const [currUser, setCurrUser] = useState(thisUser)
   const savedConnected = localStorage.getItem('connected')
   const [connected, setConnected] = useState(
@@ -51,21 +56,16 @@ function App() {
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
           <Route path="play" element={<Game currUser={currUser} />} />
-          <Route path="profile" element={<Outlet />}>
-            <Route
-              index
-              element={
-                <UserProfile user={currUser} setConnected={setConnected} />
-              }
-            />
-            <Route path=":username" element={<OtherProfile />} />
-          </Route>
-          <Route path="chat" element={<Chat />} />
+          <Route
+            path="profile/*"
+            element={
+              <Profile thisUser={currUser} setConnected={setConnected} />
+            }
+          />
+          <Route path="chat/*" element={<Chat user={thisUser} />} />
           <Route path="*" element={'404'} />
         </Route>
       </Routes>
     </BrowserRouter>
   )
 }
-
-export default App

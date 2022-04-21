@@ -1,14 +1,21 @@
-import MainContainer from '../../components/MainContainer'
+import { Route, Routes } from 'react-router-dom'
+import { User } from '../../types/user'
+import ChannelNav from './ChannelNav'
+import ChatClose from './ChatClose'
+import ChatOpen from './ChatOpen'
 
-function Chat() {
+interface Props {
+  user: User
+}
+
+function Chat({ user }: Props) {
   return (
-    <MainContainer>
-      <div className="flex flex-col items-center justify-center w-full h-full gap-10">
-        <div className="font-title text-[3rem] text-violet text-center">
-          WIP
-        </div>
-      </div>
-    </MainContainer>
+    <Routes>
+      <Route path="/" element={<ChannelNav thisUser={user} />}>
+        <Route index element={<ChatClose />} />
+        <Route path=":channelId" element={<ChatOpen thisUser={user} />} />
+      </Route>
+    </Routes>
   )
 }
 

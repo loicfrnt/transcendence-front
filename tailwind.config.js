@@ -8,6 +8,7 @@ module.exports = {
     colors: {
       white: '#FFFFFF',
       violet: '#A8529F',
+      'violet-light': '#EEDCEC',
       gray: '#C9C9C9',
       'gray-light': '#EFEFEF',
       green: '#399500',
@@ -20,9 +21,9 @@ module.exports = {
         title: ['Protomo'],
       },
       screens: {
-        prof_sm: '967px',
-        prof_md: '1413px',
-        prof_lg: '1839px',
+        sm: '966px',
+        md: '1413px',
+        lg: '1839px',
       },
     },
   },
