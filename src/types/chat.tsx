@@ -2,6 +2,7 @@ import { User } from './user'
 
 export interface Channel {
   id: number
+  name: string
   status: string
   channelUsers: ChannelUser[]
   invited_members: User[]
