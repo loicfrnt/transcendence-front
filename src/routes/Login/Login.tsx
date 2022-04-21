@@ -36,34 +36,51 @@ export function Login({ setConnected }: LoginProps) {
     });
   }
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full gap-10">
-      <div className="font-title text-[3rem] text-violet text-center">
-        <h2>Welcome to</h2>
-        <h1 className="text-[5rem]">Transcendence</h1>
+    <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className='max-w-md w-full space-y-8'>
+        <div>
+          <div className="font-title text-[3rem] text-violet text-center">
+            <h1>Transcendence</h1>
+          </div>
+          <h2 className='mt-6 text-center text-3xl font-extrabold text-black'>Sign in</h2>
+          <p className='mt-2 text-center text-sm text-black'>
+            Or{' '}
+            <a href='#' className='font-medium text-black hover:text-violet'>
+              Sign-up from here
+            </a>
+          </p>
+        </div>
+        <Formik initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleLogin}>
+          <Form className='mt-8 space-y-6'>
+            <div className='rounded-md shadow-sm -space-y-px'>
+              <div>
+                <label htmlFor='username' className='sr-only'>Username</label>
+                <Field name="username" type="text" placeholder="Username" className="apperance-none rounded-non relative block w-full px-3 py-2 border-gray placeholder-gray text-black rounded-t-md focus:outline-none focus:ring-violet focus:border-violet" />
+                <ErrorMessage name="username" component="div" />
+              </div>
+              <div>
+                <label htmlFor='password' className='sr-only'>Password</label>
+                <Field name="password" type="password" placeholder="Password" className="apperance-none rounded-non relative block w-full px-3 py-2 border-gray placeholder-gray text-black rounded-b-md focus:outline-none focus:ring-violet focus:border-violet"/>
+                <ErrorMessage name="password" component="div" />
+              </div>
+            </div>
+            <div className='flex items-center justify-between text-sm'>
+              <a href='#' className='font-medium text-violet hover:text-violet'>Forgot your password?</a>
+            </div>
+            <button type='submit' className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-white bg-violet'>Login</button>
+          </Form>
+        </Formik>
+          <button onClick={handleClick} className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-white bg-zink'>
+            <span className='object-cover h-7 w-7'>
+              <img src='/images/logo-42-square-reverse.png' alt="42" />
+            </span>
+            <span>
+              Sign in with the intra
+            </span>
+          </button>
       </div>
-      <Formik initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={handleLogin}>
-
-        <Form>
-          <div>
-            <label htmlFor='username'>Username</label>
-            <Field name="username" type="text" />
-            <ErrorMessage name="username" component="div" />
-          </div>
-          <div>
-            <label htmlFor='password'>Password</label>
-            <Field name="password" type="password" />
-            <ErrorMessage name="password" component="div" />
-          </div>
-          <button type='submit'>Login</button>
-        </Form>
-      </Formik>
-      <ContentBox button handleClick={() => handleClick()}>
-        <p className="font-semibold text-[2rem] m-3 ease-in-out duration-300 group-hover:text-white">
-          Sign in with 42's API
-        </p>
-      </ContentBox>
     </div>
   )
 }
