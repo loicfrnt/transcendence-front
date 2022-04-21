@@ -60,6 +60,7 @@ function App() {
             />
             <Route path=":username" element={<OtherProfile />} />
           </Route>
+          <Route path='login' element = {<Login setConnected={setConnected}/>}/>
           <Route path="chat" element={<Chat />} />
           <Route path="*" element={'404'} />
         </Route>
