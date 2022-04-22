@@ -20,6 +20,7 @@ import Chat from './routes/Chat/Chat'
 import { thisUser } from './data/users'
 import UserProfile from './routes/Profile/MyProfile'
 import OtherProfile from './routes/Profile/OtherProfile'
+import { Register } from './routes/Register/Register'
 
 function App() {
   const [currUser, setCurrUser] = useState(thisUser)
@@ -40,6 +41,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login setConnected={setConnected} />} />
           <Route path="*" element={<Navigate to="/" />}></Route>
+          <Route path="register" element={<Register />}></Route>
         </Routes>
       </BrowserRouter>
     )
