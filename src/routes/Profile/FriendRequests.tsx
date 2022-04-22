@@ -4,8 +4,8 @@ import { User } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
-import { ReactComponent as Accept } from './accept.svg'
-import { ReactComponent as Reject } from './reject.svg'
+import { ReactComponent as Accept } from '../../assets/accept.svg'
+import { ReactComponent as Reject } from '../../assets/reject.svg'
 
 interface Props {
   requests: User[]

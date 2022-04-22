@@ -1,8 +1,8 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { ReactComponent as Home } from './home.svg'
-import { ReactComponent as Game } from './game.svg'
-import { ReactComponent as Profile } from './profile.svg'
-import { ReactComponent as Chat } from './chat.svg'
+import { ReactComponent as Home } from '../../assets/home.svg'
+import { ReactComponent as Game } from '../../assets/game.svg'
+import { ReactComponent as Profile } from '../../assets/profile.svg'
+import { ReactComponent as Chat } from '../../assets/chat.svg'
 
 function Navbar() {
   function renderLink(
