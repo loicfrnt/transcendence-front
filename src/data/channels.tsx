@@ -35,13 +35,14 @@ export const dummyDm: Channel = {
       author: thisUser,
     },
     { id: 5, content: 'JDECONNE PTN C MARC', author: mechant },
+    { id: 6, content: 'mdr', author: mechant },
     {
-      id: 6,
+      id: 7,
       content: 'AAAAAAAAAAAH GROS CON comment tu vas le SANNNG',
       author: thisUser,
     },
-    { id: 7, content: 'trankilr hein cv et toi ?', author: mechant },
-    { id: 8, content: 'oe oe', author: thisUser },
+    { id: 8, content: 'trankilr hein cv et toi ?', author: mechant },
+    { id: 9, content: 'oe oe', author: thisUser },
   ],
 }
 
@@ -76,23 +77,5 @@ export const dummyChannel: Channel = {
     },
   ],
   invited_members: [],
-  messages: [
-    { id: 0, content: 'coucou', author: mechant },
-    { id: 1, content: 'euh t ki', author: thisUser },
-    { id: 2, content: 'asv?', author: mechant },
-    {
-      id: 3,
-      content:
-        'euh nan casse toi je veux pas dennui moi et dabord dou tu me parle jsp t ki frr',
-      author: thisUser,
-    },
-    { id: 5, content: 'JDECONNE PTN C MARC', author: mechant },
-    {
-      id: 6,
-      content: 'AAAAAAAAAAAH GROS CON comment tu vas le SANNNG',
-      author: thisUser,
-    },
-    { id: 7, content: 'trankilr hein cv et toi ?', author: mechant },
-    { id: 8, content: 'oe oe', author: thisUser },
-  ],
+  messages: [{ id: 0, content: 'ya pas foule hein', author: mechant }],
 }
