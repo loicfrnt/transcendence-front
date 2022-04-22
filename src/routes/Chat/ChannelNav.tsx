@@ -38,7 +38,7 @@ export default function ChannelNav({ thisUser }: Props) {
   return (
     <MainContainer>
       <div className="flex items-center justify-center sm:justify-start w-full h-full flex-wrap gap-y-6 pt-5">
-        <ContentBox className="w-[400px]">
+        <ContentBox className="w-[400px] sm:h-[70vh]">
           <h1 className={'mb-4 text-[2rem] leading-[2.625rem] font-semibold'}>
             Conversations
           </h1>

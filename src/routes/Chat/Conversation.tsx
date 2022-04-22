@@ -1,4 +1,4 @@
-import { createRef, useRef } from 'react'
+import { useRef } from 'react'
 import { useEffect } from 'react'
 import Avatar from '../../components/Avatar'
 import { Message } from '../../types/chat'
