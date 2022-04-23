@@ -10,14 +10,15 @@ interface MyProps {
 
 export default function MainUser({ user, children }: MyProps) {
   const titleStyle = 'text-[2rem] leading-[2.625rem] font-semibold '
-  const statsStyle = 'text-[1.375rem] leading-[2.625rem] font-normal'
+  const statsStyle =
+    'text-[1.375rem] leading-[2.625rem] font-normal text-center'
 
   return (
-    <ContentBox className="w-[400px] flex flex-col items-center py-7 grid-item mb-10">
+    <ContentBox className="max-w-[400px] flex flex-col items-center py-7 grid-item mb-10">
       <Avatar
         username={user.username}
         avatarId={user.avatarId}
-        size="h-[316px] w-[316px]"
+        size="max-h-[316px] w-full"
         noLink
       />
       <h2 className={titleStyle + 'mt-5'}>{user.username}</h2>

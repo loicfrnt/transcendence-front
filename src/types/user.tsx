@@ -1,3 +1,5 @@
+import { Channel } from './chat'
+
 export enum UserStatus {
   Offline = 0,
   Online,
@@ -18,7 +20,7 @@ export interface Relationship {
   status: RelStatus
 }
 
-export interface MatchHistory {
+export interface History {
   oppenent: User
   won: boolean
   scoreOppenent: number
@@ -33,7 +35,8 @@ export interface User {
   status: UserStatus
   victories: number
   defeats: number
-  history: MatchHistory[]
+  history: History[]
+  channels: Channel[]
   sentRelationships: Relationship[]
   receivedRelationships: Relationship[]
 }

@@ -1,4 +1,5 @@
 import { User } from '../types/user'
+import { dummyDm } from './channels'
 
 export const mechant: User = {
   id: 5,
@@ -10,6 +11,7 @@ export const mechant: User = {
   defeats: 3,
   sentRelationships: [],
   receivedRelationships: [],
+  channels: [],
   history: [],
 }
 
@@ -43,10 +45,19 @@ export const thisUser: User = {
       status: 0,
     },
   ],
+  channels: [],
   history: [
     { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
     { oppenent: mechant, won: false, scoreOppenent: 10, scorePlayer: 8 },
     { oppenent: mechant, won: false, scoreOppenent: 10, scorePlayer: 9 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
+    { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
     { oppenent: mechant, won: true, scoreOppenent: 4, scorePlayer: 10 },
   ],
 }
@@ -63,6 +74,7 @@ export const userList: User[] = [
     sentRelationships: [],
     receivedRelationships: [],
     history: [],
+    channels: [],
   },
   {
     id: 3,
@@ -75,6 +87,7 @@ export const userList: User[] = [
     sentRelationships: [],
     receivedRelationships: [],
     history: [],
+    channels: [],
   },
   thisUser,
   thisUser,

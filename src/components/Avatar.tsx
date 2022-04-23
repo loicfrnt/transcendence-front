@@ -14,7 +14,7 @@ export default function Avatar({
   noLink = false,
   size = 'h-16 w-16',
 }: AvatarProps) {
-  const classes = `block bg-cover rounded-full ${size}`
+  const classes = `block bg-cover rounded-full aspect-square ${size}`
   //const avatar = 'http://localhost:3000/local-files/' + avatarId
 
   if (!noLink) {

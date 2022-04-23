@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom'
 import Avatar from '../../components/Avatar'
-import { userList } from '../../data/users'
 import { User } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
 
-export default function Friends() {
-  function renderFriend(user: User, id: number) {
+interface Props {
+  blocked: User[]
+}
+
+export default function Blocked({ blocked }: Props) {
+  function renderBlocked(user: User, id: number) {
     return (
       <div key={id}>
         <Link
@@ -27,14 +30,14 @@ export default function Friends() {
   }
 
   return (
-    <SocialItemContainer title="Friends">
-      {!userList ? (
-        <SocialNoItem msg="No one here :c" />
-      ) : (
-        <SocialItemList>
-          <>{userList.map(renderFriend)}</>
-        </SocialItemList>
-      )}
+    <SocialItemContainer title="Blocked">
+      <SocialItemList>
+        {!blocked.length ? (
+          <SocialNoItem msg="You didn't block anyone, great!!" />
+        ) : (
+          <>{blocked.map(renderBlocked)}</>
+        )}
+      </SocialItemList>
     </SocialItemContainer>
   )
 }
