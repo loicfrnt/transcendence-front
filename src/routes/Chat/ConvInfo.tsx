@@ -81,7 +81,7 @@ export default function ConvInfo({ channel, thisUser }: Props) {
 
       const user = cUser.user
       if (user === thisUser) {
-        return <></>
+        return null
       }
       return (
         <Link
@@ -89,7 +89,7 @@ export default function ConvInfo({ channel, thisUser }: Props) {
           className="duration-300 hover:bg-gray-light  p-2 flex"
           key={cUser.id}
         >
-          <Avatar username={user.username} avatarId={user.avatarId} />
+          <Avatar username={user.username} avatarId={user.avatarId} noLink />
           <div className="flex flex-col">
             <h2 className="font-semibold text-lg ml-2">{user.username}</h2>
             <div className="flex gap-2 ml-2">

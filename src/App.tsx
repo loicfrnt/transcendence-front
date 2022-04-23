@@ -2,13 +2,7 @@
 import { useEffect, useState } from 'react'
 
 // React Routing
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
-} from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 // Routes
 import { Login } from './routes/Login/Login'
@@ -18,14 +12,12 @@ import Game from './routes/Game/Game'
 import Chat from './routes/Chat/Chat'
 //tmp
 import { thisUser } from './data/users'
-import UserProfile from './routes/Profile/MyProfile'
-import OtherProfile from './routes/Profile/OtherProfile'
 import Profile from './routes/Profile/Profile'
-import { dummyChannel, dummyDm } from './data/channels'
+import { dummyChannel, dummyDm, myChannel } from './data/channels'
 
 export default function App() {
   //TMP
-  thisUser.channels = [dummyDm, dummyChannel]
+  thisUser.channels = [dummyDm, dummyChannel, myChannel]
 
   const [currUser, setCurrUser] = useState(thisUser)
   const savedConnected = localStorage.getItem('connected')
