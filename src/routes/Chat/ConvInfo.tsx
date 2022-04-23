@@ -85,7 +85,7 @@ export default function ConvInfo({ channel, thisUser }: Props) {
       }
       return (
         <Link
-          to={'/profile' + user.username}
+          to={'/profile/' + user.username}
           className="duration-300 hover:bg-gray-light  p-2 flex"
           key={cUser.id}
         >
