@@ -3,6 +3,7 @@ import ContentBox from '../../components/ContentBox'
 import { User } from '../../types/user'
 import channelName from '../../utils/channelName'
 import Conversation from './Conversation'
+import ConvInfo from './ConvInfo'
 
 interface Props {
   thisUser: User
@@ -32,7 +33,7 @@ export default function ChatOpen({ thisUser }: Props) {
         </h1>
         <Conversation messages={channel.messages} thisUser={thisUser} />
       </ContentBox>
-      <ContentBox className="w-[400px]"></ContentBox>
+      <ConvInfo channel={channel} thisUser={thisUser}></ConvInfo>
     </>
   )
 }

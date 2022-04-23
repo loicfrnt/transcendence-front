@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+import { useEffect } from 'react'
 import Avatar from '../../components/Avatar'
 import { Message } from '../../types/chat'
 import { User } from '../../types/user'
@@ -8,6 +10,14 @@ interface Props {
 }
 
 export default function Conversation({ thisUser, messages }: Props) {
+  //Scroll conversation to bottom on each load + new message
+  let convRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const conv = convRef.current as HTMLDivElement
+    console.log(conv)
+    conv.scrollTop = conv.scrollHeight
+  }, [messages])
+
   function renderMessage(message: Message) {
     const align = message.author === thisUser ? 'self-end' : ''
     const color =
@@ -37,11 +47,15 @@ export default function Conversation({ thisUser, messages }: Props) {
 
   return (
     <>
-      <div className="flex flex-col min-h-[60vh] max-h-[70vh] gap-4 overflow-auto">
+      <div
+        id="conversation"
+        ref={convRef}
+        className="flex flex-col min-h-[60vh] max-h-[70vh] gap-4 overflow-auto"
+      >
         {messages.map(renderMessage)}
       </div>
       <input
-        className="bg-gray-light align w-full rounded-2xl px-2 py-1.5"
+        className="bg-gray-light align w-full rounded-2xl px-2 py-1.5 mt-3"
         type="text"
         placeholder="Aa"
       />
