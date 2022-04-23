@@ -7,6 +7,7 @@ import { ReactComponent as SvgDuel } from '../../assets/game.svg'
 import { ReactComponent as SvgAddFriend } from '../../assets/addFriend.svg'
 import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
 import { ReactComponent as SvgBlock } from '../../assets/block.svg'
+import { Link } from 'react-router-dom'
 
 interface Props {
   channel: Channel
@@ -71,9 +72,9 @@ export default function ConvInfo({ channel, thisUser }: Props) {
         return (
           <button
             onClick={handleClick}
-            className="bg-gray h-8 w-8 rounded-full flex items-center justify-center"
+            className="duration-300 border border-gray bg-white hover:bg-gray h-8 w-8 rounded-full flex items-center justify-center group"
           >
-            <Svg className="h-4 fill-gray-light" />
+            <Svg className="h-4 fill-gray group-hover:fill-violet duration-300" />
           </button>
         )
       }
@@ -83,7 +84,11 @@ export default function ConvInfo({ channel, thisUser }: Props) {
         return <></>
       }
       return (
-        <div className="bg-gray-light rounded-3xl p-2 flex" key={cUser.id}>
+        <Link
+          to={'/profile' + user.username}
+          className="duration-300 hover:bg-gray-light  p-2 flex"
+          key={cUser.id}
+        >
           <Avatar username={user.username} avatarId={user.avatarId} />
           <div className="flex flex-col">
             <h2 className="font-semibold text-lg ml-2">{user.username}</h2>
@@ -95,14 +100,16 @@ export default function ConvInfo({ channel, thisUser }: Props) {
               {userButton(SvgBlock, (e) => null)}
             </div>
           </div>
-        </div>
+        </Link>
       )
     }
 
     return (
       <div className="flex flex-col gap-3">
-        <h1 className="font-bold text-3xl">Members</h1>
-        {channel.channelUsers.map(renderConvMember)}
+        <h1 className="font-bold text-3xl mb">Members</h1>
+        <div className="flex flex-col gap-0 border rounded-3xl border-gray overflow-auto">
+          {channel.channelUsers.map(renderConvMember)}
+        </div>
       </div>
     )
   }
