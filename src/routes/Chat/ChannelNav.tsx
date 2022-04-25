@@ -7,11 +7,10 @@ import channelName from '../../utils/channelName'
 
 interface Props {
   thisUser: User
+  channels: Channel[]
 }
 
-export default function ChannelNav({ thisUser }: Props) {
-  const channels = thisUser.channels
-
+export default function ChannelNav({ thisUser, channels }: Props) {
   function renderChannel(channel: Channel) {
     const linkClass =
       'duration-300 rounded-3xl h-16 pl-5 w-full flex items-center '

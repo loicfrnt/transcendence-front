@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import ContentBox from '../../components/ContentBox'
+import { Channel } from '../../types/chat'
 import { User } from '../../types/user'
 import channelName from '../../utils/channelName'
 import Conversation from './Conversation'
@@ -7,10 +8,11 @@ import ConvInfo from './ConvInfo'
 
 interface Props {
   thisUser: User
+  channels: Channel[]
 }
 
-export default function ChatOpen({ thisUser }: Props) {
-  const channels = thisUser.channels
+export default function ChatOpen({ thisUser, channels }: Props) {
+  // const channels = thisUser.channels
   const params = useParams()
   const channelId = parseInt(params.channelId as string)
   const channel = channels.find((c) => c.id === channelId)
