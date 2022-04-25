@@ -12,6 +12,9 @@ import Game from './routes/Game/Game'
 import Chat from './routes/Chat/Chat'
 //tmp
 import { thisUser } from './data/users'
+import UserProfile from './routes/Profile/MyProfile'
+import OtherProfile from './routes/Profile/OtherProfile'
+import { Register } from './routes/Register/Register'
 import Profile from './routes/Profile/Profile'
 import { dummyChannel, dummyDm, myChannel } from './data/channels'
 
@@ -37,6 +40,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Login setConnected={setConnected} />} />
           <Route path="*" element={<Navigate to="/" />}></Route>
+          <Route path="register" element={<Register />}></Route>
         </Routes>
       </BrowserRouter>
     )
@@ -54,6 +58,8 @@ export default function App() {
               <Profile thisUser={currUser} setConnected={setConnected} />
             }
           />
+          <Route path=":username" element={<OtherProfile />} />
+          <Route path='login' element = {<Login setConnected={setConnected}/>}/>
           <Route path="chat/*" element={<Chat user={thisUser} />} />
           <Route path="*" element={'404'} />
         </Route>

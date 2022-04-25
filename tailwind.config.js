@@ -15,6 +15,7 @@ module.exports = {
       'gray-light': '#EFEFEF',
       green: '#399500',
       red: '#BA0000',
+      zink: '#363636'
     },
     fontFamily: {},
     extend: {
@@ -29,5 +30,8 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('tailwindcss/colors')
+  ],
 }
