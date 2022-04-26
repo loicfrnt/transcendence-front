@@ -1,6 +1,21 @@
-import { Field, Form, Formik } from 'formik'
+import { Field, Form, Formik, useFormikContext } from 'formik'
+import { NewChannel } from '../../types/chat'
 
 export default function CreateChannel() {
+  function ChannelPassword() {
+    const { values }: { values: NewChannel } = useFormikContext()
+    const isHidden = values.status === 'public'
+    return (
+      <Field
+        disabled={isHidden}
+        autocomplete="off"
+        type="password"
+        name="password"
+        placeholder="Channel Password"
+        className={'rounded-xl' + (isHidden ? ' hidden' : '')}
+      />
+    )
+  }
   return (
     <div>
       <h1 className="font-semibold text-xl mb-3">Create Channel</h1>
@@ -19,12 +34,7 @@ export default function CreateChannel() {
             <option value="public"> Public </option>
             <option value="private"> Private </option>
           </Field>
-          <Field
-            type="password"
-            name="password"
-            placeholder="Channel Password"
-            className="rounded-xl"
-          />
+          <ChannelPassword />
         </Form>
       </Formik>
     </div>
