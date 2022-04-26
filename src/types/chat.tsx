@@ -23,3 +23,10 @@ export interface Message {
   content: string
   author: User
 }
+
+export interface TransferedMessage {
+  id: number
+  channel: Channel
+  content: string
+  author: User
+}

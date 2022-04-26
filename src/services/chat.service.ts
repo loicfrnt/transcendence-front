@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Channel } from '../types/chat'
+import { Channel, TransferedMessage } from '../types/chat'
 
 const ROUTE = '/api/channels/'
 
@@ -22,6 +22,17 @@ class ChatService {
         )
       }
     })
+  }
+
+  receiveMessage(
+    message: TransferedMessage,
+    setChannels: React.Dispatch<React.SetStateAction<Channel[]>>,
+    channels: Channel[]
+  ) {
+    let newChannels = [...channels]
+    const channelId = message.channel.id
+    newChannels.find((c) => c.id === channelId)?.messages.push(message)
+    setChannels(newChannels)
   }
 
   // register(username: string, email: string, password:string) {

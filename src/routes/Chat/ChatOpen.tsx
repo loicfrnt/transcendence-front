@@ -1,4 +1,6 @@
+import { Ref } from 'react'
 import { useParams } from 'react-router-dom'
+import { Socket } from 'socket.io-client'
 import ContentBox from '../../components/ContentBox'
 import { Channel } from '../../types/chat'
 import { User } from '../../types/user'
@@ -9,9 +11,10 @@ import ConvInfo from './ConvInfo'
 interface Props {
   thisUser: User
   channels: Channel[]
+  socket: Socket | null
 }
 
-export default function ChatOpen({ thisUser, channels }: Props) {
+export default function ChatOpen({ thisUser, channels, socket }: Props) {
   // const channels = thisUser.channels
   const params = useParams()
   const channelId = parseInt(params.channelId as string)
@@ -33,7 +36,12 @@ export default function ChatOpen({ thisUser, channels }: Props) {
         <h1 className={'mb-4 text-[2rem] leading-[2.625rem] font-semibold'}>
           {channelName(channel, thisUser)}
         </h1>
-        <Conversation messages={channel.messages} thisUser={thisUser} />
+        <Conversation
+          messages={channel.messages}
+          thisUser={thisUser}
+          channelId={channel.id}
+          socket={socket}
+        />
       </ContentBox>
       <ConvInfo channel={channel} thisUser={thisUser}></ConvInfo>
     </>
