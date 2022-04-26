@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import ContentBox from '../../components/ContentBox'
 import MainContainer from '../../components/MainContainer'
+import PopUpBox from '../../components/PopUpBox'
 import { Channel } from '../../types/chat'
 import { User } from '../../types/user'
 import channelName from '../../utils/channelName'
+import { ReactComponent as AddSvg } from '../../assets/add.svg'
+import CreateChannel from './CreateChannel'
 
 interface Props {
   thisUser: User
@@ -33,14 +37,25 @@ export default function ChannelNav({ thisUser, channels }: Props) {
       </div>
     )
   }
+  const [newChanOpen, setNewChanOpen] = useState(false)
 
   return (
     <MainContainer>
+      <PopUpBox open={newChanOpen} setOpen={setNewChanOpen}>
+        <CreateChannel />
+      </PopUpBox>
       <div className="flex items-center justify-center sm:justify-start w-full h-full flex-wrap gap-y-6 pt-5">
-        <ContentBox className="w-[400px] sm:h-[70vh]">
-          <h1 className={'mb-4 text-[2rem] leading-[2.625rem] font-semibold'}>
-            Conversations
-          </h1>
+        <ContentBox className="mb-4 w-[400px] sm:h-[70vh]">
+          <div className="flex items-center justify-between">
+            <h1 className={'text-[2rem] leading-[2.625rem] font-semibold'}>
+              Conversations
+            </h1>
+            <AddSvg
+              className="w-7 h-7 fill-gray hover:fill-violet duration-300"
+              onClick={(e) => setNewChanOpen(true)}
+              cursor={'pointer'}
+            ></AddSvg>
+          </div>
           <div className="flex flex-col gap-3">
             {channels.map(renderChannel)}
           </div>

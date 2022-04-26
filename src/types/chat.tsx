@@ -1,5 +1,11 @@
 import { User } from './user'
 
+export interface NewChannel {
+  name: string
+  status: string
+  password: string
+}
+
 export interface Channel {
   id: number
   name: string
