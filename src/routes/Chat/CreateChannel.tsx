@@ -1,9 +1,9 @@
 import { Field, Form, Formik, useFormikContext } from 'formik'
 import chatService from '../../services/chat.service'
-import { Channel, NewChannel } from '../../types/chat'
+import { NewChannel, ProtoChannel } from '../../types/chat'
 
 interface Props {
-  setChannels: React.Dispatch<React.SetStateAction<Channel[]>>
+  setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setNewChanOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 

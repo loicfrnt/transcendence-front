@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Channel } from '../../types/chat'
+import { ProtoChannel } from '../../types/chat'
 import { User } from '../../types/user'
 import ChannelNav from './ChannelNav'
 import ChatClose from './ChatClose'
@@ -14,7 +14,7 @@ interface Props {
 }
 
 function Chat({ user }: Props) {
-  const [channels, setChannels] = useState<Channel[]>([])
+  const [channels, setChannels] = useState<ProtoChannel[]>([])
   const socket = useRef<Socket | null>(null)
 
   useEffect(() => {
@@ -31,14 +31,15 @@ function Chat({ user }: Props) {
     }
   }, [])
 
-  useEffect(() => {
-    socket.current?.on('receive_message', (message) => {
-      chatServices.receiveMessage(message, setChannels, channels)
-    })
-    return () => {
-      socket.current?.off('receive_message')
-    }
-  }, [channels])
+  // NOW IN ChatOpen
+  // useEffect(() => {
+  //   socket.current?.on('receive_message', (message) => {
+  //     chatServices.receiveMessage(message, setChannels, channels)
+  //   })
+  //   return () => {
+  //     socket.current?.off('receive_message')
+  //   }
+  // }, [channels])
 
   return (
     <Routes>
@@ -58,7 +59,7 @@ function Chat({ user }: Props) {
           element={
             <ChatOpen
               thisUser={user}
-              channels={channels}
+              channelsLength={channels.length}
               socket={socket.current}
               setChannels={setChannels}
             />

@@ -3,7 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import ContentBox from '../../components/ContentBox'
 import MainContainer from '../../components/MainContainer'
 import PopUpBox from '../../components/PopUpBox'
-import { Channel } from '../../types/chat'
+import { ProtoChannel } from '../../types/chat'
 import { User } from '../../types/user'
 import channelName from '../../utils/channelName'
 import { ReactComponent as AddSvg } from '../../assets/add.svg'
@@ -11,12 +11,12 @@ import CreateChannel from './CreateChannel'
 
 interface Props {
   thisUser: User
-  channels: Channel[]
-  setChannels: React.Dispatch<React.SetStateAction<Channel[]>>
+  channels: ProtoChannel[]
+  setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
 }
 
 export default function ChannelNav({ thisUser, channels, setChannels }: Props) {
-  function renderChannel(channel: Channel) {
+  function renderChannel(channel: ProtoChannel) {
     const linkClass =
       'duration-300 rounded-3xl h-16 pl-5 w-full flex items-center '
 

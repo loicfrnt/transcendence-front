@@ -1,10 +1,10 @@
-import { Channel } from '../../types/chat'
+import { ProtoChannel } from '../../types/chat'
 import chatServices from '../../services/chat.service'
 
 interface Props {
   channelId: number
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  setChannels: React.Dispatch<React.SetStateAction<Channel[]>>
+  setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
 }
 export default function EditChannel({
   channelId,
