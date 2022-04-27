@@ -58,7 +58,7 @@ export default function ChannelNav({ thisUser, channels, setChannels }: Props) {
               className="w-7 h-7 fill-gray hover:fill-violet duration-300"
               onClick={(e) => setNewChanOpen(true)}
               cursor={'pointer'}
-            ></AddSvg>
+            />
           </div>
           <div className="flex flex-col gap-3">
             {channels.map(renderChannel)}
