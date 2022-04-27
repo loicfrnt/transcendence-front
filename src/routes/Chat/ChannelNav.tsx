@@ -43,10 +43,7 @@ export default function ChannelNav({ thisUser, channels, setChannels }: Props) {
   return (
     <MainContainer>
       <PopUpBox open={newChanOpen} setOpen={setNewChanOpen}>
-        <CreateChannel
-          setChannels={setChannels}
-          setNewChanOpen={setNewChanOpen}
-        />
+        <CreateChannel setChannels={setChannels} setIsOpen={setNewChanOpen} />
       </PopUpBox>
       <div className="flex items-center justify-center sm:justify-start w-full h-full flex-wrap gap-y-6 pt-5">
         <ContentBox className="mb-4 w-[400px] sm:h-[70vh]">

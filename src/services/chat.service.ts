@@ -65,6 +65,11 @@ class ChatService {
     axios
       .post(URL + ROUTE, newChannel)
       .then(() => this.getChannels(setChannels))
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data.message)
+        }
+      })
   }
 
   deleteChannel(
