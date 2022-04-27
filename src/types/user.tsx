@@ -40,3 +40,13 @@ export interface User {
   sentRelationships: Relationship[]
   receivedRelationships: Relationship[]
 }
+
+export interface ProtoUser {
+  id: number
+  email: string
+  username: string
+  avatar_id: number
+  status: UserStatus
+  victories: number
+  defeats: number
+}

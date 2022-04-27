@@ -1,4 +1,4 @@
-import { User } from './user'
+import { User, ProtoUser } from './user'
 
 export interface NewChannel {
   name: string
@@ -10,6 +10,7 @@ export interface ProtoChannel {
   id: number
   name: string
   status: string
+  channelUsers?: ChannelUser[]
 }
 
 export interface Channel {
@@ -26,7 +27,7 @@ export interface ChannelUser {
   role: number
   sanction: null
   end_of_sanction: null
-  channel: null
+  channelId: number
   user: User
 }
 
