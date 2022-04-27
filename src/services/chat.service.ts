@@ -11,11 +11,15 @@ const ROUTE = '/api/channels/'
 
 class ChatService {
   getChannels(setChannels: React.Dispatch<React.SetStateAction<Channel[]>>) {
+    // GET channels list
     axios.get(URL + ROUTE).then((response) => {
       if (response.status === 200) {
         let channels: Channel[] = []
+        let protoChannels: ProtoChannel[] = response.data.user_channels
+        let completeCalls = 0
         // console.log(response.data.user_channels)
-        response.data.user_channels.map((current: Channel) =>
+        // GET all channels, one at a time
+        protoChannels.map((current: ProtoChannel) =>
           axios
             .get(process.env.PUBLIC_URL + ROUTE + current.id)
             .then((response) => {
@@ -23,7 +27,11 @@ class ChatService {
                 console.log(response.data)
                 channels = [...channels, response.data]
               }
-              setChannels(channels)
+              // When the last Channel has been received
+              if (++completeCalls === protoChannels.length) {
+                // Sort them and set their state in app
+                setChannels(channels.sort((a, b) => a.id - b.id))
+              }
             })
         )
       }
