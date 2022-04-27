@@ -47,6 +47,15 @@ class ChatService {
       .then(() => this.getChannels(setChannels))
   }
 
+  deleteChannel(
+    channelId: number,
+    setChannels: React.Dispatch<React.SetStateAction<Channel[]>>
+  ) {
+    axios
+      .delete(URL + ROUTE + channelId)
+      .then(() => this.getChannels(setChannels))
+  }
+
   receiveMessage(
     message: TransferedMessage,
     setChannels: React.Dispatch<React.SetStateAction<Channel[]>>,

@@ -60,6 +60,7 @@ function Chat({ user }: Props) {
               thisUser={user}
               channels={channels}
               socket={socket.current}
+              setChannels={setChannels}
             />
           }
         />
