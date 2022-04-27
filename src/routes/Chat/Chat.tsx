@@ -19,7 +19,7 @@ function Chat({ user }: Props) {
 
   useEffect(() => {
     //HTTP
-    chatServices.setChannels(setChannels)
+    chatServices.getChannels(setChannels)
 
     //WS
     socket.current = io(process.env.REACT_APP_BACK_LINK as string, {
@@ -44,7 +44,13 @@ function Chat({ user }: Props) {
     <Routes>
       <Route
         path="/"
-        element={<ChannelNav thisUser={user} channels={channels} />}
+        element={
+          <ChannelNav
+            thisUser={user}
+            channels={channels}
+            setChannels={setChannels}
+          />
+        }
       >
         <Route index element={<ChatClose />} />
         <Route

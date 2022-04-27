@@ -1,11 +1,17 @@
 import axios from 'axios'
-import { Channel, TransferedMessage } from '../types/chat'
+import {
+  Channel,
+  NewChannel,
+  ProtoChannel,
+  TransferedMessage,
+} from '../types/chat'
 
+const URL = process.env.PUBLIC_URL
 const ROUTE = '/api/channels/'
 
 class ChatService {
-  setChannels(setChannels: React.Dispatch<React.SetStateAction<Channel[]>>) {
-    axios.get(process.env.PUBLIC_URL + ROUTE).then((response) => {
+  getChannels(setChannels: React.Dispatch<React.SetStateAction<Channel[]>>) {
+    axios.get(URL + ROUTE).then((response) => {
       if (response.status === 200) {
         let channels: Channel[] = []
         // console.log(response.data.user_channels)
@@ -24,26 +30,25 @@ class ChatService {
     })
   }
 
+  createChannel(
+    newChannel: NewChannel,
+    setChannels: React.Dispatch<React.SetStateAction<Channel[]>>
+  ) {
+    axios
+      .post(URL + ROUTE, newChannel)
+      .then(() => this.getChannels(setChannels))
+  }
+
   receiveMessage(
     message: TransferedMessage,
     setChannels: React.Dispatch<React.SetStateAction<Channel[]>>,
     channels: Channel[]
   ) {
     let newChannels = [...channels]
-    const channelId = message.channel.id
+    const channelId = message.channelId
     newChannels.find((c) => c.id === channelId)?.messages.push(message)
     setChannels(newChannels)
   }
-
-  // register(username: string, email: string, password:string) {
-  //     return axios.post(process.env.PUBLIC_URL + ROUTE + "register", {
-  //         username,
-  //         email,
-  //         password
-  //     }).then(response =>{
-  //         return response.data;
-  //     });
-  // }
 }
 
 export default new ChatService()

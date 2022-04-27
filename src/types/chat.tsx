@@ -6,6 +6,12 @@ export interface NewChannel {
   password: string
 }
 
+export interface ProtoChannel {
+  id: number
+  name: string
+  status: string
+}
+
 export interface Channel {
   id: number
   name: string
@@ -32,7 +38,7 @@ export interface Message {
 
 export interface TransferedMessage {
   id: number
-  channel: Channel
+  channelId: number
   content: string
   author: User
 }

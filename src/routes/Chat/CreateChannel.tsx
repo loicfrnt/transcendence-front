@@ -1,14 +1,26 @@
 import { Field, Form, Formik, useFormikContext } from 'formik'
-import { NewChannel } from '../../types/chat'
+import chatService from '../../services/chat.service'
+import { Channel, NewChannel } from '../../types/chat'
 
-export default function CreateChannel() {
+interface Props {
+  setChannels: React.Dispatch<React.SetStateAction<Channel[]>>
+  setNewChanOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function CreateChannel({ setChannels, setNewChanOpen }: Props) {
+  function handleSubmit(values: NewChannel) {
+    if (values.status === 'public') values.password = ''
+    console.log(values)
+    chatService.createChannel(values, setChannels)
+    setNewChanOpen(false)
+  }
+
   function ChannelPassword() {
     const { values }: { values: NewChannel } = useFormikContext()
     const isHidden = values.status === 'public'
     return (
       <Field
         disabled={isHidden}
-        autocomplete="off"
         type="password"
         name="password"
         placeholder="Channel Password"
@@ -21,9 +33,9 @@ export default function CreateChannel() {
       <h1 className="font-semibold text-xl mb-3">Create Channel</h1>
       <Formik
         initialValues={{ name: '', status: 'public', password: '' }}
-        onSubmit={(values) => {}}
+        onSubmit={handleSubmit}
       >
-        <Form className="flex flex-col gap-3">
+        <Form className="flex flex-col gap-3" autoComplete="off">
           <Field
             type="text"
             name="name"
@@ -35,6 +47,12 @@ export default function CreateChannel() {
             <option value="private"> Private </option>
           </Field>
           <ChannelPassword />
+          <button
+            type="submit"
+            className="bg-gray-light font-semibold text-lg w-fit self-center mt-1 px-2 py-1 rounded-xl border hover:text-white hover:bg-violet duration-300"
+          >
+            Create
+          </button>
         </Form>
       </Formik>
     </div>

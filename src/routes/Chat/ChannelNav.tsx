@@ -12,9 +12,10 @@ import CreateChannel from './CreateChannel'
 interface Props {
   thisUser: User
   channels: Channel[]
+  setChannels: React.Dispatch<React.SetStateAction<Channel[]>>
 }
 
-export default function ChannelNav({ thisUser, channels }: Props) {
+export default function ChannelNav({ thisUser, channels, setChannels }: Props) {
   function renderChannel(channel: Channel) {
     const linkClass =
       'duration-300 rounded-3xl h-16 pl-5 w-full flex items-center '
@@ -42,7 +43,10 @@ export default function ChannelNav({ thisUser, channels }: Props) {
   return (
     <MainContainer>
       <PopUpBox open={newChanOpen} setOpen={setNewChanOpen}>
-        <CreateChannel />
+        <CreateChannel
+          setChannels={setChannels}
+          setNewChanOpen={setNewChanOpen}
+        />
       </PopUpBox>
       <div className="flex items-center justify-center sm:justify-start w-full h-full flex-wrap gap-y-6 pt-5">
         <ContentBox className="mb-4 w-[400px] sm:h-[70vh]">
