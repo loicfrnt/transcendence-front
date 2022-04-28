@@ -12,16 +12,11 @@ import Game from './routes/Game/Game'
 import Chat from './routes/Chat/Chat'
 //tmp
 import { thisUser } from './data/users'
-import UserProfile from './routes/Profile/MyProfile'
 import OtherProfile from './routes/Profile/OtherProfile'
 import { Register } from './routes/Register/Register'
 import Profile from './routes/Profile/Profile'
-import { dummyChannel, dummyDm, myChannel } from './data/channels'
 
 export default function App() {
-  //TMP
-  thisUser.channels = [dummyDm, dummyChannel, myChannel]
-
   const [currUser, setCurrUser] = useState(thisUser)
   const savedConnected = localStorage.getItem('connected')
   const [connected, setConnected] = useState(
@@ -59,7 +54,7 @@ export default function App() {
             }
           />
           <Route path=":username" element={<OtherProfile />} />
-          <Route path='login' element = {<Login setConnected={setConnected}/>}/>
+          <Route path="login" element={<Login setConnected={setConnected} />} />
           <Route path="chat/*" element={<Chat user={thisUser} />} />
           <Route path="*" element={'404'} />
         </Route>

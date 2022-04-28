@@ -4,13 +4,13 @@ interface MyProps {
   className?: string
   button?: boolean
   children?: React.ReactNode
-  handleClick?: MouseEventHandler<HTMLButtonElement>
+  handleClick?: MouseEventHandler
 }
 export default function ContentBox({
   className = '',
   button = false,
   children = <p>empty_content</p>,
-  handleClick = () => alert('No click handler found'),
+  handleClick = () => null,
 }: MyProps) {
   const style = 'bg-white rounded-3xl p-3 mx-5 ' + className
   return button ? (
@@ -21,6 +21,8 @@ export default function ContentBox({
       {children}
     </button>
   ) : (
-    <div className={style}>{children}</div>
+    <div className={style} onClick={handleClick}>
+      {children}
+    </div>
   )
 }
