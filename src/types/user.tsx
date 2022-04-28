@@ -31,7 +31,7 @@ export interface User {
   id: number
   email: string
   username: string
-  avatarId: number // ?
+  avatar_id: number // ?
   status: UserStatus
   victories: number
   defeats: number

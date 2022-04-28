@@ -19,8 +19,7 @@ export default function Avatar({
   const classes = `block bg-cover rounded-full aspect-square ${size}`
   const [state, setState] = useState({
     username : username,
-    avatarId : avatarId,
-    imageURL: ""
+    avatarId : avatarId
   });
   const [img, setImg] = useState<string>();
   useEffect( () =>{
@@ -33,7 +32,7 @@ export default function Avatar({
 
   if (!noLink) {
     return (
-      <a href="'/profile/' + {state.username}"><img src={img}  className={classes}/></a>
+      <Link to={'/profile/' + state.username}><img src={img}  className={classes}/></Link>
     )
   }
   return (

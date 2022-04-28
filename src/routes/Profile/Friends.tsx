@@ -18,7 +18,7 @@ export default function Friends() {
             noLink
             size="h-20 w-20"
             username={user.username}
-            avatarId={user.avatarId}
+            avatarId={user.avatar_id}
           ></Avatar>
           <h2 className="font-semibold text-lg">{user.username}</h2>
         </Link>

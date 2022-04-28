@@ -27,7 +27,7 @@ export default function Conversation({ thisUser, messages }: Props) {
       if (message.author !== thisUser) {
         return (
           <Avatar
-            avatarId={message.author.avatarId}
+            avatarId={message.author.avatar_id}
             username={message.author.username}
             size={'h-7 w-7 mt-1.5 mr-1.5'}
           />
