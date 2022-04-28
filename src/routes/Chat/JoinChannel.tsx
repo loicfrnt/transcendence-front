@@ -23,10 +23,11 @@ export default function JoinChannel({ setChannels, setIsOpen, socket }: Props) {
     return (
       <div key={channel.id}>
         <button
-          className="duration-300 rounded-3xl h-16 pl-5 w-full flex items-center bg-gray-light hover:bg-violet-light"
+          className="duration-300 rounded-3xl h-16 px-5 w-full flex items-center bg-gray-light hover:bg-violet-light"
           onClick={(e) => {
             socket?.emit('join_channel', { id: channel.id.toString() }, () => {
               chatService.getChannels(setChannels)
+              setIsOpen(false)
             })
           }}
         >

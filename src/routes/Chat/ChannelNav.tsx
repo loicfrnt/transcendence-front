@@ -51,7 +51,7 @@ export default function ChannelNav({
     if (newChanOpen)
       return (
         <PopUpBox open={newChanOpen} setOpen={setNewChanOpen}>
-          <div className="flex w-[400px]">
+          <div className="flex gap-10">
             <JoinChannel
               setChannels={setChannels}
               setIsOpen={setNewChanOpen}
