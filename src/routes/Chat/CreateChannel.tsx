@@ -30,7 +30,7 @@ export default function CreateChannel({ setChannels, setIsOpen }: Props) {
   }
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().min(3, 'Too short !'),
+    name: Yup.string().min(3, 'Too short !').max(20, 'Too long UwU'),
   })
 
   function ChannelPassword() {
