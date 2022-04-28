@@ -10,6 +10,7 @@ import Conversation from './Conversation'
 import ConvInfo from './ConvInfo'
 import EditChannel from './EditChannel'
 import { ReactComponent as EditSvg } from '../../assets/edit.svg'
+import { ReactComponent as LeaveSvg } from '../../assets/leave.svg'
 import chatService from '../../services/chat.service'
 import { useEffect } from 'react'
 
@@ -17,23 +18,27 @@ interface Props {
   thisUser: User
   socket: Socket | null
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
-  channelsLength: number //Here to update when we remove a channel
+  channels: ProtoChannel[] //Here to update when we remove a channel
 }
 
 export default function ChatOpen({
-  channelsLength,
+  channels,
   thisUser,
   socket,
   setChannels,
 }: Props) {
-  // const channels = thisUser.channels
   const params = useParams()
+  const channelsLength = channels.length
   const channelId = parseInt(params.channelId as string)
   const [channel, setChannel] = useState<Channel>()
   const [editChanOpen, setEditChanOpen] = useState(false)
 
   useEffect(() => {
-    chatService.getChannel(channelId, setChannel)
+    if (channels.find((chan) => chan.id === channelId) === undefined) {
+      setChannel(undefined)
+    } else {
+      chatService.getChannel(channelId, setChannel)
+    }
   }, [channelId, socket, channelsLength])
 
   useEffect(() => {
@@ -59,6 +64,9 @@ export default function ChatOpen({
     )
   }
 
+  // Redundant Styles
+  const svgClass = 'w-7 h-7 fill-gray hover:fill-violet duration-300'
+
   return (
     <>
       <PopUpBox open={editChanOpen} setOpen={setEditChanOpen}>
@@ -74,11 +82,26 @@ export default function ChatOpen({
           <h1 className={'text-[2rem] leading-[2.625rem] font-semibold'}>
             {channelName(channel, thisUser)}
           </h1>
-          <EditSvg
-            className="w-7 h-7 fill-gray hover:fill-violet duration-300"
-            onClick={(e) => setEditChanOpen(true)}
-            cursor={'pointer'}
-          />
+          <div className="flex justify-end gap-5">
+            <EditSvg
+              className={svgClass}
+              onClick={(e) => setEditChanOpen(true)}
+              cursor={'pointer'}
+            />
+            <LeaveSvg
+              className={svgClass}
+              onClick={(e) =>
+                socket?.emit(
+                  'leave_channel',
+                  { id: channelId.toString() },
+                  () => {
+                    chatService.getChannels(setChannels)
+                  }
+                )
+              }
+              cursor={'pointer'}
+            />
+          </div>
         </div>
         <Conversation
           messages={channel.messages}

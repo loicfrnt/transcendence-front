@@ -9,7 +9,6 @@ import {
 import chatService from '../../services/chat.service'
 import { NewChannel, ProtoChannel } from '../../types/chat'
 import * as Yup from 'yup'
-import { useEffect, useRef } from 'react'
 
 interface Props {
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>

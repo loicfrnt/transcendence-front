@@ -50,6 +50,7 @@ function Chat({ user }: Props) {
             thisUser={user}
             channels={channels}
             setChannels={setChannels}
+            socket={socket.current}
           />
         }
       >
@@ -59,7 +60,7 @@ function Chat({ user }: Props) {
           element={
             <ChatOpen
               thisUser={user}
-              channelsLength={channels.length}
+              channels={channels}
               socket={socket.current}
               setChannels={setChannels}
             />

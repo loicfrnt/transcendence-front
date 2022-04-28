@@ -1,10 +1,5 @@
 import axios from 'axios'
-import {
-  Channel,
-  NewChannel,
-  ProtoChannel,
-  TransferedMessage,
-} from '../types/chat'
+import { Channel, NewChannel, ProtoChannel } from '../types/chat'
 
 const URL = process.env.PUBLIC_URL
 const ROUTE = '/api/channels/'
@@ -17,26 +12,25 @@ class ChatService {
     axios.get(URL + ROUTE).then((response) => {
       if (response.status === 200) {
         setChannels(response.data.user_channels)
-        // let channels: Channel[] = []
-        // let protoChannels: ProtoChannel[] = response.data.user_channels
-        // let completeCalls = 0
-        // // console.log(response.data.user_channels)
-        // // GET all channels, one at a time
-        // protoChannels.map((current: ProtoChannel) =>
-        //   axios
-        //     .get(process.env.PUBLIC_URL + ROUTE + current.id)
-        //     .then((response) => {
-        //       if (response.status === 200) {
-        //         console.log(response.data)
-        //         channels = [...channels, response.data]
-        //       }
-        //       // When the last Channel has been received
-        //       if (++completeCalls === protoChannels.length) {
-        //         // Sort them and set their state in app
-        //         setChannels(channels.sort((a, b) => a.id - b.id))
-        //       }
-        //     })
-        // )
+      }
+    })
+  }
+
+  getJoinableChannels(
+    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
+  ) {
+    // GET available channels list, remove already joined ones
+    axios.get(URL + ROUTE).then((response) => {
+      if (response.status === 200) {
+        let availableChans: ProtoChannel[] = response.data.avalaible_channels
+        let userChans: ProtoChannel[] = response.data.user_channels
+        setChannels(
+          availableChans.filter(
+            (chan) =>
+              userChans.find((userChan) => userChan.id === chan.id) ===
+              undefined
+          )
+        )
       }
     })
   }
