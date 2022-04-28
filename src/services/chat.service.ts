@@ -22,7 +22,7 @@ class ChatService {
     // GET available channels list, remove already joined ones
     axios.get(URL + ROUTE).then((response) => {
       if (response.status === 200) {
-        let availableChans: ProtoChannel[] = response.data.avalaible_channels
+        let availableChans: ProtoChannel[] = response.data.available_channels
         let userChans: ProtoChannel[] = response.data.user_channels
         setChannels(
           availableChans.filter(
