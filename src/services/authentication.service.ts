@@ -24,6 +24,13 @@ class AuthenticationService {
             return response.data;
         });
     }
+
+    getCurrentUser() {
+        const usrStr = localStorage.getItem("user");
+        if (usrStr)
+            return JSON.parse(usrStr);
+        return null;
+    }
 }
 
 export default new AuthenticationService();

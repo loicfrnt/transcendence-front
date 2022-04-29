@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import avatar from './avatar.png'
+import { FileWatcherEventKind } from 'typescript'
+import localFilesService from '../services/local-files.service'
 
 interface AvatarProps {
   avatarId: number
@@ -15,18 +17,25 @@ export default function Avatar({
   size = 'h-16 w-16',
 }: AvatarProps) {
   const classes = `block bg-cover rounded-full aspect-square ${size}`
-  //const avatar = 'http://localhost:3000/local-files/' + avatarId
+  const [state, setState] = useState({
+    username : username,
+    avatarId : avatarId
+  });
+  const [img, setImg] = useState<string>();
+  useEffect( () =>{
+    const fetchImage = async() =>{
+      const imgUrl = await localFilesService.retriveFile(avatarId);
+      setImg(imgUrl);
+    };
+    fetchImage();
+  }, []);
 
   if (!noLink) {
     return (
-      <Link
-        className={classes}
-        style={{ backgroundImage: `url(${avatar})` }}
-        to={'/profile/' + username}
-      />
+      <Link to={'/profile/' + state.username}><img src={img}  className={classes}/></Link>
     )
   }
   return (
-    <div className={classes} style={{ backgroundImage: `url(${avatar})` }} />
+    <img src={img} className={classes}/>
   )
 }

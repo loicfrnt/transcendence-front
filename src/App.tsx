@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 // React Routing
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 
 // Routes
 import { Login } from './routes/Login/Login'
@@ -15,10 +15,26 @@ import { thisUser } from './data/users'
 import OtherProfile from './routes/Profile/OtherProfile'
 import { Register } from './routes/Register/Register'
 import Profile from './routes/Profile/Profile'
+import { User } from './types/user'
+import authenticationService from './services/authentication.service'
 
 export default function App() {
-  const [currUser, setCurrUser] = useState(thisUser)
-  const savedConnected = localStorage.getItem('connected')
+  const [currUser, setCurrUser] = useState<User>(
+  {
+    id: 0,
+    email: '',
+    username: '',
+    avatar_id: 0,
+    status: 0,
+    victories: 0,
+    defeats: 0,
+    sentRelationships: [],
+    receivedRelationships: [],
+    channels: [],
+    history: [],
+  }); 
+  //let navigate = useNavigate();
+  const savedConnected = localStorage.getItem('connected');
   const [connected, setConnected] = useState(
     // Recover Connected state from cache
     savedConnected ? JSON.parse(savedConnected) : false
@@ -26,7 +42,12 @@ export default function App() {
 
   // Cache connected state
   useEffect(() => {
-    localStorage.setItem('connected', JSON.stringify(connected))
+    localStorage.setItem('connected', JSON.stringify(connected));
+    const currentUser = authenticationService.getCurrentUser();
+    //if (!currentUser)
+      //navigate("/");
+    //else
+      setCurrUser(currentUser);
   }, [connected])
 
   if (!connected) {
