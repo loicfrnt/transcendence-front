@@ -50,18 +50,17 @@ export default function ChannelNav({
   function popUp() {
     if (newChanOpen)
       return (
-        <PopUpBox open={newChanOpen} setOpen={setNewChanOpen}>
-          <div className="flex gap-10">
-            <JoinChannel
-              setChannels={setChannels}
-              setIsOpen={setNewChanOpen}
-              socket={socket}
-            />
-            <CreateChannel
-              setChannels={setChannels}
-              setIsOpen={setNewChanOpen}
-            />
-          </div>
+        <PopUpBox
+          open={newChanOpen}
+          setOpen={setNewChanOpen}
+          className="flex gap-10 flex-wrap justify-center"
+        >
+          <JoinChannel
+            setChannels={setChannels}
+            setIsOpen={setNewChanOpen}
+            socket={socket}
+          />
+          <CreateChannel setChannels={setChannels} setIsOpen={setNewChanOpen} />
         </PopUpBox>
       )
   }

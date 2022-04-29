@@ -30,7 +30,7 @@ export default function CreateChannel({ setChannels, setIsOpen }: Props) {
   }
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().min(3, 'Too short !'),
+    name: Yup.string().min(3, 'Too short !').max(20, 'Too long UwU'),
   })
 
   function ChannelPassword() {
@@ -48,8 +48,8 @@ export default function CreateChannel({ setChannels, setIsOpen }: Props) {
   }
 
   return (
-    <div>
-      <h1 className="font-semibold text-xl mb-3">Create Channel</h1>
+    <div className="min-w-[200px] duration-75">
+      <h1 className="font-semibold text-2xl mb-3">Create Channel</h1>
       <Formik
         initialValues={{ name: '', status: 'public', password: '' }}
         onSubmit={handleSubmit}

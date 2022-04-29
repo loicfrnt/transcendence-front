@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 // React Routing
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 // Routes
 import { Login } from './routes/Login/Login'
@@ -11,7 +11,6 @@ import Home from './routes/Home/Home'
 import Game from './routes/Game/Game'
 import Chat from './routes/Chat/Chat'
 //tmp
-import { thisUser } from './data/users'
 import OtherProfile from './routes/Profile/OtherProfile'
 import { Register } from './routes/Register/Register'
 import Profile from './routes/Profile/Profile'
@@ -19,8 +18,7 @@ import { User } from './types/user'
 import authenticationService from './services/authentication.service'
 
 export default function App() {
-  const [currUser, setCurrUser] = useState<User>(
-  {
+  const [currUser, setCurrUser] = useState<User>({
     id: 0,
     email: '',
     username: '',
@@ -32,9 +30,9 @@ export default function App() {
     receivedRelationships: [],
     channels: [],
     history: [],
-  }); 
+  })
   //let navigate = useNavigate();
-  const savedConnected = localStorage.getItem('connected');
+  const savedConnected = localStorage.getItem('connected')
   const [connected, setConnected] = useState(
     // Recover Connected state from cache
     savedConnected ? JSON.parse(savedConnected) : false
@@ -42,12 +40,12 @@ export default function App() {
 
   // Cache connected state
   useEffect(() => {
-    localStorage.setItem('connected', JSON.stringify(connected));
-    const currentUser = authenticationService.getCurrentUser();
+    localStorage.setItem('connected', JSON.stringify(connected))
+    const currentUser = authenticationService.getCurrentUser()
     //if (!currentUser)
-      //navigate("/");
+    //navigate("/");
     //else
-      setCurrUser(currentUser);
+    setCurrUser(currentUser)
   }, [connected])
 
   if (!connected) {
@@ -76,7 +74,7 @@ export default function App() {
           />
           <Route path=":username" element={<OtherProfile />} />
           <Route path="login" element={<Login setConnected={setConnected} />} />
-          <Route path="chat/*" element={<Chat user={thisUser} />} />
+          <Route path="chat/*" element={<Chat user={currUser} />} />
           <Route path="*" element={'404'} />
         </Route>
       </Routes>
