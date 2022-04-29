@@ -34,7 +34,7 @@ export interface ChannelUser {
 export interface Message {
   id: number
   content: string
-  author: User
+  author: ProtoUser
 }
 
 export interface TransferedMessage {
