@@ -46,7 +46,7 @@ export default function ConvInfo({ channel, thisUser }: Props) {
       <div className="flex flex-col items-center w-full">
         <Avatar
           username={user.username}
-          avatarId={user.avatarId}
+          avatarId={user.avatar_id}
           size="h-[146px]"
         />
         <h1 className="font-semibold text-[2rem] leading-[3rem] mt-4">
@@ -89,7 +89,7 @@ export default function ConvInfo({ channel, thisUser }: Props) {
           className="duration-300 hover:bg-gray-light  p-2 flex"
           key={cUser.id}
         >
-          <Avatar username={user.username} avatarId={user.avatarId} noLink />
+          <Avatar username={user.username} avatarId={user.avatar_id} noLink />
           <div className="flex flex-col">
             <h2 className="font-semibold text-lg ml-2">{user.username}</h2>
             <div className="flex gap-2 ml-2">
