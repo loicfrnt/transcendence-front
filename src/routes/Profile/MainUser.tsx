@@ -18,7 +18,7 @@ export default function MainUser({ user, children }: MyProps) {
       <Avatar
         username={user.username}
         avatarId={user.avatar_id}
-        size="max-h-[316px] w-full"
+        size="max-h-[316px] max-w-[316px] w-full"
         noLink
       />
       <h2 className={titleStyle + 'mt-5'}>{user.username}</h2>

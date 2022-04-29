@@ -1,5 +1,7 @@
+import { KeyboardEvent } from 'react'
 import { useRef } from 'react'
 import { useEffect } from 'react'
+import { Socket } from 'socket.io-client'
 import Avatar from '../../components/Avatar'
 import { Message } from '../../types/chat'
 import { User } from '../../types/user'
@@ -7,24 +9,31 @@ import { User } from '../../types/user'
 interface Props {
   thisUser: User
   messages: Message[]
+  channelId: number
+  socket: Socket | null
 }
 
-export default function Conversation({ thisUser, messages }: Props) {
+export default function Conversation({
+  thisUser,
+  messages,
+  channelId,
+  socket,
+}: Props) {
   //Scroll conversation to bottom on each load + new message
   let convRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const conv = convRef.current as HTMLDivElement
-    console.log(conv)
+    // console.log(conv)
     conv.scrollTop = conv.scrollHeight
-  }, [messages])
+  }, [messages.length])
 
   function renderMessage(message: Message) {
-    const align = message.author === thisUser ? 'self-end' : ''
+    const align = message.author.id === thisUser.id ? 'self-end' : ''
     const color =
-      message.author === thisUser ? 'bg-violet-light' : 'bg-gray-light'
+      message.author.id === thisUser.id ? 'bg-violet-light' : 'bg-gray-light'
 
     function avatar() {
-      if (message.author !== thisUser) {
+      if (message.author.id !== thisUser.id) {
         return (
           <Avatar
             avatarId={message.author.avatar_id}
@@ -45,6 +54,16 @@ export default function Conversation({ thisUser, messages }: Props) {
     )
   }
 
+  const handleSend = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === 'Enter') {
+      socket?.emit('send_channel_message', {
+        channelId: channelId,
+        content: (e.target as HTMLInputElement).value,
+      })
+      ;(e.target as HTMLInputElement).value = ''
+    }
+  }
+
   return (
     <>
       <div
@@ -55,6 +74,7 @@ export default function Conversation({ thisUser, messages }: Props) {
         {messages.map(renderMessage)}
       </div>
       <input
+        onKeyDown={handleSend}
         className="bg-gray-light align w-full rounded-2xl px-2 py-1.5 mt-3"
         type="text"
         placeholder="Aa"

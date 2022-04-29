@@ -1,5 +1,4 @@
 import { User } from '../types/user'
-import { dummyDm } from './channels'
 
 export const mechant: User = {
   id: 5,
