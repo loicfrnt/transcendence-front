@@ -119,7 +119,7 @@ export default function ChatOpen({
     <>
       {EditPopUp()}
       <ContentBox className="w-[400px] sm:max-w-[836px] sm:grow">
-        <div className="flex items-center justify-between gap-3 mb-4 px-2">
+        <div className="flex items-center justify-between gap-3 mb-4 px-2 flex-wrap">
           <h1 className={'text-[2rem] leading-[2.625rem] font-semibold'}>
             {channelName(channel, thisUser)}
           </h1>

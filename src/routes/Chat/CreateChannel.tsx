@@ -15,13 +15,12 @@ interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+interface ResetForm {
+  resetForm: (nextState?: Partial<FormikState<NewChannel>>) => void
+}
+
 export default function CreateChannel({ setChannels, setIsOpen }: Props) {
-  function handleSubmit(
-    values: NewChannel,
-    {
-      resetForm,
-    }: { resetForm: (nextState?: Partial<FormikState<NewChannel>>) => void }
-  ) {
+  function handleSubmit(values: NewChannel, { resetForm }: ResetForm) {
     if (values.status === 'public') values.password = ''
     console.log(values)
     chatService.createChannel(values, setChannels)
@@ -31,19 +30,23 @@ export default function CreateChannel({ setChannels, setIsOpen }: Props) {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().min(3, 'Too short !').max(20, 'Too long UwU'),
+    password: Yup.string().min(7, 'Too short !'),
   })
 
   function ChannelPassword() {
     const { values }: { values: NewChannel } = useFormikContext()
-    const isHidden = values.status === 'public'
+    const isHidden = values.status !== 'protected'
     return (
-      <Field
-        disabled={isHidden}
-        type="password"
-        name="password"
-        placeholder="Channel Password"
-        className={'rounded-xl' + (isHidden ? ' hidden' : '')}
-      />
+      <>
+        <ErrorMessage name="password" component="div" className="text-red" />
+        <Field
+          disabled={isHidden}
+          type="password"
+          name="password"
+          placeholder="Channel Password"
+          className={'rounded-xl' + (isHidden ? ' hidden' : '')}
+        />
+      </>
     )
   }
 
@@ -65,6 +68,7 @@ export default function CreateChannel({ setChannels, setIsOpen }: Props) {
           <ErrorMessage name="name" component="div" className="text-red" />
           <Field as="select" name="status" className="rounded-xl">
             <option value="public"> Public </option>
+            <option value="protected"> Protected </option>
             <option value="private"> Private </option>
           </Field>
           <ChannelPassword />
