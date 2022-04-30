@@ -67,7 +67,6 @@ export default function ChatOpen({
 
   // in a function, rendered conditionnaly
   function EditPopUp() {
-    console.log(isOwner(thisUser, channel as Channel))
     if (channel !== undefined && isOwner(thisUser, channel)) {
       return (
         <PopUpBox open={editChanOpen} setOpen={setEditChanOpen}>

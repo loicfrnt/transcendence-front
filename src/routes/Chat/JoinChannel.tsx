@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import { Socket } from 'socket.io-client'
 import chatService from '../../services/chat.service'
@@ -7,6 +7,8 @@ import { ReactComponent as ReloadSvg } from '../../assets/reload.svg'
 import { ReactComponent as ProtectedSvg } from '../../assets/protected.svg'
 import { ReactComponent as ArrowSvg } from '../../assets/arrow.svg'
 import { Field, Form, Formik, FormikState } from 'formik'
+import animateCSS from '../../utils/animateCSS'
+import 'animate.css'
 
 interface RenderChannelProps {
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
@@ -22,9 +24,7 @@ function RenderChannel({
   channel,
 }: RenderChannelProps) {
   const [showPwd, setShowPwd] = useState(false)
-  const classButton =
-    'duration-300 ease-in-out rounded-3xl h-12 px-5 w-full flex justify-between items-center bg-gray-light hover:bg-violet-light gap-4'
-  console.log(showPwd)
+  const pwdFieldElement = useRef<HTMLElement>(null)
 
   interface FormValue {
     password: string
@@ -38,9 +38,19 @@ function RenderChannel({
     socket?.emit(
       'join_channel',
       { id: channel.id.toString(), password: values.password },
-      () => {
-        chatService.getChannels(setChannels)
-        setIsOpen(false)
+      (data: any) => {
+        console.log(data)
+        if (!data.error) {
+          chatService.getChannels(setChannels)
+          setIsOpen(false)
+          resetForm()
+        } else if (data.error.name === 'PasswordErrorException') {
+          console.log(pwdFieldElement.current)
+          pwdFieldElement.current &&
+            animateCSS(pwdFieldElement.current, 'headShake')
+        } else {
+          console.log(data.error.message)
+        }
       }
     )
   }
@@ -66,7 +76,7 @@ function RenderChannel({
             onClick={(e) => e.stopPropagation()}
             autoComplete="off"
             className={
-              'duration-300 ease-in-out flex gap-5 overflow-hidden w-full justify-between ' +
+              'duration-300 ease-in-out flex gap-5 w-full justify-between ' +
               (showPwd ? 'h-7 mb-2' : 'h-0')
             }
           >
@@ -74,7 +84,8 @@ function RenderChannel({
               type="password"
               name="password"
               placeholder="Channel Password"
-              className={`rounded-xl text-xs ${display}`}
+              className={`rounded-xl text-xs ${display} animate__faster`}
+              innerRef={pwdFieldElement}
             />
             <div
               className={`flex justify-center items-center h-full w-9 ${display}`}
@@ -92,7 +103,8 @@ function RenderChannel({
   else
     return (
       <div
-        className={classButton}
+        className="duration-300 ease-in-out rounded-3xl min-h-[3rem] px-5 w-full flex justify-between items-center bg-gray-light hover:bg-violet-light gap-4"
+        style={{ cursor: 'pointer' }}
         onClick={(e) => {
           socket?.emit('join_channel', { id: channel.id.toString() }, () => {
             chatService.getChannels(setChannels)
