@@ -16,8 +16,14 @@ export default function EditChannel({
       <h1 className="font-semibold text-xl mb-3">Edit Channel</h1>
       <button
         onClick={() => {
-          chatServices.deleteChannel(channelId, setChannels)
-          setOpen(false)
+          if (
+            window.confirm(
+              `You're about to delete this channel. Are you sure ?`
+            )
+          ) {
+            chatServices.deleteChannel(channelId, setChannels)
+            setOpen(false)
+          }
         }}
       >
         Delete Channel
