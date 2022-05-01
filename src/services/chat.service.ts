@@ -68,12 +68,11 @@ class ChatService {
     updated: NewChannel,
     setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   ) {
-    let data: {
-      name: string
-      status: string
-    } = updated
     axios
-      .patch(URL + ROUTE + channelId, data)
+      .patch(URL + ROUTE + channelId, {
+        name: updated.name,
+        status: updated.status,
+      })
       .then(() => console.log('patched'))
       .catch((error) => console.log(error.response.data.message))
   }
