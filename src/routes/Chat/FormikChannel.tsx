@@ -7,43 +7,49 @@ import {
   FormikState,
   useFormikContext,
 } from 'formik'
-import * as Yup from 'yup'
 import { NewChannel } from '../../types/chat'
 
 interface Props {
+  submitButtonString: string
   initialValues: NewChannel
   onSubmit: ((
     values: NewChannel,
     formikHelpers: FormikHelpers<NewChannel>
   ) => void | Promise<any>) &
     ((values: NewChannel, { resetForm }: ResetForm) => void)
+  validationSchema: any
 }
 
 export interface ResetForm {
   resetForm: (nextState?: Partial<FormikState<NewChannel>>) => void
 }
 
-export default function FormikChannel({ initialValues, onSubmit }: Props) {
+export default function FormikChannel({
+  submitButtonString,
+  initialValues,
+  onSubmit,
+  validationSchema,
+}: Props) {
   function ChannelPassword() {
     const { values }: { values: NewChannel } = useFormikContext()
     const isHidden = values.status !== 'protected'
-    return (
-      <>
-        <ErrorMessage name="password" component="div" className="text-red" />
-        <Field
-          disabled={isHidden}
-          type="password"
-          name="password"
-          placeholder="Channel Password"
-          className={'rounded-xl' + (isHidden ? ' hidden' : '')}
-        />
-      </>
-    )
+    if (isHidden) {
+      return null
+    } else {
+      return (
+        <>
+          <ErrorMessage name="password" component="div" className="text-red" />
+          <Field
+            disabled={isHidden}
+            type="password"
+            name="password"
+            placeholder={'Channel Password'}
+            className={'rounded-xl' + (isHidden ? ' hidden' : '')}
+          />
+        </>
+      )
+    }
   }
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().min(3, 'Too short !').max(20, 'Too long UwU'),
-    password: Yup.string().min(7, 'Too short !'),
-  })
 
   return (
     <Formik
@@ -70,7 +76,7 @@ export default function FormikChannel({ initialValues, onSubmit }: Props) {
           type="submit"
           className="bg-gray-light font-semibold text-lg w-fit self-center mt-1 px-2 py-1 rounded-xl border hover:text-white hover:bg-violet duration-300 ease-in-out"
         >
-          Save changes
+          {submitButtonString}
         </button>
       </Form>
     </Formik>

@@ -74,6 +74,7 @@ export default function ChatOpen({
           <EditChannel
             channel={channel}
             setChannels={setChannels}
+            setChannel={setChannel}
             setOpen={setEditChanOpen}
             // setNewChanOpen={setEditChanOpen}
           />
