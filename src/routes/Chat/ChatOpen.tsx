@@ -35,6 +35,7 @@ export default function ChatOpen({
   const [editChanOpen, setEditChanOpen] = useState(false)
 
   useEffect(() => {
+    console.log('infini')
     if (channels.find((chan) => chan.id === channelId) === undefined) {
       setChannel(undefined)
     } else {
@@ -71,7 +72,7 @@ export default function ChatOpen({
       return (
         <PopUpBox open={editChanOpen} setOpen={setEditChanOpen}>
           <EditChannel
-            channelId={channelId}
+            channel={channel}
             setChannels={setChannels}
             setOpen={setEditChanOpen}
             // setNewChanOpen={setEditChanOpen}

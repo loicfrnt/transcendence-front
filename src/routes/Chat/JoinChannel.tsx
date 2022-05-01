@@ -39,7 +39,6 @@ function RenderChannel({
       'join_channel',
       { id: channel.id.toString(), password: values.password },
       (data: any) => {
-        console.log(data)
         if (!data.error) {
           chatService.getChannels(setChannels)
           setIsOpen(false)

@@ -26,6 +26,11 @@ function Chat({ user }: Props) {
       withCredentials: true,
     })
 
+    socket.current.on('*', (event, data) => {
+      console.log(event)
+      console.log(data)
+    })
+
     return () => {
       socket.current?.close()
     }

@@ -42,10 +42,7 @@ class ChatService {
     axios
       .get(URL + ROUTE + channelId)
       .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data)
-          setChannel(response.data)
-        }
+        if (response.status === 200) setChannel(response.data)
       })
       .catch(() => {
         setChannel(undefined)
@@ -64,6 +61,21 @@ class ChatService {
           console.log(error.response.data.message)
         }
       })
+  }
+
+  patchChannel(
+    channelId: number,
+    updated: NewChannel,
+    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
+  ) {
+    let data: {
+      name: string
+      status: string
+    } = updated
+    axios
+      .patch(URL + ROUTE + channelId, data)
+      .then(() => console.log('patched'))
+      .catch((error) => console.log(error.response.data.message))
   }
 
   deleteChannel(
