@@ -20,7 +20,7 @@ export default function EditChannel({
   function handleSubmit(values: NewChannel) {
     if (values.status === 'public') values.password = ''
     console.log(values)
-    chatService.patchChannel(channel.id, values, setChannel, setChannels)
+    chatService.patchChannel(channel, values, setChannel, setChannels)
   }
 
   function handleDelete() {

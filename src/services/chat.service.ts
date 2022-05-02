@@ -64,18 +64,25 @@ class ChatService {
   }
 
   patchChannel(
-    channelId: number,
+    channel: Channel,
     updated: NewChannel,
     setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>,
     setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   ) {
+    let payload: {
+      id: string
+      name: string
+      status?: string
+      password?: string
+    } = {
+      id: channel.id.toString(),
+      name: updated.name,
+    }
+    if (updated.password.length) payload.password = updated.password
+    if (channel.status !== updated.status) payload.status = updated.status
+    console.log(payload)
     axios
-      .patch(URL + ROUTE + channelId, {
-        id: channelId.toString(),
-        name: updated.name,
-        status: updated.status,
-        password: updated.password,
-      })
+      .patch(URL + ROUTE + channel.id, payload)
       .then((response) => {
         this.getChannels(setChannels)
         setChannel(response.data)
