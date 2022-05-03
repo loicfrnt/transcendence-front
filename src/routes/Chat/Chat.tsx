@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Channel, ProtoChannel } from '../../types/chat'
+import { ProtoChannel } from '../../types/chat'
 import { User } from '../../types/user'
 import ChannelNav from './ChannelNav'
 import ChatClose from './ChatClose'
@@ -27,6 +27,10 @@ function Chat({ user }: Props) {
     })
 
     socket.current.on('updated_channel', (data) => {
+      chatServices.getChannels(setChannels)
+    })
+
+    socket.current.on('deleted_channel', (data) => {
       chatServices.getChannels(setChannels)
     })
 
