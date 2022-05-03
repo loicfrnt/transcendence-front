@@ -35,15 +35,20 @@ export default function ChatOpen({
   const [editChanOpen, setEditChanOpen] = useState(false)
 
   useEffect(() => {
-    console.log('infini')
     if (channels.find((chan) => chan.id === channelId) === undefined) {
       setChannel(undefined)
     } else {
       chatService.getChannel(channelId, setChannel)
     }
-  }, [channelId, socket, channelsLength])
+  }, [channelId, channelsLength])
+
+  useEffect(() => {})
 
   useEffect(() => {
+    const updateChannel = (data: any) => {
+      if (channelId === data?.id) chatService.getChannel(channelId, setChannel)
+    }
+    socket?.on('updated_channel', updateChannel)
     socket?.on('receive_message', (message) => {
       if (message.channelId === channelId) {
         let newChannel = JSON.parse(JSON.stringify(channel))
@@ -53,6 +58,7 @@ export default function ChatOpen({
     })
     return () => {
       socket?.off('receive_message')
+      socket?.off('updated_channel', updateChannel)
     }
   })
 

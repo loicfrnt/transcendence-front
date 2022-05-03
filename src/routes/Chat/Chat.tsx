@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { ProtoChannel } from '../../types/chat'
+import { Channel, ProtoChannel } from '../../types/chat'
 import { User } from '../../types/user'
 import ChannelNav from './ChannelNav'
 import ChatClose from './ChatClose'
@@ -26,25 +26,14 @@ function Chat({ user }: Props) {
       withCredentials: true,
     })
 
-    socket.current.on('*', (event, data) => {
-      console.log(event)
-      console.log(data)
+    socket.current.on('updated_channel', (data) => {
+      chatServices.getChannels(setChannels)
     })
 
     return () => {
       socket.current?.close()
     }
   }, [])
-
-  // NOW IN ChatOpen
-  // useEffect(() => {
-  //   socket.current?.on('receive_message', (message) => {
-  //     chatServices.receiveMessage(message, setChannels, channels)
-  //   })
-  //   return () => {
-  //     socket.current?.off('receive_message')
-  //   }
-  // }, [channels])
 
   return (
     <Routes>

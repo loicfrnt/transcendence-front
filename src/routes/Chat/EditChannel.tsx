@@ -19,7 +19,6 @@ export default function EditChannel({
 }: Props) {
   function handleSubmit(values: NewChannel) {
     if (values.status === 'public') values.password = ''
-    console.log(values)
     chatService.patchChannel(channel, values, setChannel, setChannels)
   }
 
