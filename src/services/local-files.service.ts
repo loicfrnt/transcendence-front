@@ -5,7 +5,7 @@ const ROUTE = "/api/local-files/"
 
 class LocalFilesService {
     async retriveFile(id: number) {
-        if (id === 0)
+        if (id === 0 || id == null)
         {
           const res = await fetch(window.location.origin + "/images/avatar.png");
           const imageBlob = await res.blob();
