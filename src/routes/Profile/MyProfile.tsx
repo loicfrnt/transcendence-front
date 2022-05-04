@@ -60,8 +60,7 @@ export default function UserProfile({ user, setConnected }: Props) {
   return (
     <MainContainer>
       <PopUpBox open={editOpen} setOpen={setEditOpen}>
-
-      {qrClicked && <img src={img} alt="your image name " />}
+        {qrClicked && <img src={img} alt="Qr Code" />}
         <div className={qrClassDiv}>
           <Formik initialValues={initialValues}
                   validationSchema={validationSchema}
