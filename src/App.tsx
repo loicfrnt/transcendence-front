@@ -25,6 +25,7 @@ export default function App() {
     email: '',
     username: '',
     avatar_id: 0,
+    isTwoFactorAuthenticationEnabled: false,
     status: 0,
     victories: 0,
     defeats: 0,

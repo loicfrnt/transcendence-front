@@ -4,6 +4,9 @@ import * as Yup from "yup";
 import authenticationService from '../../services/authentication.service';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import PopUpBox from '../../components/PopUpBox';
+import twoFactorsAuthenticationService from '../../services/two-factors-authentication.service';
+import MainContainer from '../../components/MainContainer';
 
 export interface LoginProps {
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
@@ -24,6 +27,11 @@ export function Login({ setConnected }: LoginProps) {
     loading: false,
     message: ""
   });
+  const [stateQr, setStateQr] = useState({
+    tfacode : "",
+    message : ""
+  });
+  const [qrClicked, setQrClicked] = useState(false);
 
   function handleClick() {
     setConnected(true)
@@ -51,9 +59,15 @@ export function Login({ setConnected }: LoginProps) {
       message : "",
       loading : true
     });
-    authenticationService.login(username, password).then(()=> {
+    authenticationService.login(username, password).then((response)=> {
+    console.log(response);
+    if (response == "")
+      setQrClicked(true);
+    else
+    {
       handleClick();
-    navigate("/");
+      navigate("/");
+    }
     }, error => {
       const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
       setState({
@@ -64,7 +78,35 @@ export function Login({ setConnected }: LoginProps) {
       });
     });
   }
+
+  const initialValuesQr = {
+    tfacode : ""
+  };
+
+  function validationSchemaQr() {
+    return Yup.object().shape({
+      tfacode: Yup.string().required("This field is required!").test("len", 
+      "The code is a 6 digits number.",
+      (val: any) => val && val.toString().length === 6),
+    });
+  }
+
+  function handleTfaAuthentication(formValue: {tfacode: string}) {
+    const {tfacode} = formValue;
+    twoFactorsAuthenticationService.authenticate(tfacode.toString()).then(() =>{
+      setQrClicked(false);
+      handleClick();
+      navigate("/");
+    }, error => {
+      const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+      setStateQr({
+        tfacode : "",
+        message : resMessage
+      });
+    });
+  }
   return (
+    <MainContainer>
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className='max-w-md w-full space-y-8'>
         <div>
@@ -127,5 +169,33 @@ export function Login({ setConnected }: LoginProps) {
           </button>
       </div>
     </div>
+    <PopUpBox open={qrClicked} setOpen={setQrClicked}>
+    <Formik initialValues={initialValuesQr}
+            validationSchema={validationSchemaQr}
+            onSubmit={handleTfaAuthentication}>
+      <Form>
+        <div className='flex flex-wrap'>
+          <div className='m-auto'>
+            <div className='w-full px-3'>
+              <label htmlFor='tfacode' className='block uppercase tracking-wide text-gray text-x text-center font-blod mb-2'>Your 2FA Code: </label>
+              <Field className='appearance-none block w-full bg-gray-200 text-black text-center border border-gray-200 rounded mb-6 leading-tight focus:outline-none focus:bg-white focus:border-violet'name='tfacode' type='number' placeholder='XXXXXX' />
+              <ErrorMessage name="tfacode" component="div" className='text-red'/>
+            </div>
+            <button type='submit' className='group relative w-full flex justify-center py-2 px-3 mb-6 border border-transparent text-md font-medium rounded-md text-white bg-violet'>Activate</button>
+            {stateQr.message && (
+            <div className="border border-red text-red px-4 py-3 rounded relative" role="alert">
+              <strong className="font-bold">Holy smokes! {' '}</strong>
+              <span className="block sm:inline">{stateQr.message}</span>
+              <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <svg className="fill-current h-6 w-6 text-red" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+              </span>
+            </div>
+        )}
+          </div>
+        </div>
+      </Form>
+    </Formik>
+    </PopUpBox>
+    </MainContainer>
   )
 }

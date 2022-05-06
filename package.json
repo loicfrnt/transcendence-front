@@ -11,6 +11,7 @@
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.43",
     "axios": "^0.26.1",
+    "cookies-js": "^1.2.3",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
     "js-cookie": "^3.0.1",
