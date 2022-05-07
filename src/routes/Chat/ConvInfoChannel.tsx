@@ -19,7 +19,7 @@ function isFriend(user: User, thisUser: User) {
 interface UserButtonProps {
   Svg: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
   tooltip: string
-  handleClick: React.MouseEventHandler<HTMLButtonElement>
+  handleClick: () => void
   id: string
 }
 
@@ -29,7 +29,10 @@ function UserButton({ Svg, tooltip, handleClick, id }: UserButtonProps) {
     <>
       {tooltipVisible && <ReactTooltip id={id} effect="solid" />}
       <button
-        onClick={handleClick}
+        onClick={(e) => {
+          e.preventDefault()
+          handleClick()
+        }}
         className="duration-300 border border-gray bg-white hover:bg-gray h-8 w-8 rounded-full flex items-center justify-center group"
         data-tip={tooltip}
         data-for={id}
@@ -69,34 +72,34 @@ function ConvMember({ cUser, thisUser }: ConvMemberProps) {
             Svg={SvgDuel}
             tooltip="Duel"
             id={`${cUser.id}duel`}
-            handleClick={(e) => null}
+            handleClick={() => null}
           />
           {isFriend(user, thisUser) ? (
             <UserButton
               Svg={SvgRmFriend}
               tooltip="Remove Friend"
               id={`${cUser.id}rm`}
-              handleClick={(e) => null}
+              handleClick={() => null}
             />
           ) : (
             <UserButton
               Svg={SvgAddFriend}
               tooltip="Add Friend"
               id={`${cUser.id}add`}
-              handleClick={(e) => null}
+              handleClick={() => null}
             />
           )}
           <UserButton
             Svg={SvgMessage}
             tooltip="Direct Message"
             id={`${cUser.id}dm`}
-            handleClick={(e) => null}
+            handleClick={() => null}
           />
           <UserButton
             Svg={SvgBlock}
             tooltip="Block User"
             id={`${cUser.id}blck`}
-            handleClick={(e) => null}
+            handleClick={() => null}
           />
         </div>
       </div>
