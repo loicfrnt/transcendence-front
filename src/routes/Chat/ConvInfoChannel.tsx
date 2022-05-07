@@ -5,6 +5,7 @@ import { ReactComponent as SvgDuel } from '../../assets/game.svg'
 import { ReactComponent as SvgAddFriend } from '../../assets/addFriend.svg'
 import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
 import { ReactComponent as SvgBlock } from '../../assets/block.svg'
+import { ReactComponent as SvgMessage } from '../../assets/message.svg'
 import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { useState } from 'react'
@@ -85,6 +86,12 @@ function ConvMember({ cUser, thisUser }: ConvMemberProps) {
               handleClick={(e) => null}
             />
           )}
+          <UserButton
+            Svg={SvgMessage}
+            tooltip="Direct Message"
+            id={`${cUser.id}dm`}
+            handleClick={(e) => null}
+          />
           <UserButton
             Svg={SvgBlock}
             tooltip="Block User"
