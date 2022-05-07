@@ -7,5 +7,5 @@ export default function channelName(
 ) {
   return channel.status !== 'direct_message'
     ? channel.name
-    : channel.channelUsers?.find((u) => u.user !== user)?.user.username
+    : channel.channelUsers?.find((u) => u.user.id !== user.id)?.user.username
 }
