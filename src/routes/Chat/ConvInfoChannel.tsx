@@ -9,6 +9,8 @@ import { ReactComponent as SvgMessage } from '../../assets/message.svg'
 import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { useState } from 'react'
+import { Socket } from 'socket.io-client'
+import { useNavigate } from 'react-router-dom'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -52,10 +54,12 @@ function UserButton({ Svg, tooltip, handleClick, id }: UserButtonProps) {
 interface ConvMemberProps {
   cUser: ChannelUser
   thisUser: User
+  socket: Socket | null
 }
 
-function ConvMember({ cUser, thisUser }: ConvMemberProps) {
+function ConvMember({ cUser, thisUser, socket }: ConvMemberProps) {
   const user = cUser.user
+  let navigate = useNavigate()
   if (user === thisUser) {
     return null
   }
@@ -93,7 +97,16 @@ function ConvMember({ cUser, thisUser }: ConvMemberProps) {
             Svg={SvgMessage}
             tooltip="Direct Message"
             id={`${cUser.id}dm`}
-            handleClick={() => null}
+            handleClick={() => {
+              socket?.emit(
+                'get_direct_messages_channel',
+                { id: user.id.toString() },
+                (channel: any, err: any) => {
+                  console.log(channel, err)
+                  navigate('/chat/' + channel.id)
+                }
+              )
+            }}
           />
           <UserButton
             Svg={SvgBlock}
@@ -110,15 +123,21 @@ function ConvMember({ cUser, thisUser }: ConvMemberProps) {
 interface Props {
   channel: Channel
   thisUser: User
+  socket: Socket | null
 }
 
-export function ConvInfoChannel({ channel, thisUser }: Props) {
+export function ConvInfoChannel({ channel, thisUser, socket }: Props) {
   return (
     <div className="flex flex-col gap-3">
       <h1 className="font-bold text-3xl mb">Members</h1>
       <div className="flex flex-col gap-0 border rounded-3xl border-gray overflow-auto">
         {channel.channelUsers.map((cUser) => (
-          <ConvMember cUser={cUser} thisUser={thisUser} key={cUser.id} />
+          <ConvMember
+            cUser={cUser}
+            thisUser={thisUser}
+            socket={socket}
+            key={cUser.id}
+          />
         ))}
       </div>
     </div>

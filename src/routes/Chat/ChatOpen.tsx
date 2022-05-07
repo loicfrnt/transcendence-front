@@ -139,7 +139,11 @@ export default function ChatOpen({
           socket={socket}
         />
       </ContentBox>
-      <ConvInfo channel={channel} thisUser={thisUser}></ConvInfo>
+      <ConvInfo
+        channel={channel}
+        thisUser={thisUser}
+        socket={socket}
+      ></ConvInfo>
     </>
   )
 }
