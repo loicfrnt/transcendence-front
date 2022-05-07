@@ -55,7 +55,6 @@ function ConvMember({ cUser, thisUser }: ConvMemberProps) {
   if (user === thisUser) {
     return null
   }
-  console.log('rerender conv member')
   return (
     <Link
       to={'/profile/' + user.username}
