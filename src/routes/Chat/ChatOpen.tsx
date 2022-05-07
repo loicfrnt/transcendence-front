@@ -49,15 +49,17 @@ export default function ChatOpen({
       if (channelId === data?.id) chatService.getChannel(channelId, setChannel)
     }
     socket?.on('updated_channel', updateChannel)
-    socket?.on('receive_message', (message) => {
+
+    const receiveMessage = (message: any) => {
       if (message.channelId === channelId) {
         let newChannel = JSON.parse(JSON.stringify(channel))
         newChannel.messages.push(message)
         setChannel(newChannel)
       }
-    })
+    }
+    socket?.on('receive_message', receiveMessage)
     return () => {
-      socket?.off('receive_message')
+      socket?.off('receive_message', receiveMessage)
       socket?.off('updated_channel', updateChannel)
     }
   })

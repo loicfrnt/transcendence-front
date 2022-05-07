@@ -36,6 +36,8 @@ export interface Message {
   id: number
   content: string
   author: ProtoUser
+  channelId: number
+  created_at: string
 }
 
 export interface TransferedMessage {
