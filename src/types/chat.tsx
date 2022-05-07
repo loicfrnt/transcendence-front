@@ -11,6 +11,7 @@ export interface ProtoChannel {
   name: string
   status: string
   channelUsers?: ChannelUser[]
+  last_message_at: string
 }
 
 export interface Channel {
