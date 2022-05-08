@@ -6,11 +6,13 @@ import { ReactComponent as SvgAddFriend } from '../../assets/addFriend.svg'
 import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
 import { ReactComponent as SvgBlock } from '../../assets/block.svg'
 import { ReactComponent as SvgMessage } from '../../assets/message.svg'
+import { ReactComponent as SvgAdmin } from '../../assets/hammer.svg'
 import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { useState } from 'react'
 import { Socket } from 'socket.io-client'
 import { useNavigate } from 'react-router-dom'
+import getChannelUser from '../../utils/getChannelUser'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -53,16 +55,13 @@ function UserButton({ Svg, tooltip, handleClick, id }: UserButtonProps) {
 // Renders for each conversation member
 interface ConvMemberProps {
   cUser: ChannelUser
-  thisUser: User
+  thisCUser: ChannelUser
   socket: Socket | null
 }
 
-function ConvMember({ cUser, thisUser, socket }: ConvMemberProps) {
+function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
   const user = cUser.user
   let navigate = useNavigate()
-  if (user === thisUser) {
-    return null
-  }
   return (
     <Link
       to={'/profile/' + user.username}
@@ -78,7 +77,7 @@ function ConvMember({ cUser, thisUser, socket }: ConvMemberProps) {
             id={`${cUser.id}duel`}
             handleClick={() => null}
           />
-          {isFriend(user, thisUser) ? (
+          {isFriend(user, thisCUser.user) ? (
             <UserButton
               Svg={SvgRmFriend}
               tooltip="Remove Friend"
@@ -93,6 +92,7 @@ function ConvMember({ cUser, thisUser, socket }: ConvMemberProps) {
               handleClick={() => null}
             />
           )}
+
           <UserButton
             Svg={SvgMessage}
             tooltip="Direct Message"
@@ -108,6 +108,18 @@ function ConvMember({ cUser, thisUser, socket }: ConvMemberProps) {
               )
             }}
           />
+          {
+            // If user is admin or owner
+            thisCUser.role === 2 ||
+              (thisCUser.role === 3 && (
+                <UserButton
+                  Svg={SvgAdmin}
+                  tooltip="Admin Stuff"
+                  id={`${cUser.id}admin`}
+                  handleClick={() => null}
+                />
+              ))
+          }
           <UserButton
             Svg={SvgBlock}
             tooltip="Block User"
@@ -127,18 +139,29 @@ interface Props {
 }
 
 export function ConvInfoChannel({ channel, thisUser, socket }: Props) {
+  const thisCUser = getChannelUser(channel, thisUser)
+  const otherUsers = channel.channelUsers.filter((user) => user !== thisCUser)
+  const border = otherUsers.length ? 'border' : ''
+
+  if (!thisCUser) {
+    return <p>Something went wrong...</p>
+  }
+
   return (
     <div className="flex flex-col gap-3">
       <h1 className="font-bold text-3xl mb">Members</h1>
-      <div className="flex flex-col gap-0 border rounded-3xl border-gray overflow-auto">
-        {channel.channelUsers.map((cUser) => (
+      <div
+        className={`flex flex-col gap-0 rounded-3xl border-gray overflow-auto ${border}`}
+      >
+        {otherUsers.map((cUser) => (
           <ConvMember
             cUser={cUser}
-            thisUser={thisUser}
+            thisCUser={thisCUser}
             socket={socket}
             key={cUser.id}
           />
         ))}
+        {!otherUsers.length && <p>It's empty in here...</p>}
       </div>
     </div>
   )
