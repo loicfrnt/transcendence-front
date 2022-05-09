@@ -14,6 +14,8 @@ import { Socket } from 'socket.io-client'
 import { useNavigate } from 'react-router-dom'
 import getChannelUser from '../../utils/getChannelUser'
 import PopUpBox from '../../components/PopUpBox'
+import AdminPanel from './AdminPanel'
+import { useEffect } from 'react'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -64,14 +66,15 @@ interface ConvMemberProps {
 
 function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
   const user = cUser.user
-  const isAdmin = thisCUser.role === 2 || thisCUser.role === 3
+  // User is not owner, and this User is admin or owner
+  const isAdmin = cUser.role !== 3 && [2, 3].includes(thisCUser.role)
   const [adminPanelOpen, setAdminPanelOpen] = useState(false)
   let navigate = useNavigate()
   return (
     <>
       {isAdmin && adminPanelOpen && (
         <PopUpBox open={adminPanelOpen} setOpen={setAdminPanelOpen}>
-          Admin Panel
+          <AdminPanel cUser={cUser} socket={socket} />
         </PopUpBox>
       )}
       <Link
@@ -153,6 +156,16 @@ export function ConvInfoChannel({ channel, thisUser, socket }: Props) {
   const thisCUser = getChannelUser(channel, thisUser)
   const otherUsers = channel.channelUsers.filter((user) => user !== thisCUser)
   const border = otherUsers.length ? 'border' : ''
+
+  useEffect(() => {
+    const channelUserUpdated = (user: any) => {
+      console.log(user)
+    }
+    socket?.on('channel_user_updated', channelUserUpdated)
+    return () => {
+      socket?.off('channel_user_updated')
+    }
+  }, [channel, socket])
 
   if (!thisCUser) {
     return <p>Something went wrong...</p>
