@@ -8,7 +8,7 @@ interface Props {
 }
 export default function AdminPanel({ cUser, socket }: Props) {
   const user = cUser.user
-  const isAdmin = cUser.role == 2
+  const isAdmin = cUser.role === 2
   const titleStyle = 'font-semibold text-lg ml-2'
   return (
     <div className="flex flex-col gap-5">
