@@ -7,16 +7,23 @@ import ConvInfoDm from './ConvInfoDm'
 
 interface Props {
   channel: Channel
+  setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
   thisUser: User
   socket: Socket | null
 }
 
-export default function ConvInfo({ channel, thisUser, socket }: Props) {
+export default function ConvInfo({
+  channel,
+  setChannel,
+  thisUser,
+  socket,
+}: Props) {
   if (channel.status !== 'direct_message')
     return (
       <ContentBox className="w-[400px] pt-5">
         <ConvInfoChannel
           channel={channel}
+          setChannel={setChannel}
           thisUser={thisUser}
           socket={socket}
         />

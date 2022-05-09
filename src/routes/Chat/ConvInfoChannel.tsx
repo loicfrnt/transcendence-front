@@ -150,22 +150,44 @@ interface Props {
   channel: Channel
   thisUser: User
   socket: Socket | null
+  setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
 }
 
-export function ConvInfoChannel({ channel, thisUser, socket }: Props) {
+export function ConvInfoChannel({
+  channel,
+  thisUser,
+  socket,
+  setChannel,
+}: Props) {
   const thisCUser = getChannelUser(channel, thisUser)
   const otherUsers = channel.channelUsers.filter((user) => user !== thisCUser)
   const border = otherUsers.length ? 'border' : ''
 
   useEffect(() => {
-    const channelUserUpdated = (user: any) => {
-      console.log(user)
+    const channelUserUpdated = (updatedUser: any) => {
+      console.log(updatedUser)
+      setChannel((channel) => {
+        if (!channel) return channel
+        let newChannel = { ...channel }
+        if (
+          //try to update current user
+          newChannel.channelUsers.some((user, index) => {
+            if (user.id !== updatedUser.id) return false
+            newChannel.channelUsers[index] = updatedUser
+            return true
+          }) === false
+        ) {
+          // push new user if it's not already present
+          newChannel.channelUsers.push(updatedUser)
+        }
+        return newChannel
+      })
     }
-    socket?.on('channel_user_updated', channelUserUpdated)
+    socket?.on('channel_user', channelUserUpdated)
     return () => {
-      socket?.off('channel_user_updated')
+      socket?.off('channel_user', channelUserUpdated)
     }
-  }, [channel, socket])
+  }, [channel, setChannel, socket])
 
   if (!thisCUser) {
     return <p>Something went wrong...</p>
