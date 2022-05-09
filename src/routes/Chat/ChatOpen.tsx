@@ -95,7 +95,7 @@ export default function ChatOpen({
   function SvgButtons() {
     // Redundant Styles
     const svgClass = 'w-7 h-7 fill-gray hover:fill-violet duration-300'
-    if (channel && channel.status !== 'direct-message')
+    if (channel && channel.status !== 'direct_message')
       return (
         <div className="flex justify-end gap-5">
           {isOwner(thisUser, channel) ? (
