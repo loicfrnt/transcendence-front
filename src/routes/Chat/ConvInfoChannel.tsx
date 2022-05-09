@@ -68,78 +68,78 @@ function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
   const [adminPanelOpen, setAdminPanelOpen] = useState(false)
   let navigate = useNavigate()
   return (
-    <Link
-      to={'/profile/' + user.username}
-      className="duration-300 hover:bg-gray-light  p-2 flex"
-    >
+    <>
       {isAdmin && adminPanelOpen && (
-        <div onClick={(e) => e.preventDefault()} className="cursor-auto">
-          <PopUpBox open={adminPanelOpen} setOpen={setAdminPanelOpen}>
-            Admin Panel
-          </PopUpBox>
-        </div>
+        <PopUpBox open={adminPanelOpen} setOpen={setAdminPanelOpen}>
+          Admin Panel
+        </PopUpBox>
       )}
-      <Avatar username={user.username} avatarId={user.avatar_id} noLink />
-      <div className="flex flex-col">
-        <h2 className="font-semibold text-lg ml-2">{user.username}</h2>
-        <div className="flex gap-2 ml-2">
-          <UserButton
-            Svg={SvgDuel}
-            tooltip="Duel"
-            id={`${cUser.id}duel`}
-            handleClick={() => null}
-          />
-          {isFriend(user, thisCUser.user) ? (
+      <Link
+        to={'/profile/' + user.username}
+        className="duration-300 hover:bg-gray-light  p-2 flex"
+      >
+        <Avatar username={user.username} avatarId={user.avatar_id} noLink />
+        <div className="flex flex-col">
+          <h2 className="font-semibold text-lg ml-2">{user.username}</h2>
+          <div className="flex gap-2 ml-2">
             <UserButton
-              Svg={SvgRmFriend}
-              tooltip="Remove Friend"
-              id={`${cUser.id}rm`}
+              Svg={SvgDuel}
+              tooltip="Duel"
+              id={`${cUser.id}duel`}
               handleClick={() => null}
             />
-          ) : (
-            <UserButton
-              Svg={SvgAddFriend}
-              tooltip="Add Friend"
-              id={`${cUser.id}add`}
-              handleClick={() => null}
-            />
-          )}
-
-          <UserButton
-            Svg={SvgMessage}
-            tooltip="Direct Message"
-            id={`${cUser.id}dm`}
-            handleClick={() => {
-              socket?.emit(
-                'get_direct_messages_channel',
-                { id: user.id.toString() },
-                (channel: any, err: any) => {
-                  console.log(channel, err)
-                  navigate('/chat/' + channel.id)
-                }
-              )
-            }}
-          />
-          {
-            // If user is admin or owner
-            isAdmin && (
+            {isFriend(user, thisCUser.user) ? (
               <UserButton
-                Svg={SvgAdmin}
-                tooltip="Admin Stuff"
-                id={`${cUser.id}admin`}
-                handleClick={() => setAdminPanelOpen(true)}
+                Svg={SvgRmFriend}
+                tooltip="Remove Friend"
+                id={`${cUser.id}rm`}
+                handleClick={() => null}
               />
-            )
-          }
-          <UserButton
-            Svg={SvgBlock}
-            tooltip="Block User"
-            id={`${cUser.id}blck`}
-            handleClick={() => null}
-          />
+            ) : (
+              <UserButton
+                Svg={SvgAddFriend}
+                tooltip="Add Friend"
+                id={`${cUser.id}add`}
+                handleClick={() => null}
+              />
+            )}
+
+            <UserButton
+              Svg={SvgMessage}
+              tooltip="Direct Message"
+              id={`${cUser.id}dm`}
+              handleClick={() => {
+                socket?.emit(
+                  'get_direct_messages_channel',
+                  { id: user.id.toString() },
+                  (channel: any, err: any) => {
+                    console.log(channel, err)
+                    navigate('/chat/' + channel.id)
+                  }
+                )
+              }}
+            />
+            {
+              // If user is admin or owner
+              isAdmin && (
+                <UserButton
+                  Svg={SvgAdmin}
+                  tooltip="Admin Stuff"
+                  id={`${cUser.id}admin`}
+                  handleClick={() => setAdminPanelOpen(true)}
+                />
+              )
+            }
+            <UserButton
+              Svg={SvgBlock}
+              tooltip="Block User"
+              id={`${cUser.id}blck`}
+              handleClick={() => null}
+            />
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </>
   )
 }
 
