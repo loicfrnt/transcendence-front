@@ -10,29 +10,14 @@ import Navbar from './routes/Navbar/Navbar'
 import Home from './routes/Home/Home'
 import Game from './routes/Game/Game'
 import Chat from './routes/Chat/Chat'
-//tmp
-import { thisUser } from './data/users'
 import OtherProfile from './routes/Profile/OtherProfile'
 import { Register } from './routes/Register/Register'
 import Profile from './routes/Profile/Profile'
 import { User } from './types/user'
 import authenticationService from './services/authentication.service'
-
 export default function App() {
-  const [currUser, setCurrUser] = useState<User>(
-  {
-    id: 0,
-    email: '',
-    username: '',
-    avatar_id: 0,
-    isTwoFactorAuthenticationEnabled: false,
-    status: 0,
-    victories: 0,
-    defeats: 0,
-    sentRelationships: [],
-    receivedRelationships: [],
-    channels: [],
-    history: [],
+  const [currUser, setCurrUser] = useState<User>(() => {
+    return authenticationService.getCurrentUser();
   }); 
   //let navigate = useNavigate();
   const savedConnected = localStorage.getItem('connected');
@@ -75,9 +60,9 @@ export default function App() {
               <Profile thisUser={currUser} setConnected={setConnected} />
             }
           />
-          <Route path=":username" element={<OtherProfile />} />
+          <Route path=":username" element={<OtherProfile user={currUser}/>} />
           <Route path="login" element={<Login setConnected={setConnected} />} />
-          <Route path="chat/*" element={<Chat user={thisUser} />} />
+          <Route path="chat/*" element={<Chat user={currUser} />} />
           <Route path="*" element={'404'} />
         </Route>
       </Routes>

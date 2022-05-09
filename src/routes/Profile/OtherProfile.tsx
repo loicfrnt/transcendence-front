@@ -1,20 +1,16 @@
 import { useParams } from 'react-router-dom'
 import MainContainer from '../../components/MainContainer'
 import MainUser from './MainUser'
-
-import { thisUser as dummy_user } from '../../data/users' // TMP
 import SocialButton from './SocialButton'
 import ProfileMasonry from './ProfileMasonry'
 import Friends from './Friends'
 import MatchHistory from './MatchHistory'
 import { User } from '../../types/user'
 
-export default function OtherProfile() {
+export default function OtherProfile({user} : {user: User}) {
   const params = useParams()
   const username = params.username
 
-  //tmp
-  let user = Object.assign({}, dummy_user)
   user.username = username as string
 
   return (

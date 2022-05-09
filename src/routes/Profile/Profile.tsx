@@ -16,7 +16,7 @@ export default function Profile({ thisUser, setConnected }: Props) {
         index
         element={<UserProfile user={thisUser} setConnected={setConnected} />}
       />
-      <Route path=":username" element={<OtherProfile />} />
+      <Route path=":username" element={<OtherProfile user={thisUser}/>} />
     </Routes>
   )
 }
