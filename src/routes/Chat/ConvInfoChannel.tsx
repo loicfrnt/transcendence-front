@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { Socket } from 'socket.io-client'
 import { useNavigate } from 'react-router-dom'
 import getChannelUser from '../../utils/getChannelUser'
+import PopUpBox from '../../components/PopUpBox'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -29,6 +30,10 @@ interface UserButtonProps {
 
 function UserButton({ Svg, tooltip, handleClick, id }: UserButtonProps) {
   const [tooltipVisible, showTooltip] = useState(true)
+  const hideTooltip = () => {
+    showTooltip(false)
+    setTimeout(() => showTooltip(true), 10)
+  }
   return (
     <>
       {tooltipVisible && <ReactTooltip id={id} effect="solid" />}
@@ -41,10 +46,8 @@ function UserButton({ Svg, tooltip, handleClick, id }: UserButtonProps) {
         data-tip={tooltip}
         data-for={id}
         onMouseEnter={() => showTooltip(true)}
-        onMouseLeave={() => {
-          showTooltip(false)
-          setTimeout(() => showTooltip(true), 10)
-        }}
+        onMouseLeave={() => hideTooltip()}
+        onBlur={() => hideTooltip()}
       >
         <Svg className="h-4 fill-gray group-hover:fill-violet duration-300" />
       </button>
@@ -61,12 +64,21 @@ interface ConvMemberProps {
 
 function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
   const user = cUser.user
+  const isAdmin = thisCUser.role === 2 || thisCUser.role === 3
+  const [adminPanelOpen, setAdminPanelOpen] = useState(false)
   let navigate = useNavigate()
   return (
     <Link
       to={'/profile/' + user.username}
       className="duration-300 hover:bg-gray-light  p-2 flex"
     >
+      {isAdmin && adminPanelOpen && (
+        <div onClick={(e) => e.preventDefault()} className="cursor-auto">
+          <PopUpBox open={adminPanelOpen} setOpen={setAdminPanelOpen}>
+            Admin Panel
+          </PopUpBox>
+        </div>
+      )}
       <Avatar username={user.username} avatarId={user.avatar_id} noLink />
       <div className="flex flex-col">
         <h2 className="font-semibold text-lg ml-2">{user.username}</h2>
@@ -110,15 +122,14 @@ function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
           />
           {
             // If user is admin or owner
-            thisCUser.role === 2 ||
-              (thisCUser.role === 3 && (
-                <UserButton
-                  Svg={SvgAdmin}
-                  tooltip="Admin Stuff"
-                  id={`${cUser.id}admin`}
-                  handleClick={() => null}
-                />
-              ))
+            isAdmin && (
+              <UserButton
+                Svg={SvgAdmin}
+                tooltip="Admin Stuff"
+                id={`${cUser.id}admin`}
+                handleClick={() => setAdminPanelOpen(true)}
+              />
+            )
           }
           <UserButton
             Svg={SvgBlock}
