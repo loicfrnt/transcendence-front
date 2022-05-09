@@ -164,8 +164,7 @@ export function ConvInfoChannel({
   const border = otherUsers.length ? 'border' : ''
 
   useEffect(() => {
-    const channelUserUpdated = (updatedUser: any) => {
-      console.log(updatedUser)
+    const channelUserUpdated = (updatedUser: ChannelUser) => {
       setChannel((channel) => {
         if (!channel) return channel
         let newChannel = { ...channel }
@@ -184,8 +183,23 @@ export function ConvInfoChannel({
       })
     }
     socket?.on('channel_user', channelUserUpdated)
+
+    const userLeft = (leavingUser: ChannelUser) => {
+      console.log('zut')
+      setChannel((channel) => {
+        if (!channel) return channel
+        let newChannel = { ...channel }
+        newChannel.channelUsers = newChannel.channelUsers.filter(
+          (user) => user.id !== leavingUser.id
+        )
+        return newChannel
+      })
+    }
+    socket?.on('left_channel', userLeft)
+
     return () => {
       socket?.off('channel_user', channelUserUpdated)
+      socket?.off('left_channel', userLeft)
     }
   }, [channel, setChannel, socket])
 
