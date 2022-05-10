@@ -83,7 +83,12 @@ function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
       >
         <Avatar username={user.username} avatarId={user.avatar_id} noLink />
         <div className="flex flex-col">
-          <h2 className="font-semibold text-lg ml-2">{user.username}</h2>
+          <div className="flex gap-x-1 ml-2 items-center flex-wrap">
+            <h2 className="font-semibold text-lg">{user.username}</h2>
+            {cUser.role === 2 && <p className="text-sm text-gray"> - Admin</p>}
+            {cUser.role === 3 && <p className="text-sm text-gray"> - Owner</p>}
+            {cUser.sanction && <p className="text-sm text-gray"> - Mute</p>}
+          </div>
           <div className="flex gap-2 ml-2">
             <UserButton
               Svg={SvgDuel}
