@@ -10,7 +10,7 @@ class LocalFilesService {
            return imageObjectURL;
         }
         else
-            return await fetch(process.env.PUBLIC_URL + "/api/local-files/" + id).then(async (res)=>{
+            return await fetch(process.env.PUBLIC_URL + ROUTE + id).then(async (res)=>{
             const imageBlob = await res.blob();
             const imageObjectURL = URL.createObjectURL(imageBlob);
             return imageObjectURL;
@@ -23,4 +23,4 @@ class LocalFilesService {
     }
 }
 
-export default new LocalFilesService;
+export default new LocalFilesService();

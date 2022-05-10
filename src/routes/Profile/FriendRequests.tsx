@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom'
 import Avatar from '../../components/Avatar'
-import { User } from '../../types/user'
+import { Relationship, RelStatus, User } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
 import { ReactComponent as Accept } from '../../assets/accept.svg'
 import { ReactComponent as Reject } from '../../assets/reject.svg'
+import { useEffect, useState } from 'react'
+import usersService from '../../services/users.service'
 
 interface Props {
-  requests: User[]
+  user : User
 }
 
-export default function FriendRequests({ requests }: Props) {
+export default function FriendRequests({ user }: Props) {
   const svgClass = 'ease-in-out duration-300 fill-gray group-hover:fill-violet'
 
   function renderRequest(user: User, id: number) {
@@ -39,6 +41,16 @@ export default function FriendRequests({ requests }: Props) {
       </div>
     )
   }
+
+  const [requests, setRequests] = useState<User[]>([]);
+  useEffect(() =>{
+    for (let relationship of user.received_relationships) {
+      if (relationship.status == RelStatus.Pending)
+        usersService.getById(relationship.issuer_id).then((response) => {
+          setRequests([...requests, response]);
+        });
+    }
+  },[]);
 
   return (
     <SocialItemContainer title="Friend Requests">

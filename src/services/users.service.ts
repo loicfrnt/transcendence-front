@@ -1,5 +1,3 @@
-import axios from "axios";
-//import useAxiosPrivate from "../hooks/use-axios-private";
 import api from '../api/api';
 const ROUTE = "/api/users/";
 
@@ -28,6 +26,12 @@ class UsersService {
             }
             return response.data;
         });
+    }
+
+    getById(id: number) {
+        return api.get(ROUTE + id).then(response => {
+            return response.data;
+        })
     }
 }
 

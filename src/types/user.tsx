@@ -39,7 +39,7 @@ export interface User {
   history: History[]
   channels: Channel[]
   sentRelationships: Relationship[]
-  receivedRelationships: Relationship[]
+  received_relationships: Relationship[]
 }
 
 export interface ProtoUser {

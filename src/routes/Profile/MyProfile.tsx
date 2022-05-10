@@ -1,6 +1,3 @@
-// TMP static vars
-import { userList } from '../../data/users'
-
 import MainContainer from '../../components/MainContainer'
 import { User } from '../../types/user'
 import MainUser from './MainUser'
@@ -16,6 +13,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import twoFactorsAuthenticationService from '../../services/two-factors-authentication.service'
 import *  as Yup from 'yup';
 import UsersService from '../../services/users.service'
+import { userList } from '../../data/users'
 
 interface Props {
   user: User
@@ -296,7 +294,7 @@ export default function UserProfile({ user, setConnected }: Props) {
         </MainUser>
         <Friends />
         <MatchHistory user={user} />
-        <FriendRequests requests={userList} />
+        <FriendRequests user={user} />
         <Blocked blocked={[userList[1]]} />
       </ProfileMasonry>
     </MainContainer>
