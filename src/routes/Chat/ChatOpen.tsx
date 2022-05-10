@@ -35,11 +35,7 @@ export default function ChatOpen({
   const [editChanOpen, setEditChanOpen] = useState(false)
 
   useEffect(() => {
-    if (channels.find((chan) => chan.id === channelId) === undefined) {
-      setChannel(undefined)
-    } else {
-      chatService.getChannel(channelId, setChannel)
-    }
+    chatService.getChannel(channelId, setChannel)
   }, [channelId, channelsLength])
 
   useEffect(() => {})
