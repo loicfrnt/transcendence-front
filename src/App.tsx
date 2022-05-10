@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 // React Routing
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 // Routes
 import { Login } from './routes/Login/Login'
@@ -20,7 +20,7 @@ export default function App() {
     return authenticationService.getCurrentUser();
   }); 
   //let navigate = useNavigate();
-  const savedConnected = localStorage.getItem('connected');
+  const savedConnected = localStorage.getItem('connected')
   const [connected, setConnected] = useState(
     // Recover Connected state from cache
     savedConnected ? JSON.parse(savedConnected) : false
@@ -28,12 +28,12 @@ export default function App() {
 
   // Cache connected state
   useEffect(() => {
-    localStorage.setItem('connected', JSON.stringify(connected));
-    const currentUser = authenticationService.getCurrentUser();
+    localStorage.setItem('connected', JSON.stringify(connected))
+    const currentUser = authenticationService.getCurrentUser()
     //if (!currentUser)
-      //navigate("/");
+    //navigate("/");
     //else
-      setCurrUser(currentUser);
+    setCurrUser(currentUser)
   }, [connected])
 
   if (!connected) {
