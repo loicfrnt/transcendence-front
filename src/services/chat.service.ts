@@ -84,8 +84,15 @@ class ChatService {
     axios
       .patch(URL + ROUTE + channel.id, payload)
       .then((response) => {
-        this.getChannels(setChannels)
-        setChannel(response.data)
+        setChannel((channel) => {
+          if (channel) {
+            let newChan: Channel = { ...channel }
+            newChan.name = response.data.name ?? newChan.name
+            newChan.status = response.data.status ?? newChan.status
+            return newChan
+          }
+          return undefined
+        })
       })
       .catch((error) => console.log(error.response.data.message))
   }
