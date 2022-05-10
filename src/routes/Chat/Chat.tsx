@@ -40,7 +40,10 @@ function Chat({ user }: Props) {
     })
 
     socket.current.on('deleted_channel', (data) => {
-      chatServices.getChannels(setChannels)
+      setChannels((channels) => {
+        let newChannels = [...channels]
+        return newChannels.filter((chan) => chan.id !== parseInt(data.id))
+      })
     })
 
     socket.current.on('receive_message', (message: Message) => {
