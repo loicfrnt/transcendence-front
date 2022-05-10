@@ -5,6 +5,7 @@ interface LogOutProps {
 export default function LogOut({ setConnected }: LogOutProps) {
   function handleClick() {
     setConnected(false)
+    localStorage.removeItem("user");
   }
   return <button onClick={(e) => handleClick()}>Log Out</button>
 }

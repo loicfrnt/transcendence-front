@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ROUTE = "/api/authentication/"
+const ROUTE = "/api/authentication/";
 
 class AuthenticationService {
     login(username: string, password:string) {

@@ -12,7 +12,6 @@ export default function MainUser({ user, children }: MyProps) {
   const titleStyle = 'text-[2rem] leading-[2.625rem] font-semibold '
   const statsStyle =
     'text-[1.375rem] leading-[2.625rem] font-normal text-center'
-    console.log(user);
   return (
     <ContentBox className="max-w-[400px] flex flex-col items-center py-7 grid-item mb-10">
       <Avatar
