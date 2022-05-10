@@ -185,7 +185,6 @@ export function ConvInfoChannel({
     socket?.on('channel_user', channelUserUpdated)
 
     const userLeft = (leavingUser: ChannelUser) => {
-      console.log('zut')
       setChannel((channel) => {
         if (!channel) return channel
         let newChannel = { ...channel }
