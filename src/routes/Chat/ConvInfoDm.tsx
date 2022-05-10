@@ -33,7 +33,9 @@ export default function ConvInfoDm({ channel, thisUser }: Props) {
       </button>
     )
   }
-  const cUser = channel.channelUsers.find((cUser) => cUser.user !== thisUser)
+  const cUser = channel.channelUsers.find(
+    (cUser) => cUser.user.id !== thisUser.id
+  )
   if (cUser === undefined) {
     return <span>Something went wrong</span>
   }
