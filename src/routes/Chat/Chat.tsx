@@ -27,7 +27,18 @@ function Chat({ user }: Props) {
     })
 
     socket.current.on('updated_channel', (data) => {
-      chatServices.getChannels(setChannels)
+      // chatServices.getChannels(setChannels)
+      setChannels((channels) => {
+        let newChannels = [...channels]
+        channels.some((chan, idx) => {
+          if (chan.id !== parseInt(data.id)) return false
+          newChannels[idx].name = data.name ?? newChannels[idx].name
+          newChannels[idx].status = data.status ?? newChannels[idx].status
+          console.log(newChannels)
+          return true
+        })
+        return newChannels
+      })
     })
 
     socket.current.on('deleted_channel', (data) => {
