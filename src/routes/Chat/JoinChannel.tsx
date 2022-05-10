@@ -146,15 +146,21 @@ export default function JoinChannel({
       </div>
       <div className="flex flex-col gap-1 overflow-hidden hover:overflow-auto max-h-[300px]">
         {joinChannels.length
-          ? joinChannels.map((channel) => (
-              <RenderChannel
-                setChannels={setChannels}
-                setIsOpen={setIsOpen}
-                socket={socket}
-                channel={channel}
-                key={channel.id}
-              />
-            ))
+          ? joinChannels
+              .sort((a, b) => {
+                let d1 = Date.parse(a.last_message_at)
+                let d2 = Date.parse(b.last_message_at)
+                return d2 - d1
+              })
+              .map((channel) => (
+                <RenderChannel
+                  setChannels={setChannels}
+                  setIsOpen={setIsOpen}
+                  socket={socket}
+                  channel={channel}
+                  key={channel.id}
+                />
+              ))
           : 'No Channels to be joined :c'}
       </div>
     </div>
