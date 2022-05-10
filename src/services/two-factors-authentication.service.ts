@@ -1,5 +1,5 @@
- import axios from "axios";
 import Cookies from "cookies-js";
+import api from "../api/api";
 
  const ROUTE = "/api/two-factor-authentication/";
 
@@ -17,25 +17,25 @@ import Cookies from "cookies-js";
     }
 
     async turnOn(twoFactorAuthenticationCode: string) {
-        return axios.post(process.env.PUBLIC_URL + ROUTE + "turn-on", {
+        return api.post(process.env.PUBLIC_URL + ROUTE + "turn-on", {
             twoFactorAuthenticationCode
-        }, {withCredentials: true}).then(response => {
+        }).then(response => {
             return response.data;
         });
     }
 
     async turnOff(twoFactorAuthenticationCode: string) {
-        return axios.post(process.env.PUBLIC_URL + ROUTE + "turn-off", {
+        return api.post(process.env.PUBLIC_URL + ROUTE + "turn-off", {
             twoFactorAuthenticationCode
-        }, {withCredentials: true}).then(response => {
+        }).then(response => {
             return response.data;
         });
     }
 
     async authenticate(twoFactorAuthenticationCode: string) {
-        return axios.post(process.env.PUBLIC_URL + ROUTE + "authenticate", {
+        return api.post(process.env.PUBLIC_URL + ROUTE + "authenticate", {
             twoFactorAuthenticationCode
-        }, {withCredentials: true}).then(response => {
+        },).then(response => {
             if (response.data.id) {
                 localStorage.setItem("user", JSON.stringify(response.data));
             }

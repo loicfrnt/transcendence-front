@@ -60,7 +60,6 @@ export function Login({ setConnected }: LoginProps) {
       loading : true
     });
     authenticationService.login(username, password).then((response)=> {
-    console.log(response);
     if (response == "")
       setQrClicked(true);
     else

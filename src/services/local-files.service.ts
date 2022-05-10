@@ -1,6 +1,3 @@
-import axios from "axios";
-import localAvatar from "../../public/images/avatar.png"
-
 const ROUTE = "/api/local-files/"
 
 class LocalFilesService {

@@ -32,7 +32,6 @@ export default function UserProfile({ user, setConnected }: Props) {
   const [qrClicked, setQrClicked] = useState(false);
   const [tfaOffClicked, settfaOffClicked] = useState(false);
   const [tfaActivated, setTfaActivated] = useState(() =>{
-    console.log(user);
    return user.isTwoFactorAuthenticationEnabled
   });
   const [qrInit, setQrInit] = useState(false);
@@ -84,7 +83,6 @@ export default function UserProfile({ user, setConnected }: Props) {
       setQrClicked(false);
       setQrClassDiv('');
       user.isTwoFactorAuthenticationEnabled = true;
-      console.log(user);
       localStorage.setItem("user", JSON.stringify(user));
       setTfaActivated(true);
     }, error => {
