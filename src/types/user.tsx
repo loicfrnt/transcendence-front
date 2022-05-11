@@ -32,6 +32,7 @@ export interface User {
   email: string
   username: string
   avatar_id: number // ?
+  isTwoFactorAuthenticationEnabled: boolean
   status: UserStatus
   victories: number
   defeats: number
@@ -46,6 +47,7 @@ export interface ProtoUser {
   email: string
   username: string
   avatar_id: number
+  isTwoFactorAuthenticationEnabled: boolean
   status: UserStatus
   victories: number
   defeats: number
