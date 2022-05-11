@@ -9,6 +9,7 @@ import { ReactComponent as ArrowSvg } from '../../assets/arrow.svg'
 import { Field, Form, Formik, FormikState } from 'formik'
 import animateCSS from '../../utils/animateCSS'
 import 'animate.css'
+import { useNavigate } from 'react-router-dom'
 
 interface RenderChannelProps {
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
@@ -25,6 +26,7 @@ function RenderChannel({
 }: RenderChannelProps) {
   const [showPwd, setShowPwd] = useState(false)
   const pwdFieldElement = useRef<HTMLElement>(null)
+  let navigate = useNavigate()
 
   interface FormValue {
     password: string
@@ -34,17 +36,21 @@ function RenderChannel({
   }
 
   function submitPassword(values: FormValue, { resetForm }: ResetForm) {
-    console.log('yooo le s')
     socket?.emit(
       'join_channel',
       { id: channel.id.toString(), password: values.password },
       (data: any) => {
         if (!data.error) {
-          chatService.getChannels(setChannels)
+          setChannels((channels) => {
+            let newChannels = [...channels]
+            newChannels.push(data as ProtoChannel)
+            return newChannels
+          })
+          setIsOpen(false)
           setIsOpen(false)
           resetForm()
+          navigate(`/chat/` + data.id)
         } else if (data.error.name === 'PasswordErrorException') {
-          console.log(pwdFieldElement.current)
           pwdFieldElement.current &&
             animateCSS(pwdFieldElement.current, 'headShake')
         } else {
@@ -105,10 +111,19 @@ function RenderChannel({
         className="duration-300 ease-in-out rounded-3xl min-h-[3rem] px-5 w-full flex justify-between items-center bg-gray-light hover:bg-violet-light gap-4"
         style={{ cursor: 'pointer' }}
         onClick={(e) => {
-          socket?.emit('join_channel', { id: channel.id.toString() }, () => {
-            chatService.getChannels(setChannels)
-            setIsOpen(false)
-          })
+          socket?.emit(
+            'join_channel',
+            { id: channel.id.toString() },
+            (data: any) => {
+              setChannels((channels) => {
+                let newChannels = [...channels]
+                newChannels.push(data as ProtoChannel)
+                return newChannels
+              })
+              navigate(`/chat/` + data.id)
+              setIsOpen(false)
+            }
+          )
         }}
       >
         <h2 className="font-semibold text-xl">{channel.name}</h2>
