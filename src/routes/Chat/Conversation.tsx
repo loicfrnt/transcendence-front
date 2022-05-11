@@ -23,7 +23,6 @@ export default function Conversation({
   let convRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const conv = convRef.current as HTMLDivElement
-    // console.log(conv)
     conv.scrollTop = conv.scrollHeight
   }, [messages.length])
 

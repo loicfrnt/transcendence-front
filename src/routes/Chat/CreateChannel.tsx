@@ -15,7 +15,6 @@ export default function CreateChannel({ setChannels, setIsOpen }: Props) {
     if (values.status === 'public') values.password = ''
     try {
       const result: any = await chatService.createChannel(values)
-      console.log(result)
       setChannels((channels) => {
         let newChannels = [...channels]
         newChannels.push(result.data as ProtoChannel)

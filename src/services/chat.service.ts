@@ -77,7 +77,6 @@ class ChatService {
     }
     if (updated.password.length) payload.password = updated.password
     if (channel.status !== updated.status) payload.status = updated.status
-    console.log(payload)
     api
       .patch(URL + ROUTE + channel.id, payload)
       .then((response) => {
