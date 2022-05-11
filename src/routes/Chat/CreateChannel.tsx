@@ -2,6 +2,7 @@ import chatService from '../../services/chat.service'
 import { NewChannel, ProtoChannel } from '../../types/chat'
 import FormikChannel, { ResetForm } from './FormikChannel'
 import * as Yup from 'yup'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
@@ -9,12 +10,23 @@ interface Props {
 }
 
 export default function CreateChannel({ setChannels, setIsOpen }: Props) {
-  function handleSubmit(values: NewChannel, { resetForm }: ResetForm) {
+  let navigate = useNavigate()
+  const handleSubmit = async (values: NewChannel, { resetForm }: ResetForm) => {
     if (values.status === 'public') values.password = ''
-    console.log(values)
-    chatService.createChannel(values, setChannels)
-    setIsOpen(false)
-    resetForm()
+    try {
+      const result: any = await chatService.createChannel(values)
+      console.log(result)
+      setChannels((channels) => {
+        let newChannels = [...channels]
+        newChannels.push(result.data as ProtoChannel)
+        return newChannels
+      })
+      setIsOpen(false)
+      resetForm()
+      navigate('/chat/' + result.data.id)
+    } catch (err) {
+      alert(err)
+    }
   }
 
   const validationSchema = Yup.object().shape({

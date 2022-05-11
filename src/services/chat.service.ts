@@ -49,17 +49,14 @@ class ChatService {
       })
   }
 
-  createChannel(
-    newChannel: NewChannel,
-    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
-  ) {
-    api
+  async createChannel(newChannel: NewChannel) {
+    return api
       .post(URL + ROUTE, newChannel)
-      .then(() => this.getChannels(setChannels))
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data.message)
-        }
+      .then((data) => {
+        return data
+      })
+      .catch((err) => {
+        throw new Error(err)
       })
   }
 
