@@ -24,7 +24,7 @@ export default function EditChannel({
 
   function handleDelete() {
     if (window.confirm(`You're about to delete this channel. Are you sure ?`)) {
-      chatServices.deleteChannel(channel.id, setChannels)
+      chatServices.deleteChannel(channel.id)
       setOpen(false)
     }
   }

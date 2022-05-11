@@ -97,10 +97,7 @@ class ChatService {
       .catch((error) => console.log(error.response.data.message))
   }
 
-  deleteChannel(
-    channelId: number,
-    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
-  ) {
+  deleteChannel(channelId: number) {
     api.delete(URL + ROUTE + channelId).then()
   }
 
