@@ -110,9 +110,14 @@ export default function ChatOpen({
               socket?.emit(
                 'leave_channel',
                 { id: channelId.toString() },
-                () => {
+                (data: any) => {
                   navigate('/chat')
-                  chatService.getChannels(setChannels)
+                  setChannels((channels) => {
+                    let newChannels = [...channels]
+                    return newChannels.filter(
+                      (chan) => chan.id !== parseInt(data.channelId)
+                    )
+                  })
                 }
               )
             }
