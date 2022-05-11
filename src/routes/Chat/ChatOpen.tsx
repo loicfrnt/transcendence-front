@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Socket } from 'socket.io-client'
 import ContentBox from '../../components/ContentBox'
 import PopUpBox from '../../components/PopUpBox'
@@ -33,6 +33,7 @@ export default function ChatOpen({
   const channelId = parseInt(params.channelId as string)
   const [channel, setChannel] = useState<Channel>()
   const [editChanOpen, setEditChanOpen] = useState(false)
+  let navigate = useNavigate()
 
   useEffect(() => {
     chatService.getChannel(channelId, setChannel)
@@ -110,6 +111,7 @@ export default function ChatOpen({
                 'leave_channel',
                 { id: channelId.toString() },
                 () => {
+                  navigate('/chat')
                   chatService.getChannels(setChannels)
                 }
               )
