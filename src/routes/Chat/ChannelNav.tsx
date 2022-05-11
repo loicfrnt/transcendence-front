@@ -81,7 +81,13 @@ export default function ChannelNav({
             />
           </div>
           <div className="flex flex-col gap-2 overflow-hidden hover:overflow-auto">
-            {channels.map(renderChannel)}
+            {channels
+              .sort((a, b) => {
+                let d1 = Date.parse(a.last_message_at)
+                let d2 = Date.parse(b.last_message_at)
+                return d2 - d1
+              })
+              .map(renderChannel)}
           </div>
         </ContentBox>
         <Outlet />

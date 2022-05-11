@@ -1,4 +1,4 @@
-import axios from 'axios'
+import api from '../api/api'
 import { Channel, NewChannel, ProtoChannel } from '../types/chat'
 
 const URL = process.env.PUBLIC_URL
@@ -9,7 +9,7 @@ class ChatService {
     setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   ) {
     // GET channels list
-    axios.get(URL + ROUTE).then((response) => {
+    api.get(URL + ROUTE).then((response) => {
       if (response.status === 200) {
         setChannels(response.data.user_channels)
       }
@@ -20,7 +20,7 @@ class ChatService {
     setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   ) {
     // GET available channels list, remove already joined ones
-    axios.get(URL + ROUTE).then((response) => {
+    api.get(URL + ROUTE).then((response) => {
       if (response.status === 200) {
         let availableChans: ProtoChannel[] = response.data.available_channels
         let userChans: ProtoChannel[] = response.data.user_channels
@@ -39,40 +39,62 @@ class ChatService {
     channelId: number,
     setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
   ) {
-    axios
+    api
       .get(URL + ROUTE + channelId)
       .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data)
-          setChannel(response.data)
-        }
+        if (response.status === 200) setChannel(response.data)
       })
       .catch(() => {
         setChannel(undefined)
       })
   }
 
-  createChannel(
-    newChannel: NewChannel,
-    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
-  ) {
-    axios
+  async createChannel(newChannel: NewChannel) {
+    return api
       .post(URL + ROUTE, newChannel)
-      .then(() => this.getChannels(setChannels))
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data.message)
-        }
+      .then((data) => {
+        return data
+      })
+      .catch((err) => {
+        throw new Error(err)
       })
   }
 
-  deleteChannel(
-    channelId: number,
+  patchChannel(
+    channel: Channel,
+    updated: NewChannel,
+    setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>,
     setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   ) {
-    axios
-      .delete(URL + ROUTE + channelId)
-      .then(() => this.getChannels(setChannels))
+    let payload: {
+      id: string
+      name: string
+      status?: string
+      password?: string
+    } = {
+      id: channel.id.toString(),
+      name: updated.name,
+    }
+    if (updated.password.length) payload.password = updated.password
+    if (channel.status !== updated.status) payload.status = updated.status
+    api
+      .patch(URL + ROUTE + channel.id, payload)
+      .then((response) => {
+        setChannel((channel) => {
+          if (channel) {
+            let newChan: Channel = { ...channel }
+            newChan.name = response.data.name ?? newChan.name
+            newChan.status = response.data.status ?? newChan.status
+            return newChan
+          }
+          return undefined
+        })
+      })
+      .catch((error) => console.log(error.response.data.message))
+  }
+
+  deleteChannel(channelId: number) {
+    api.delete(URL + ROUTE + channelId).then()
   }
 
   //   receiveMessage(

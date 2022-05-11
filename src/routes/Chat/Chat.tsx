@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { ProtoChannel } from '../../types/chat'
+import { Message, ProtoChannel } from '../../types/chat'
 import { User } from '../../types/user'
 import ChannelNav from './ChannelNav'
 import ChatClose from './ChatClose'
@@ -26,20 +26,42 @@ function Chat({ user }: Props) {
       withCredentials: true,
     })
 
+    socket.current.on('updated_channel', (data) => {
+      setChannels((channels) => {
+        let newChannels = [...channels]
+        channels.some((chan, idx) => {
+          if (chan.id !== parseInt(data.id)) return false
+          newChannels[idx].name = data.name ?? newChannels[idx].name
+          newChannels[idx].status = data.status ?? newChannels[idx].status
+          return true
+        })
+        return newChannels
+      })
+    })
+
+    socket.current.on('deleted_channel', (data) => {
+      setChannels((channels) => {
+        let newChannels = [...channels]
+        return newChannels.filter((chan) => chan.id !== parseInt(data.id))
+      })
+    })
+
+    socket.current.on('receive_message', (message: Message) => {
+      setChannels((channels) => {
+        let newChannels = [...channels]
+        newChannels.some((chan) => {
+          if (message.channelId !== chan.id) return false
+          chan.last_message_at = message.created_at
+          return true
+        })
+        return newChannels
+      })
+    })
+
     return () => {
       socket.current?.close()
     }
   }, [])
-
-  // NOW IN ChatOpen
-  // useEffect(() => {
-  //   socket.current?.on('receive_message', (message) => {
-  //     chatServices.receiveMessage(message, setChannels, channels)
-  //   })
-  //   return () => {
-  //     socket.current?.off('receive_message')
-  //   }
-  // }, [channels])
 
   return (
     <Routes>
