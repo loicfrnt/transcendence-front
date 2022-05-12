@@ -2,7 +2,6 @@ import Avatar from '../../components/Avatar'
 import { ReactComponent as SvgArrow } from '../../assets/arrow.svg'
 import { Channel, ChannelUser } from '../../types/chat'
 import { Socket } from 'socket.io-client'
-import { channel } from 'diagnostics_channel'
 
 interface FriendProps {
   friend: ChannelUser

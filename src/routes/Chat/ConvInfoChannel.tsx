@@ -228,7 +228,6 @@ export function ConvInfoChannel({
     }
   }
 
-  console.log('this user', thisUser)
   return (
     <>
       {popUp()}
