@@ -78,10 +78,8 @@ export default function ChatOpen({
         <PopUpBox open={editChanOpen} setOpen={setEditChanOpen}>
           <EditChannel
             channel={channel}
-            setChannels={setChannels}
             setChannel={setChannel}
             setOpen={setEditChanOpen}
-            // setNewChanOpen={setEditChanOpen}
           />
         </PopUpBox>
       )

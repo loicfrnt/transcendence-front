@@ -1,4 +1,4 @@
-import { Channel, NewChannel, ProtoChannel } from '../../types/chat'
+import { Channel, NewChannel } from '../../types/chat'
 import chatServices from '../../services/chat.service'
 import FormikChannel from './FormikChannel'
 import chatService from '../../services/chat.service'
@@ -8,15 +8,9 @@ interface Props {
   channel: Channel
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
-  setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
 }
 
-export default function EditChannel({
-  channel,
-  setOpen,
-  setChannel,
-  setChannels,
-}: Props) {
+export default function EditChannel({ channel, setOpen, setChannel }: Props) {
   function handleSubmit(values: NewChannel) {
     if (values.status === 'public') values.password = ''
     chatService.patchChannel(channel, values, setChannel)
