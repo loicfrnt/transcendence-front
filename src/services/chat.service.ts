@@ -63,8 +63,7 @@ class ChatService {
   patchChannel(
     channel: Channel,
     updated: NewChannel,
-    setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>,
-    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
+    setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
   ) {
     let payload: {
       id: string
