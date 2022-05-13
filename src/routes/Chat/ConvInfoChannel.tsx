@@ -18,6 +18,7 @@ import PopUpBox from '../../components/PopUpBox'
 import AdminPanel from './AdminPanel'
 import { useEffect } from 'react'
 import InviteMembers from './InviteMembers'
+import dmUser from '../../utils/dmUser'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -118,16 +119,7 @@ function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
               Svg={SvgMessage}
               tooltip="Direct Message"
               id={`${cUser.id}dm`}
-              handleClick={() => {
-                socket?.emit(
-                  'get_direct_messages_channel',
-                  { id: user.id.toString() },
-                  (channel: any, err: any) => {
-                    console.log(channel, err)
-                    navigate('/chat/' + channel.id)
-                  }
-                )
-              }}
+              handleClick={() => dmUser(user, socket, navigate)}
             />
             {
               // If user is admin or owner
