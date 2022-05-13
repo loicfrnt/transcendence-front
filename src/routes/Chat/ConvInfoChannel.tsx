@@ -235,14 +235,16 @@ export function ConvInfoChannel({
         <div
           className={`flex flex-col gap-0 rounded-3xl border-gray overflow-auto ${border}`}
         >
-          {otherUsers.map((cUser) => (
-            <ConvMember
-              cUser={cUser}
-              thisCUser={thisCUser}
-              socket={socket}
-              key={cUser.id}
-            />
-          ))}
+          {otherUsers
+            .filter((cUser) => cUser.sanction !== 'ban')
+            .map((cUser) => (
+              <ConvMember
+                cUser={cUser}
+                thisCUser={thisCUser}
+                socket={socket}
+                key={cUser.id}
+              />
+            ))}
           {!otherUsers.length && <p>It's empty in here...</p>}
         </div>
       </div>
