@@ -59,6 +59,10 @@ function Chat({ user }: Props) {
       })
     })
 
+    socket.current.on('invited_channels', (data) => {
+      setInvitedChannels(data)
+    })
+
     return () => {
       socket.current?.close()
     }
