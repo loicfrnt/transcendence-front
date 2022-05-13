@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom'
 /* Each Invitation Component */
 interface InvitationProps {
   channel: ProtoChannel
+  channels: ProtoChannel[]
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
-  setInvitedChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   thisUserId: number
   socket: Socket | null
@@ -16,8 +16,8 @@ interface InvitationProps {
 
 const Invitation = ({
   channel,
+  channels,
   socket,
-  setInvitedChannels,
   setChannels,
   thisUserId,
   setIsOpen,
@@ -25,15 +25,23 @@ const Invitation = ({
   let navigate = useNavigate()
 
   const acceptInvite = () => {
-    socket?.emit('join_channel', { id: channel.id.toString() }, (data: any) => {
-      setChannels((channels) => {
-        let newChannels = [...channels]
-        newChannels.push(data as ProtoChannel)
-        return newChannels
-      })
-      navigate(`/chat/` + data.id)
-      setIsOpen(false)
-    })
+    if (!channels.find((chan) => chan.id === channel.id)) {
+      socket?.emit(
+        'join_channel',
+        { id: channel.id.toString() },
+        (data: any) => {
+          setChannels((channels) => {
+            let newChannels = [...channels]
+            newChannels.push(data as ProtoChannel)
+            return newChannels
+          })
+        }
+      )
+    } else {
+      rejectInvite()
+    }
+    navigate(`/chat/` + channel.id)
+    setIsOpen(false)
   }
 
   const rejectInvite = () => {
@@ -42,9 +50,6 @@ const Invitation = ({
       { channelId: channel.id, invitedId: thisUserId },
       (data: any) => {
         console.log(data)
-        setInvitedChannels((invitedChannels) => {
-          return invitedChannels.filter((chan) => chan.id !== channel.id)
-        })
       }
     )
   }
@@ -72,8 +77,8 @@ const Invitation = ({
 
 /* Main Component */
 interface Props {
+  channels: ProtoChannel[]
   invitedChannels: ProtoChannel[]
-  setInvitedChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   thisUserId: number
@@ -81,8 +86,8 @@ interface Props {
 }
 
 export default function InvitedChannels({
+  channels,
   invitedChannels,
-  setInvitedChannels,
   setChannels,
   setIsOpen,
   thisUserId,
@@ -96,8 +101,8 @@ export default function InvitedChannels({
           return (
             <Invitation
               channel={channel}
+              channels={channels}
               socket={socket}
-              setInvitedChannels={setInvitedChannels}
               setChannels={setChannels}
               setIsOpen={setIsOpen}
               thisUserId={thisUserId}

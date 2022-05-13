@@ -68,8 +68,8 @@ export default function ChannelNav({
           <CreateChannel setChannels={setChannels} setIsOpen={setNewChanOpen} />
           {invitedChannels.length ? (
             <InvitedChannels
+              channels={channels}
               invitedChannels={invitedChannels}
-              setInvitedChannels={setInvitedChannels}
               setChannels={setChannels}
               setIsOpen={setNewChanOpen}
               thisUserId={thisUser.id}
