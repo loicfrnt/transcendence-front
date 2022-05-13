@@ -66,7 +66,7 @@ export default function ChannelNav({
             socket={socket}
           />
           <CreateChannel setChannels={setChannels} setIsOpen={setNewChanOpen} />
-          {invitedChannels.length && (
+          {invitedChannels.length ? (
             <InvitedChannels
               invitedChannels={invitedChannels}
               setInvitedChannels={setInvitedChannels}
@@ -75,7 +75,7 @@ export default function ChannelNav({
               thisUserId={thisUser.id}
               socket={socket}
             />
-          )}
+          ) : null}
         </PopUpBox>
       )
   }
