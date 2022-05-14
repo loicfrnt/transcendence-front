@@ -26,8 +26,8 @@ export interface Channel {
 export interface ChannelUser {
   id: number
   role: number
-  sanction: null
-  end_of_sanction: null
+  sanction: string | null
+  end_of_sanction: string
   channelId: number
   user: User
 }
