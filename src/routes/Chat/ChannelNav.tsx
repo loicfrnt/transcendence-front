@@ -17,7 +17,7 @@ interface Props {
   channels: ProtoChannel[]
   invitedChannels: ProtoChannel[]
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
-  socket: Socket | null
+  socket: Socket
 }
 
 export default function ChannelNav({

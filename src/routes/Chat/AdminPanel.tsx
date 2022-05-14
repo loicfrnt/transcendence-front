@@ -5,7 +5,7 @@ import { ChannelUser } from '../../types/chat'
 
 interface SanctionFormProps {
   cUser: ChannelUser
-  socket: Socket | null
+  socket: Socket
 }
 
 interface FormValues {
@@ -32,7 +32,7 @@ function SanctionForm({ cUser, socket }: SanctionFormProps) {
   }
 
   const onSubmit = ({ type, duration }: FormValues) => {
-    socket?.emit(
+    socket.emit(
       'manage_channel_user',
       {
         id: cUser.id,
@@ -74,7 +74,7 @@ function SanctionForm({ cUser, socket }: SanctionFormProps) {
 
 interface Props {
   cUser: ChannelUser
-  socket: Socket | null
+  socket: Socket
 }
 
 export default function AdminPanel({ cUser, socket }: Props) {
@@ -98,7 +98,7 @@ export default function AdminPanel({ cUser, socket }: Props) {
             (isAdmin ? 'hover:bg-red' : 'hover:bg-violet')
           }
           onClick={() =>
-            socket?.emit(
+            socket.emit(
               'manage_channel_user',
               {
                 id: cUser.id,
@@ -114,7 +114,7 @@ export default function AdminPanel({ cUser, socket }: Props) {
           <button
             className={`font-semibold rounded-full bg-gray-light p-3  hover:text-white duration-300 ease-in-out hover:bg-violet`}
             onClick={() =>
-              socket?.emit(
+              socket.emit(
                 'manage_channel_user',
                 {
                   id: cUser.id,

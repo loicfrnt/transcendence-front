@@ -11,7 +11,7 @@ interface InvitationProps {
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   thisUserId: number
-  socket: Socket | null
+  socket: Socket
 }
 
 const Invitation = ({
@@ -26,7 +26,7 @@ const Invitation = ({
 
   const acceptInvite = () => {
     if (!channels.find((chan) => chan.id === channel.id)) {
-      socket?.emit(
+      socket.emit(
         'join_channel',
         { id: channel.id.toString() },
         (data: any) => {
@@ -45,7 +45,7 @@ const Invitation = ({
   }
 
   const rejectInvite = () => {
-    socket?.emit(
+    socket.emit(
       'channel_invitation',
       { channelId: channel.id, invitedId: thisUserId },
       (data: any) => {
@@ -82,7 +82,7 @@ interface Props {
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   thisUserId: number
-  socket: Socket | null
+  socket: Socket
 }
 
 export default function InvitedChannels({

@@ -64,7 +64,7 @@ function UserButton({ Svg, tooltip, handleClick, id }: UserButtonProps) {
 interface ConvMemberProps {
   cUser: ChannelUser
   thisCUser: ChannelUser
-  socket: Socket | null
+  socket: Socket
 }
 
 function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
@@ -148,7 +148,7 @@ function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
 interface Props {
   channel: Channel
   thisUser: User
-  socket: Socket | null
+  socket: Socket
   setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
 }
 
@@ -185,7 +185,7 @@ export function ConvInfoChannel({
         return newChannel
       })
     }
-    socket?.on('channel_user', channelUserUpdated)
+    socket.on('channel_user', channelUserUpdated)
 
     const userLeft = (leavingUser: ChannelUser) => {
       setChannel((channel) => {
@@ -197,11 +197,11 @@ export function ConvInfoChannel({
         return newChannel
       })
     }
-    socket?.on('left_channel', userLeft)
+    socket.on('left_channel', userLeft)
 
     return () => {
-      socket?.off('channel_user', channelUserUpdated)
-      socket?.off('left_channel', userLeft)
+      socket.off('channel_user', channelUserUpdated)
+      socket.off('left_channel', userLeft)
     }
   }, [channel, setChannel, socket])
 

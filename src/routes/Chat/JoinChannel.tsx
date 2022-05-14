@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 interface RenderChannelProps {
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  socket: Socket | null
+  socket: Socket
   channel: ProtoChannel
 }
 
@@ -36,7 +36,7 @@ function RenderChannel({
   }
 
   function submitPassword(values: FormValue, { resetForm }: ResetForm) {
-    socket?.emit(
+    socket.emit(
       'join_channel',
       { id: channel.id.toString(), password: values.password },
       (data: any) => {
@@ -111,7 +111,7 @@ function RenderChannel({
         className="duration-300 ease-in-out rounded-3xl min-h-[3rem] px-5 w-full flex justify-between items-center bg-gray-light hover:bg-violet-light gap-4"
         style={{ cursor: 'pointer' }}
         onClick={(e) => {
-          socket?.emit(
+          socket.emit(
             'join_channel',
             { id: channel.id.toString() },
             (data: any) => {
@@ -134,7 +134,7 @@ function RenderChannel({
 interface JoinChannelProps {
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  socket: Socket | null
+  socket: Socket
 }
 
 export default function JoinChannel({
