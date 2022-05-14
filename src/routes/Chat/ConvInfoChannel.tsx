@@ -169,7 +169,7 @@ export function ConvInfoChannel({
   useEffect(() => {
     const channelUserUpdated = (updatedUser: ChannelUser) => {
       setChannel((channel) => {
-        if (!channel) return channel
+        if (!channel || updatedUser.channelId !== channel.id) return channel
         let newChannel = { ...channel }
         if (
           //try to update current user
