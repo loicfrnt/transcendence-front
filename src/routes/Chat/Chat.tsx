@@ -15,11 +15,12 @@ interface Props {
 
 function Chat({ user }: Props) {
   const [channels, setChannels] = useState<ProtoChannel[]>([])
+  const [invitedChannels, setInvitedChannels] = useState<ProtoChannel[]>([])
   const socket = useRef<Socket | null>(null)
 
   useEffect(() => {
     //HTTP
-    chatServices.getChannels(setChannels)
+    chatServices.getChannels(setChannels, setInvitedChannels)
 
     //WS
     socket.current = io(process.env.REACT_APP_BACK_LINK as string, {
@@ -58,6 +59,16 @@ function Chat({ user }: Props) {
       })
     })
 
+    socket.current?.on('user_banned', (channelId: number) => {
+      setChannels((channels) => {
+        return channels.filter((chan) => chan.id !== channelId)
+      })
+    })
+
+    socket.current.on('invited_channels', (data) => {
+      setInvitedChannels(data)
+    })
+
     return () => {
       socket.current?.close()
     }
@@ -71,6 +82,7 @@ function Chat({ user }: Props) {
           <ChannelNav
             thisUser={user}
             channels={channels}
+            invitedChannels={invitedChannels}
             setChannels={setChannels}
             socket={socket.current}
           />

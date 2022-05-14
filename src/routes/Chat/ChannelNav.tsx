@@ -10,10 +10,12 @@ import { ReactComponent as AddSvg } from '../../assets/add.svg'
 import CreateChannel from './CreateChannel'
 import JoinChannel from './JoinChannel'
 import { Socket } from 'socket.io-client'
+import InvitedChannels from './InvitedChannels'
 
 interface Props {
   thisUser: User
   channels: ProtoChannel[]
+  invitedChannels: ProtoChannel[]
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   socket: Socket | null
 }
@@ -21,6 +23,7 @@ interface Props {
 export default function ChannelNav({
   thisUser,
   channels,
+  invitedChannels,
   setChannels,
   socket,
 }: Props) {
@@ -61,6 +64,16 @@ export default function ChannelNav({
             socket={socket}
           />
           <CreateChannel setChannels={setChannels} setIsOpen={setNewChanOpen} />
+          {invitedChannels.length ? (
+            <InvitedChannels
+              channels={channels}
+              invitedChannels={invitedChannels}
+              setChannels={setChannels}
+              setIsOpen={setNewChanOpen}
+              thisUserId={thisUser.id}
+              socket={socket}
+            />
+          ) : null}
         </PopUpBox>
       )
   }

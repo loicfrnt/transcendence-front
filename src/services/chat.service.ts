@@ -6,12 +6,14 @@ const ROUTE = '/api/channels/'
 
 class ChatService {
   getChannels(
-    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
+    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>,
+    setInvitedChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   ) {
     // GET channels list
     api.get(URL + ROUTE).then((response) => {
       if (response.status === 200) {
         setChannels(response.data.user_channels)
+        setInvitedChannels(response.data.invited_channels)
       }
     })
   }
@@ -63,8 +65,7 @@ class ChatService {
   patchChannel(
     channel: Channel,
     updated: NewChannel,
-    setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>,
-    setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
+    setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
   ) {
     let payload: {
       id: string

@@ -7,6 +7,7 @@ import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
 import { ReactComponent as SvgBlock } from '../../assets/block.svg'
 import { ReactComponent as SvgMessage } from '../../assets/message.svg'
 import { ReactComponent as SvgAdmin } from '../../assets/hammer.svg'
+import { ReactComponent as AddSvg } from '../../assets/add.svg'
 import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { useState } from 'react'
@@ -16,6 +17,8 @@ import getChannelUser from '../../utils/getChannelUser'
 import PopUpBox from '../../components/PopUpBox'
 import AdminPanel from './AdminPanel'
 import { useEffect } from 'react'
+import InviteMembers from './InviteMembers'
+import dmUser from '../../utils/dmUser'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -116,16 +119,7 @@ function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
               Svg={SvgMessage}
               tooltip="Direct Message"
               id={`${cUser.id}dm`}
-              handleClick={() => {
-                socket?.emit(
-                  'get_direct_messages_channel',
-                  { id: user.id.toString() },
-                  (channel: any, err: any) => {
-                    console.log(channel, err)
-                    navigate('/chat/' + channel.id)
-                  }
-                )
-              }}
+              handleClick={() => dmUser(user, socket, navigate)}
             />
             {
               // If user is admin or owner
@@ -165,13 +159,17 @@ export function ConvInfoChannel({
   setChannel,
 }: Props) {
   const thisCUser = getChannelUser(channel, thisUser)
-  const otherUsers = channel.channelUsers.filter((user) => user !== thisCUser)
+  const otherUsers = channel.channelUsers
+    .filter((user) => user !== thisCUser)
+    .filter((cUser) => cUser.sanction !== 'ban')
+
   const border = otherUsers.length ? 'border' : ''
+  const [inviteOpen, setInviteOpen] = useState(false)
 
   useEffect(() => {
     const channelUserUpdated = (updatedUser: ChannelUser) => {
       setChannel((channel) => {
-        if (!channel) return channel
+        if (!channel || updatedUser.channelId !== channel.id) return channel
         let newChannel = { ...channel }
         if (
           //try to update current user
@@ -211,22 +209,46 @@ export function ConvInfoChannel({
     return <p>Something went wrong...</p>
   }
 
-  return (
-    <div className="flex flex-col gap-3">
-      <h1 className="font-bold text-3xl mb">Members</h1>
-      <div
-        className={`flex flex-col gap-0 rounded-3xl border-gray overflow-auto ${border}`}
-      >
-        {otherUsers.map((cUser) => (
-          <ConvMember
-            cUser={cUser}
-            thisCUser={thisCUser}
+  const popUp = () => {
+    if (inviteOpen) {
+      return (
+        <PopUpBox open={inviteOpen} setOpen={setInviteOpen}>
+          <InviteMembers
+            friends={channel.channelUsers}
             socket={socket}
-            key={cUser.id}
+            channel={channel}
           />
-        ))}
-        {!otherUsers.length && <p>It's empty in here...</p>}
+        </PopUpBox>
+      )
+    }
+  }
+
+  return (
+    <>
+      {popUp()}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="font-bold text-3xl mb">Members</h1>
+          <AddSvg
+            className="w-7 h-7 fill-gray hover:fill-violet duration-300"
+            onClick={(e) => setInviteOpen(true)}
+            cursor={'pointer'}
+          />
+        </div>
+        <div
+          className={`flex flex-col gap-0 rounded-3xl border-gray overflow-auto ${border}`}
+        >
+          {otherUsers.map((cUser) => (
+            <ConvMember
+              cUser={cUser}
+              thisCUser={thisCUser}
+              socket={socket}
+              key={cUser.id}
+            />
+          ))}
+          {!otherUsers.length && <p>It's empty in here...</p>}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
