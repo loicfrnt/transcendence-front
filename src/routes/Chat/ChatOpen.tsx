@@ -39,8 +39,6 @@ export default function ChatOpen({
     chatService.getChannel(channelId, setChannel)
   }, [channelId, channelsLength])
 
-  useEffect(() => {})
-
   useEffect(() => {
     const updateChannel = (data: any) => {
       if (channelId === data?.id) chatService.getChannel(channelId, setChannel)
@@ -61,7 +59,10 @@ export default function ChatOpen({
     }
   })
 
-  if (channel === undefined) {
+  if (
+    channel === undefined ||
+    channels.find((chan) => chan.id === channelId) === undefined
+  ) {
     return (
       <ContentBox className="w-[400px] sm:max-w-[836px] sm:grow">
         <h1 className="font-semibold text-lg text-center">

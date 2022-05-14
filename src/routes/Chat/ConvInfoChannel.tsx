@@ -159,7 +159,10 @@ export function ConvInfoChannel({
   setChannel,
 }: Props) {
   const thisCUser = getChannelUser(channel, thisUser)
-  const otherUsers = channel.channelUsers.filter((user) => user !== thisCUser)
+  const otherUsers = channel.channelUsers
+    .filter((user) => user !== thisCUser)
+    .filter((cUser) => cUser.sanction !== 'ban')
+
   const border = otherUsers.length ? 'border' : ''
   const [inviteOpen, setInviteOpen] = useState(false)
 
@@ -235,16 +238,14 @@ export function ConvInfoChannel({
         <div
           className={`flex flex-col gap-0 rounded-3xl border-gray overflow-auto ${border}`}
         >
-          {otherUsers
-            .filter((cUser) => cUser.sanction !== 'ban')
-            .map((cUser) => (
-              <ConvMember
-                cUser={cUser}
-                thisCUser={thisCUser}
-                socket={socket}
-                key={cUser.id}
-              />
-            ))}
+          {otherUsers.map((cUser) => (
+            <ConvMember
+              cUser={cUser}
+              thisCUser={thisCUser}
+              socket={socket}
+              key={cUser.id}
+            />
+          ))}
           {!otherUsers.length && <p>It's empty in here...</p>}
         </div>
       </div>

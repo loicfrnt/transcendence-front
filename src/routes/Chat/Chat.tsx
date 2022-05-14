@@ -59,6 +59,12 @@ function Chat({ user }: Props) {
       })
     })
 
+    socket.current?.on('user_banned', (channelId: number) => {
+      setChannels((channels) => {
+        return channels.filter((chan) => chan.id !== channelId)
+      })
+    })
+
     socket.current.on('invited_channels', (data) => {
       setInvitedChannels(data)
     })
