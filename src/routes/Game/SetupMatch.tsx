@@ -4,15 +4,15 @@ interface FindMatchProps {
   setStep: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function FindMatch({ setStep }: FindMatchProps) {
+export default function SetupMatch({ setStep }: FindMatchProps) {
   function handleClick() {
-    setStep('queue')
+    setStep('match')
   }
   return (
     <div className="flex items-center justify-evenly h-full w-full">
       <ContentBox button handleClick={(e) => handleClick()}>
         <p className="font-semibold text-[2rem] m-3 ease-in-out duration-300 group-hover:text-white">
-          Find match
+          Setup Match
         </p>
       </ContentBox>
     </div>
