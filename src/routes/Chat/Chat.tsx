@@ -77,7 +77,6 @@ function Chat({ user }: Props) {
             thisUser={user}
             channels={channels}
             invitedChannels={invitedChannels}
-            setInvitedChannels={setInvitedChannels}
             setChannels={setChannels}
             socket={socket.current}
           />
