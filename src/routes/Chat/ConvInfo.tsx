@@ -9,7 +9,7 @@ interface Props {
   channel: Channel
   setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
   thisUser: User
-  socket: Socket | null
+  socket: Socket
 }
 
 export default function ConvInfo({

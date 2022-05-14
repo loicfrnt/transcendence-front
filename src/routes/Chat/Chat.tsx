@@ -17,7 +17,7 @@ interface Props {
 function Chat({ user, socket }: Props) {
   const [channels, setChannels] = useState<ProtoChannel[]>([])
   const [invitedChannels, setInvitedChannels] = useState<ProtoChannel[]>([])
-  // const socket = useRef<Socket | null>(null)
+  // const socket = useRef<Socket>(null)
 
   useEffect(() => {
     //HTTP
