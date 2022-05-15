@@ -34,18 +34,20 @@ export default function App() {
   }, [connected])
 
   // WebSocket management
-  const socket = useRef<Socket | null>(null)
+  const [socket, setSocket] = useState<Socket | null>(null)
   useEffect(() => {
     // //WS
-    socket.current = io(process.env.REACT_APP_BACK_LINK as string, {
-      withCredentials: true,
-    })
+    setSocket(
+      io(process.env.REACT_APP_BACK_LINK as string, {
+        withCredentials: true,
+      })
+    )
     return () => {
-      socket.current?.close()
+      socket?.close()
     }
   }, [])
 
-  if (socket.current === null) {
+  if (socket === null) {
     return <ConnectError />
   }
 
@@ -77,7 +79,7 @@ export default function App() {
           <Route path="login" element={<Login setConnected={setConnected} />} />
           <Route
             path="chat/*"
-            element={<Chat user={currUser} socket={socket.current} />}
+            element={<Chat user={currUser} socket={socket} />}
           />
           <Route path="*" element={'404'} />
         </Route>
