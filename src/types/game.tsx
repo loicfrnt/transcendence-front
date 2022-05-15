@@ -7,19 +7,19 @@ enum GameStatus {
   ENDED = 'ended',
 }
 
-enum GameMaxPoints {
+export enum GameMaxPoints {
   FIVE = 5,
   TEN = 10,
   FIFTEEN = 15,
 }
 
-enum GamePlayerHeight {
+export enum GamePlayerHeight {
   SMALL = 50,
   MEDIUM = 100,
   LARGE = 150,
 }
 
-enum GameBallSpeed {
+export enum GameBallSpeed {
   SLOW = 1.1,
   MEDIUM = 2,
   FAST = 2.5,
