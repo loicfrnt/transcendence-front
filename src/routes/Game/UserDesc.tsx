@@ -24,7 +24,7 @@ export default function UserDesc({ user, role }: Props) {
       <Avatar
         username={user.username}
         avatarId={user.avatar_id}
-        size="h-[173px] w-[173px]"
+        size="w-[173px]"
       />
       <h2 className={titleStyle + 'mt-[5px]'}>{user.username}</h2>
       <div className={statsStyle}>{user.victories} Wins</div>
