@@ -7,13 +7,15 @@ import SetupMatch from './SetupMatch'
 import InQueue from './InQueue'
 import { io, Socket } from 'socket.io-client'
 import ConnectError from '../../components/ConnectError'
+import Game from '../../types/game'
 
 interface Props {
   currUser: User
 }
 
-function Game({ currUser }: Props) {
+export default function Pong({ currUser }: Props) {
   const [step, setStep] = useState('idle')
+  const [game, setGame] = useState<Game | null>(null)
   //WS
   const [socket, setSocket] = useState<Socket | null>(null)
   useEffect(() => {
@@ -35,9 +37,19 @@ function Game({ currUser }: Props) {
       case 'match':
         return <PlayMatch currUser={currUser} socket={socket} />
       case 'setup':
-        return <SetupMatch setStep={setStep} socket={socket} />
+        if (game)
+          return (
+            <SetupMatch
+              setStep={setStep}
+              socket={socket}
+              game={game}
+              setGame={setGame}
+              currUser={currUser}
+            />
+          )
+        return <ConnectError />
       case 'queue':
-        return <InQueue setStep={setStep} socket={socket} />
+        return <InQueue setStep={setStep} setGame={setGame} socket={socket} />
       default:
       case 'idle':
         return <FindMatch setStep={setStep} socket={socket} />
@@ -46,5 +58,3 @@ function Game({ currUser }: Props) {
 
   return <MainContainer>{returnState()}</MainContainer>
 }
-
-export default Game

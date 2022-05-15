@@ -8,7 +8,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Login } from './routes/Login/Login'
 import Navbar from './routes/Navbar/Navbar'
 import Home from './routes/Home/Home'
-import Game from './routes/Game/Game'
+import Pong from './routes/Game/Pong'
 import Chat from './routes/Chat/Chat'
 import OtherProfile from './routes/Profile/OtherProfile'
 import { Register } from './routes/Register/Register'
@@ -66,7 +66,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
-          <Route path="play" element={<Game currUser={currUser} />} />
+          <Route path="play" element={<Pong currUser={currUser} />} />
           <Route
             path="profile/*"
             element={
