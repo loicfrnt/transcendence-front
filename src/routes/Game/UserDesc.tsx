@@ -1,13 +1,15 @@
 import { User } from '../../types/user'
 import Avatar from '../../components/Avatar'
 import ContentBox from '../../components/ContentBox'
+import { ReactElement } from 'react'
 
 interface Props {
   user: User
   role: string
+  children?: ReactElement
 }
 
-export default function UserDesc({ user, role }: Props) {
+export default function UserDesc({ user, role, children }: Props) {
   function ratio(victories: number, defeats: number): number {
     if (!defeats) {
       return victories ? 1 : 0
@@ -32,6 +34,7 @@ export default function UserDesc({ user, role }: Props) {
       <div className={statsStyle}>
         {ratio(user.victories, user.defeats)} Ratio
       </div>
+      {children}
     </ContentBox>
   )
 }

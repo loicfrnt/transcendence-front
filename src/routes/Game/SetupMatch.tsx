@@ -40,10 +40,10 @@ function SetupButton({
           console.log(response)
         })
       }}
-      className={`bg-gray-light border-4 rounded-2xl p-1 group w-fit ease-in-out duration-300 hover:bg-violet hover:border-violet ${selectedStyle}`}
+      className={`bg-gray-light border-4 rounded-2xl p-1 group w-fit ease-in-out duration-150 hover:bg-violet hover:border-violet ${selectedStyle}`}
     >
       <p
-        className={`${size} font-semibold ease-in-out duration-300 group-hover:text-white`}
+        className={`${size} font-semibold ease-in-out duration-150 group-hover:text-white`}
       >
         {content}
       </p>
@@ -158,15 +158,26 @@ export default function SetupMatch({
             />
           </div>
         </div>
-        <SetupButton
-          content="Ready"
-          socket={socket}
-          isSelected={player.isReady}
-          payload={{ id: game.id, isPlayerReady: true }}
-          isBig
-        />
+        <div className="mt-3">
+          <SetupButton
+            content="Ready"
+            socket={socket}
+            isSelected={player.isReady}
+            payload={{ id: game.id, isPlayerReady: !player.isReady }}
+            isBig
+          />
+        </div>
       </ContentBox>
-      <UserDesc user={oppenent.user} role="Oppenent" />
+      <UserDesc user={oppenent.user} role="Oppenent">
+        <div
+          className={
+            `border-4 rounded-2xl p-1 w-fit ease-in-out duration-150 ` +
+            (oppenent.isReady ? 'border-violet bg-gray-light' : 'border-white')
+          }
+        >
+          <p className="text-[1.2rem] m-1.5 font-semibold">Ready</p>
+        </div>
+      </UserDesc>
     </div>
   )
 }
