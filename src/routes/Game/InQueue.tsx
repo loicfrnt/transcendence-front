@@ -9,8 +9,13 @@ interface FindMatchProps {
 
 export default function InQueue({ setStep, socket }: FindMatchProps) {
   useEffect(() => {
-    setTimeout(() => setStep('setup'), 5000)
-  }, [setStep])
+    // setTimeout(() => setStep('setup'), 5000)
+    socket.on('setupGame', (data) => {
+      setStep('setup')
+      console.log('switch to setup', data)
+    })
+  }, [socket, setStep])
+
   return (
     <div className="flex flex-col items-center justify-center h-full w-full gap-8">
       <p className="font-semibold text-[2rem]">Waiting for an oppenent</p>

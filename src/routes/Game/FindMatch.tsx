@@ -8,9 +8,10 @@ interface FindMatchProps {
 
 export default function FindMatch({ setStep, socket }: FindMatchProps) {
   function handleClick() {
-    // socket.emit('joinQueue')
+    socket.emit('joinQueue', (rep: any) => console.log(rep))
     setStep('queue')
   }
+
   return (
     <div className="flex items-center justify-evenly h-full w-full">
       <ContentBox button handleClick={(e) => handleClick()}>
