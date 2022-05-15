@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import ContentBox from '../../components/ContentBox'
+import { ReactComponent as SvgSpinner } from '../../assets/spinner.svg'
 
 interface FindMatchProps {
   setStep: React.Dispatch<React.SetStateAction<string>>
@@ -10,12 +10,9 @@ export default function InQueue({ setStep }: FindMatchProps) {
     setTimeout(() => setStep('setup'), 5000)
   }, [setStep])
   return (
-    <div className="flex items-center justify-evenly h-full w-full">
-      <ContentBox>
-        <p className="font-semibold text-[2rem] m-3 ease-in-out duration-300 group-hover:text-white">
-          In queue...
-        </p>
-      </ContentBox>
+    <div className="flex flex-col items-center justify-center h-full w-full gap-8">
+      <p className="font-semibold text-[2rem]">Waiting for an oppenent</p>
+      <SvgSpinner className="fill-violet h-16 w-16 animate-spin" />
     </div>
   )
 }

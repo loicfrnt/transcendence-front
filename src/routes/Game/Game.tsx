@@ -5,8 +5,14 @@ import FindMatch from './FindMatch'
 import PlayMatch from './PlayMatch'
 import SetupMatch from './SetupMatch'
 import InQueue from './InQueue'
+import { Socket } from 'socket.io-client'
 
-function Game({ currUser }: { currUser: User }) {
+interface Props {
+  currUser: User
+  // socket: Socket
+}
+
+function Game({ currUser }: Props) {
   const [step, setStep] = useState('idle')
 
   function returnState() {
