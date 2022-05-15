@@ -2,7 +2,6 @@ import api from '../api/api';
 const ROUTE = "/api/users/";
 
 class UsersService {
-    //const axiosPrivate = useAxiosPrivate();
     checkIfEmailExists(email?: string) {
         return api.get(ROUTE + "check_mail/" + email).then(response => {
             return response;

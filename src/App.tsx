@@ -47,7 +47,7 @@ export default function App() {
       </BrowserRouter>
     )
   }
-
+  console.log(currUser);
   return (
     <BrowserRouter>
       <Routes>
@@ -60,7 +60,6 @@ export default function App() {
               <Profile thisUser={currUser} setConnected={setConnected} />
             }
           />
-          <Route path=":username" element={<OtherProfile user={currUser}/>} />
           <Route path="login" element={<Login setConnected={setConnected} />} />
           <Route path="chat/*" element={<Chat user={currUser} />} />
           <Route path="*" element={'404'} />

@@ -22,5 +22,4 @@ class LocalFilesService {
           });
     }
 }
-
 export default new LocalFilesService();

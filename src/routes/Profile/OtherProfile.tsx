@@ -24,8 +24,8 @@ export default function OtherProfile({user} : {user: User}) {
           <SocialButton content="Spectate" handleClick={(e) => null} />
           <SocialButton content="Block" handleClick={(e) => null} />
         </MainUser>
-        <Friends />
-        <MatchHistory user={user} />
+        <Friends user={user}/>
+        <MatchHistory user={user}/>
       </ProfileMasonry>
     </MainContainer>
   )

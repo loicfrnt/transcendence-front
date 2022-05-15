@@ -7,13 +7,12 @@ import Friends from './Friends'
 import MatchHistory from './MatchHistory'
 import FriendRequests from './FriendRequests'
 import Blocked from './Blocked'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PopUpBox from '../../components/PopUpBox'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import twoFactorsAuthenticationService from '../../services/two-factors-authentication.service'
 import *  as Yup from 'yup';
 import UsersService from '../../services/users.service'
-import { userList } from '../../data/users'
 
 interface Props {
   user: User
@@ -174,7 +173,7 @@ export default function UserProfile({ user, setConnected }: Props) {
       fetchImage();
       setQrInit(false);
     }
-  });
+  },[qrInit]);
   return (
     <MainContainer>
       <PopUpBox open={editOpen} setOpen={setEditOpen}>
@@ -292,10 +291,10 @@ export default function UserProfile({ user, setConnected }: Props) {
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => setEditOpen(true)} />
         </MainUser>
-        <Friends />
+        <Friends user={user}/>
         <MatchHistory user={user} />
         <FriendRequests user={user} />
-        <Blocked blocked={[userList[1]]} />
+        <Blocked user={user} />
       </ProfileMasonry>
     </MainContainer>
   )
