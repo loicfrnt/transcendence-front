@@ -4,10 +4,10 @@ import { User } from '../types/user'
 
 export default function dmUser(
   user: User,
-  socket: Socket | null,
+  socket: Socket,
   navigate: NavigateFunction
 ): void {
-  socket?.emit(
+  socket.emit(
     'get_direct_messages_channel',
     { id: user.id.toString() },
     (channel: any, err: any) => {

@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // React Routing
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
@@ -15,26 +15,42 @@ import { Register } from './routes/Register/Register'
 import Profile from './routes/Profile/Profile'
 import { User } from './types/user'
 import authenticationService from './services/authentication.service'
+import { io, Socket } from 'socket.io-client'
 export default function App() {
   const [currUser, setCurrUser] = useState<User>(() => {
-    return authenticationService.getCurrentUser();
-  }); 
-  //let navigate = useNavigate();
+    return authenticationService.getCurrentUser()
+  })
   const savedConnected = localStorage.getItem('connected')
   const [connected, setConnected] = useState(
     // Recover Connected state from cache
     savedConnected ? JSON.parse(savedConnected) : false
   )
-
   // Cache connected state
   useEffect(() => {
     localStorage.setItem('connected', JSON.stringify(connected))
     const currentUser = authenticationService.getCurrentUser()
-    //if (!currentUser)
-    //navigate("/");
-    //else
     setCurrUser(currentUser)
   }, [connected])
+
+  // WebSocket management
+  const socket = useRef<Socket | null>(null)
+  useEffect(() => {
+    // //WS
+    socket.current = io(process.env.REACT_APP_BACK_LINK as string, {
+      withCredentials: true,
+    })
+    return () => {
+      socket.current?.close()
+    }
+  }, [])
+
+  if (!socket.current) {
+    return (
+      <div className="h-screen w-screen flex justify-center items-center">
+        <span className="text-2xl">Couldn't connect to server...</span>
+      </div>
+    )
+  }
 
   if (!connected) {
     return (
@@ -60,9 +76,12 @@ export default function App() {
               <Profile thisUser={currUser} setConnected={setConnected} />
             }
           />
-          <Route path=":username" element={<OtherProfile user={currUser}/>} />
+          <Route path=":username" element={<OtherProfile user={currUser} />} />
           <Route path="login" element={<Login setConnected={setConnected} />} />
-          <Route path="chat/*" element={<Chat user={currUser} />} />
+          <Route
+            path="chat/*"
+            element={<Chat user={currUser} socket={socket.current} />}
+          />
           <Route path="*" element={'404'} />
         </Route>
       </Routes>
