@@ -17,7 +17,7 @@ import isOwner from '../../utils/isOwner'
 
 interface Props {
   thisUser: User
-  socket: Socket | null
+  socket: Socket
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   channels: ProtoChannel[] //Here to update when we remove a channel
 }
@@ -43,7 +43,7 @@ export default function ChatOpen({
     const updateChannel = (data: any) => {
       if (channelId === data?.id) chatService.getChannel(channelId, setChannel)
     }
-    socket?.on('updated_channel', updateChannel)
+    socket.on('updated_channel', updateChannel)
 
     const receiveMessage = (message: any) => {
       if (message.channelId === channelId) {
@@ -52,10 +52,10 @@ export default function ChatOpen({
         setChannel(newChannel)
       }
     }
-    socket?.on('receive_message', receiveMessage)
+    socket.on('receive_message', receiveMessage)
     return () => {
-      socket?.off('receive_message', receiveMessage)
-      socket?.off('updated_channel', updateChannel)
+      socket.off('receive_message', receiveMessage)
+      socket.off('updated_channel', updateChannel)
     }
   })
 
@@ -106,7 +106,7 @@ export default function ChatOpen({
           <LeaveSvg
             className={svgClass}
             onClick={(e) =>
-              socket?.emit(
+              socket.emit(
                 'leave_channel',
                 { id: channelId.toString() },
                 (data: any) => {

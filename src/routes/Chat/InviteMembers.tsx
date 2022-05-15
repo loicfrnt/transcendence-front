@@ -6,13 +6,13 @@ import { Socket } from 'socket.io-client'
 interface FriendProps {
   friend: ChannelUser
   channel: Channel
-  socket: Socket | null
+  socket: Socket
 }
 const Friend = ({ friend, socket, channel }: FriendProps) => {
   const user = friend.user
   const inviteMe = () => {
     console.log('???')
-    socket?.emit(
+    socket.emit(
       'channel_invitation',
       { channelId: channel.id, invitedId: user.id },
       (result: any) => {
@@ -37,7 +37,7 @@ const Friend = ({ friend, socket, channel }: FriendProps) => {
 interface Props {
   friends: ChannelUser[]
   channel: Channel
-  socket: Socket | null
+  socket: Socket
 }
 export default function InviteMembers({ friends, socket, channel }: Props) {
   const border = friends.length ? 'border' : ''

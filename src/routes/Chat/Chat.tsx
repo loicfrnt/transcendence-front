@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Message, ProtoChannel } from '../../types/chat'
@@ -7,27 +7,24 @@ import ChannelNav from './ChannelNav'
 import ChatClose from './ChatClose'
 import ChatOpen from './ChatOpen'
 import chatServices from '../../services/chat.service'
-import { io, Socket } from 'socket.io-client'
+import { Socket } from 'socket.io-client'
 
 interface Props {
   user: User
+  socket: Socket
 }
 
-function Chat({ user }: Props) {
+function Chat({ user, socket }: Props) {
   const [channels, setChannels] = useState<ProtoChannel[]>([])
   const [invitedChannels, setInvitedChannels] = useState<ProtoChannel[]>([])
-  const socket = useRef<Socket | null>(null)
+  // const socket = useRef<Socket>(null)
 
   useEffect(() => {
     //HTTP
     chatServices.getChannels(setChannels, setInvitedChannels)
 
     //WS
-    socket.current = io(process.env.REACT_APP_BACK_LINK as string, {
-      withCredentials: true,
-    })
-
-    socket.current.on('updated_channel', (data) => {
+    socket.on('updated_channel', (data) => {
       setChannels((channels) => {
         let newChannels = [...channels]
         channels.some((chan, idx) => {
@@ -40,14 +37,14 @@ function Chat({ user }: Props) {
       })
     })
 
-    socket.current.on('deleted_channel', (data) => {
+    socket.on('deleted_channel', (data) => {
       setChannels((channels) => {
         let newChannels = [...channels]
         return newChannels.filter((chan) => chan.id !== parseInt(data.id))
       })
     })
 
-    socket.current.on('receive_message', (message: Message) => {
+    socket.on('receive_message', (message: Message) => {
       setChannels((channels) => {
         let newChannels = [...channels]
         newChannels.some((chan) => {
@@ -59,20 +56,24 @@ function Chat({ user }: Props) {
       })
     })
 
-    socket.current?.on('user_banned', (channelId: number) => {
+    socket.on('user_banned', (channelId: number) => {
       setChannels((channels) => {
         return channels.filter((chan) => chan.id !== channelId)
       })
     })
 
-    socket.current.on('invited_channels', (data) => {
+    socket.on('invited_channels', (data) => {
       setInvitedChannels(data)
     })
 
     return () => {
-      socket.current?.close()
+      socket.off('updated_channel')
+      socket.off('deleted_channel')
+      socket.off('receive_message')
+      socket.off('user_banned')
+      socket.off('invited_channels')
     }
-  }, [])
+  }, [socket])
 
   return (
     <Routes>
@@ -84,7 +85,7 @@ function Chat({ user }: Props) {
             channels={channels}
             invitedChannels={invitedChannels}
             setChannels={setChannels}
-            socket={socket.current}
+            socket={socket}
           />
         }
       >
@@ -95,7 +96,7 @@ function Chat({ user }: Props) {
             <ChatOpen
               thisUser={user}
               channels={channels}
-              socket={socket.current}
+              socket={socket}
               setChannels={setChannels}
             />
           }
