@@ -16,6 +16,9 @@ export default function InQueue({ setStep, socket, setGame }: FindMatchProps) {
       setGame(data)
       console.log('switch to setup', data)
     })
+    return () => {
+      socket.off('setupGame')
+    }
   }, [socket, setStep, setGame])
 
   return (
