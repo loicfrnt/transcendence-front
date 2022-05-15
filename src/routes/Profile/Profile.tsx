@@ -11,12 +11,11 @@ interface Props {
 export default function Profile({ thisUser, setConnected }: Props) {
   return (
     <Routes>
-      <Route></Route>
       <Route
         index
         element={<UserProfile user={thisUser} setConnected={setConnected} />}
       />
-      <Route path=":username" element={<OtherProfile user={thisUser}/>} />
+      <Route path=":username" element={<OtherProfile user={thisUser} />} />
     </Routes>
   )
 }
