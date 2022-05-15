@@ -1,10 +1,12 @@
+import { Socket } from 'socket.io-client'
 import ContentBox from '../../components/ContentBox'
 
 interface FindMatchProps {
   setStep: React.Dispatch<React.SetStateAction<string>>
+  socket: Socket
 }
 
-export default function SetupMatch({ setStep }: FindMatchProps) {
+export default function SetupMatch({ setStep, socket }: FindMatchProps) {
   function handleClick() {
     setStep('match')
   }

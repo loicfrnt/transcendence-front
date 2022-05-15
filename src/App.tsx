@@ -69,7 +69,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
-          <Route path="play" element={<Game currUser={currUser} />} />
+          <Route
+            path="play"
+            element={<Game currUser={currUser} socket={socket.current} />}
+          />
           <Route
             path="profile/*"
             element={

@@ -2,8 +2,14 @@ import { User } from '../../types/user'
 import PongGame from './PongGame'
 import UserDesc from './UserDesc'
 import ContentBox from '../../components/ContentBox'
+import { Socket } from 'socket.io-client'
 
-export default function PlayMatch({ currUser }: { currUser: User }) {
+interface Props {
+  currUser: User
+  socket: Socket
+}
+
+export default function PlayMatch({ currUser, socket }: Props) {
   const instructions =
     'Use the arrow keys to move. Score 10 points to win the game'
   return (

@@ -9,23 +9,23 @@ import { Socket } from 'socket.io-client'
 
 interface Props {
   currUser: User
-  // socket: Socket
+  socket: Socket
 }
 
-function Game({ currUser }: Props) {
+function Game({ currUser, socket }: Props) {
   const [step, setStep] = useState('idle')
 
   function returnState() {
     switch (step) {
       case 'match':
-        return <PlayMatch currUser={currUser} />
+        return <PlayMatch currUser={currUser} socket={socket} />
       case 'setup':
-        return <SetupMatch setStep={setStep} />
+        return <SetupMatch setStep={setStep} socket={socket} />
       case 'queue':
-        return <InQueue setStep={setStep} />
+        return <InQueue setStep={setStep} socket={socket} />
       default:
       case 'idle':
-        return <FindMatch setStep={setStep} />
+        return <FindMatch setStep={setStep} socket={socket} />
     }
   }
 

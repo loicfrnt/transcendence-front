@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
+import { Socket } from 'socket.io-client'
 import { ReactComponent as SvgSpinner } from '../../assets/spinner.svg'
 
 interface FindMatchProps {
   setStep: React.Dispatch<React.SetStateAction<string>>
+  socket: Socket
 }
 
-export default function InQueue({ setStep }: FindMatchProps) {
+export default function InQueue({ setStep, socket }: FindMatchProps) {
   useEffect(() => {
     setTimeout(() => setStep('setup'), 5000)
   }, [setStep])
