@@ -1,21 +1,36 @@
 import { User } from '../../types/user'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MainContainer from '../../components/MainContainer'
 import FindMatch from './FindMatch'
 import PlayMatch from './PlayMatch'
 import SetupMatch from './SetupMatch'
 import InQueue from './InQueue'
-import { Socket } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
+import ConnectError from '../../components/ConnectError'
 
 interface Props {
   currUser: User
-  socket: Socket
 }
 
-function Game({ currUser, socket }: Props) {
+function Game({ currUser }: Props) {
   const [step, setStep] = useState('idle')
+  //WS
+  const [socket, setSocket] = useState<Socket | null>(null)
+  useEffect(() => {
+    setSocket(
+      io((process.env.REACT_APP_BACK_LINK as string) + 'pong', {
+        withCredentials: true,
+      })
+    )
+    return () => {
+      socket?.close()
+    }
+  }, [])
 
   function returnState() {
+    if (socket === null) {
+      return <ConnectError />
+    }
     switch (step) {
       case 'match':
         return <PlayMatch currUser={currUser} socket={socket} />

@@ -16,6 +16,7 @@ import Profile from './routes/Profile/Profile'
 import { User } from './types/user'
 import authenticationService from './services/authentication.service'
 import { io, Socket } from 'socket.io-client'
+import ConnectError from './components/ConnectError'
 export default function App() {
   const [currUser, setCurrUser] = useState<User>(() => {
     return authenticationService.getCurrentUser()
@@ -44,12 +45,8 @@ export default function App() {
     }
   }, [])
 
-  if (!socket.current) {
-    return (
-      <div className="h-screen w-screen flex justify-center items-center">
-        <span className="text-2xl">Couldn't connect to server...</span>
-      </div>
-    )
+  if (socket.current === null) {
+    return <ConnectError />
   }
 
   if (!connected) {
@@ -69,10 +66,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
-          <Route
-            path="play"
-            element={<Game currUser={currUser} socket={socket.current} />}
-          />
+          <Route path="play" element={<Game currUser={currUser} />} />
           <Route
             path="profile/*"
             element={
