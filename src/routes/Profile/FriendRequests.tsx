@@ -65,7 +65,7 @@ localStorage.setItem("user", JSON.stringify(response.data));
     if (user.received_relationships)
     {
       for (let relationship of user.received_relationships) {
-        if (relationship.status == RelStatus.Pending)
+        if (relationship.status === RelStatus.Pending)
           usersService.getById(relationship.issuer_id).then((response) => {
             if (!requests.includes(response))
               setRequests([...requests, response]);

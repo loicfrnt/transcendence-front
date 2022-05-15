@@ -47,7 +47,6 @@ export default function App() {
       </BrowserRouter>
     )
   }
-  console.log(currUser);
   return (
     <BrowserRouter>
       <Routes>

@@ -36,7 +36,7 @@ export default function Friends({ user }: Props) {
     if (user.received_relationships)
     {
       for (let relationship of user.received_relationships) {
-        if (relationship.status == RelStatus.Friends)
+        if (relationship.status === RelStatus.Friends)
           usersService.getById(relationship.issuer_id).then((response) => {
             if (!userList.includes(response))
               setUserList([...userList, response]);
