@@ -70,6 +70,9 @@ export default function SetupMatch({
     socket.on('setupGame', (data) => {
       setGame(data)
     })
+    socket.on('startGame', (data) => {
+      setStep('match')
+    })
     return () => {
       socket.off('setupGame')
     }
@@ -87,7 +90,7 @@ export default function SetupMatch({
   //dev
   console.log(game)
   return (
-    <div className="flex items-center justify-evenly h-full w-full">
+    <div className="flex items-center justify-evenly h-full w-full flex-wrap gap-5">
       <ContentBox className="flex flex-col gap-6 items-center">
         <div className={optionGroupStyle}>
           <h2 className={optionTitleStyle}>Paddle size</h2>
