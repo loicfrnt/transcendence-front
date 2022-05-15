@@ -31,7 +31,7 @@ function SetupButton({
   payload,
   isBig = false,
 }: ButtonProps) {
-  const selectedStyle = isSelected ? 'border-4 border-violet' : ''
+  const selectedStyle = isSelected ? 'border-violet' : 'border-gray-light'
   const size = isBig ? 'text-[2rem] m-3' : 'text-[1.2rem] m-1.5'
   return (
     <button
@@ -40,7 +40,7 @@ function SetupButton({
           console.log(response)
         })
       }}
-      className={`bg-gray-light rounded-2xl p-1 group ease-in-out duration-300 hover:bg-violet w-fit ${selectedStyle}`}
+      className={`bg-gray-light border-4 rounded-2xl p-1 group w-fit ease-in-out duration-300 hover:bg-violet hover:border-violet ${selectedStyle}`}
     >
       <p
         className={`${size} font-semibold ease-in-out duration-300 group-hover:text-white`}
