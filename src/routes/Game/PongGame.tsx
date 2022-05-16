@@ -77,13 +77,18 @@ export default function PongGame({ socket, game, setGame }: Props) {
   }
 
   return (
-    <canvas
-      onMouseMove={sendMouse}
-      ref={canvas}
-      id="pongCanvas"
-      className="rounded-2xl"
-      width="640"
-      height="480"
-    ></canvas>
+    <div className="flex flex-col items-center gap-3">
+      <span className="font-semibold text-[2rem]">
+        {game.player1.score} - {game.player2.score}
+      </span>
+      <canvas
+        onMouseMove={sendMouse}
+        ref={canvas}
+        id="pongCanvas"
+        className="rounded-2xl"
+        width="640"
+        height="480"
+      />
+    </div>
   )
 }
