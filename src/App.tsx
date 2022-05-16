@@ -10,7 +10,6 @@ import Navbar from './routes/Navbar/Navbar'
 import Home from './routes/Home/Home'
 import Pong from './routes/Game/Pong'
 import Chat from './routes/Chat/Chat'
-import OtherProfile from './routes/Profile/OtherProfile'
 import { Register } from './routes/Register/Register'
 import Profile from './routes/Profile/Profile'
 import { User } from './types/user'
@@ -64,7 +63,6 @@ export default function App() {
     return <ConnectError />
   }
 
-
   return (
     <BrowserRouter>
       <Routes>
@@ -74,7 +72,11 @@ export default function App() {
           <Route
             path="profile/*"
             element={
-              <Profile thisUser={currUser} setConnected={setConnected} />
+              <Profile
+                thisUser={currUser}
+                setConnected={setConnected}
+                socket={socket}
+              />
             }
           />
           <Route path="login" element={<Login setConnected={setConnected} />} />
