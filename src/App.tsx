@@ -37,18 +37,16 @@ export default function App() {
   const [socket, setSocket] = useState<Socket | null>(null)
   const sockRef = useRef<Socket | null>(null)
   useEffect(() => {
-    sockRef.current = io((process.env.REACT_APP_BACK_LINK as string) + 'pong', {
-      withCredentials: true,
-    })
-    setSocket(sockRef.current)
-    return () => {
-      sockRef.current?.close()
+    if (connected) {
+      sockRef.current = io(process.env.REACT_APP_BACK_LINK as string, {
+        withCredentials: true,
+      })
+      setSocket(sockRef.current)
+      return () => {
+        sockRef.current?.close()
+      }
     }
-  }, [])
-
-  if (socket === null) {
-    return <ConnectError />
-  }
+  }, [connected])
 
   if (!connected) {
     return (
@@ -60,6 +58,10 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     )
+  }
+
+  if (socket === null) {
+    return <ConnectError />
   }
 
   return (
