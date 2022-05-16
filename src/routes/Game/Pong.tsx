@@ -24,7 +24,6 @@ export default function Pong({ currUser }: Props) {
       withCredentials: true,
     })
     setSocket(sockRef.current)
-    console.log(sockRef.current)
     return () => {
       sockRef.current?.close()
     }
