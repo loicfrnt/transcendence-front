@@ -141,7 +141,10 @@ export default function OtherProfile({ user, socket }: Props) {
             handleClick={() => dmUser(otherUser!, socket, navigate)}
           />
           {/* isIngame ? Spectate : Duel */}
-          <SocialButton content="Spectate" handleClick={(e) => null} />
+          <SocialButton
+            content="Spectate"
+            handleClick={() => navigate('/game/' + otherUser?.username)}
+          />
           <SocialButton
             content="Block"
             handleClick={() => {
