@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { MouseEvent } from 'react'
 import { useEffect } from 'react'
 import { Socket } from 'socket.io-client'
 import Game from '../../types/game'
@@ -49,7 +50,8 @@ interface Props {
 }
 
 export default function PongGame({ socket, game, setGame }: Props) {
-  // WebSocket events
+  const canvas = useRef<HTMLCanvasElement | null>(null)
+
   useEffect(() => {
     socket.on('update', (game: Game) => {
       setGame(game)
@@ -61,29 +63,22 @@ export default function PongGame({ socket, game, setGame }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket])
 
-  const canvas = useRef<HTMLCanvasElement | null>(null)
+  function sendMouse(event: MouseEvent) {
+    // if (game && game.status === 'running')
+    socket.emit(
+      'mousemove',
+      {
+        id: game.id,
+        canvasLocationY: canvas.current?.getBoundingClientRect().y,
+        clientY: event.clientY,
+      },
+      (rep: any) => console.log(rep)
+    )
+  }
 
-  // useEffect(() => {
-  //   console.log('game loaded')
-  //   let canvas = document.querySelector(
-  //     'canvas#pongCanvas'
-  //   ) as HTMLCanvasElement
-  //   let game = new GameCanvas(canvas)
-  //   function listener(e: KeyboardEvent) {
-  //     game.playerMoveKB(e)
-  //   }
-
-  //   document.addEventListener('keydown', listener)
-  //   game.draw()
-  //   game.play()
-  //   return () => {
-  //     game.run = false
-  //     document.removeEventListener('keydown', listener)
-  //     console.log('game unloaded')
-  //   }
-  // }, [])
   return (
     <canvas
+      onMouseMove={sendMouse}
       ref={canvas}
       id="pongCanvas"
       className="rounded-2xl"
