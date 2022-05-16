@@ -10,17 +10,20 @@ import { ReactComponent as AddSvg } from '../../assets/add.svg'
 import CreateChannel from './CreateChannel'
 import JoinChannel from './JoinChannel'
 import { Socket } from 'socket.io-client'
+import InvitedChannels from './InvitedChannels'
 
 interface Props {
   thisUser: User
   channels: ProtoChannel[]
+  invitedChannels: ProtoChannel[]
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
-  socket: Socket | null
+  socket: Socket
 }
 
 export default function ChannelNav({
   thisUser,
   channels,
+  invitedChannels,
   setChannels,
   socket,
 }: Props) {
@@ -61,6 +64,16 @@ export default function ChannelNav({
             socket={socket}
           />
           <CreateChannel setChannels={setChannels} setIsOpen={setNewChanOpen} />
+          {invitedChannels.length ? (
+            <InvitedChannels
+              channels={channels}
+              invitedChannels={invitedChannels}
+              setChannels={setChannels}
+              setIsOpen={setNewChanOpen}
+              thisUserId={thisUser.id}
+              socket={socket}
+            />
+          ) : null}
         </PopUpBox>
       )
   }
@@ -81,7 +94,13 @@ export default function ChannelNav({
             />
           </div>
           <div className="flex flex-col gap-2 overflow-hidden hover:overflow-auto">
-            {channels.map(renderChannel)}
+            {channels
+              .sort((a, b) => {
+                let d1 = Date.parse(a.last_message_at)
+                let d2 = Date.parse(b.last_message_at)
+                return d2 - d1
+              })
+              .map(renderChannel)}
           </div>
         </ContentBox>
         <Outlet />

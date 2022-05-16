@@ -11,6 +11,7 @@ export interface ProtoChannel {
   name: string
   status: string
   channelUsers?: ChannelUser[]
+  last_message_at: string
 }
 
 export interface Channel {
@@ -25,8 +26,8 @@ export interface Channel {
 export interface ChannelUser {
   id: number
   role: number
-  sanction: null
-  end_of_sanction: null
+  sanction: string | null
+  end_of_sanction: string
   channelId: number
   user: User
 }
@@ -35,6 +36,8 @@ export interface Message {
   id: number
   content: string
   author: ProtoUser
+  channelId: number
+  created_at: string
 }
 
 export interface TransferedMessage {

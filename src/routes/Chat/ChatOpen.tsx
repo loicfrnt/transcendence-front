@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Socket } from 'socket.io-client'
 import ContentBox from '../../components/ContentBox'
 import PopUpBox from '../../components/PopUpBox'
@@ -17,7 +17,7 @@ import isOwner from '../../utils/isOwner'
 
 interface Props {
   thisUser: User
-  socket: Socket | null
+  socket: Socket
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   channels: ProtoChannel[] //Here to update when we remove a channel
 }
@@ -33,29 +33,36 @@ export default function ChatOpen({
   const channelId = parseInt(params.channelId as string)
   const [channel, setChannel] = useState<Channel>()
   const [editChanOpen, setEditChanOpen] = useState(false)
+  let navigate = useNavigate()
 
   useEffect(() => {
-    if (channels.find((chan) => chan.id === channelId) === undefined) {
-      setChannel(undefined)
-    } else {
-      chatService.getChannel(channelId, setChannel)
+    chatService.getChannel(channelId, setChannel)
+  }, [channelId, channelsLength])
+
+  useEffect(() => {
+    const updateChannel = (data: any) => {
+      if (channelId === data?.id) chatService.getChannel(channelId, setChannel)
     }
-  }, [channelId, socket, channelsLength])
+    socket.on('updated_channel', updateChannel)
 
-  useEffect(() => {
-    socket?.on('receive_message', (message) => {
+    const receiveMessage = (message: any) => {
       if (message.channelId === channelId) {
         let newChannel = JSON.parse(JSON.stringify(channel))
         newChannel.messages.push(message)
         setChannel(newChannel)
       }
-    })
+    }
+    socket.on('receive_message', receiveMessage)
     return () => {
-      socket?.off('receive_message')
+      socket.off('receive_message', receiveMessage)
+      socket.off('updated_channel', updateChannel)
     }
   })
 
-  if (channel === undefined) {
+  if (
+    channel === undefined ||
+    channels.find((chan) => chan.id === channelId) === undefined
+  ) {
     return (
       <ContentBox className="w-[400px] sm:max-w-[836px] sm:grow">
         <h1 className="font-semibold text-lg text-center">
@@ -67,15 +74,13 @@ export default function ChatOpen({
 
   // in a function, rendered conditionnaly
   function EditPopUp() {
-    console.log(isOwner(thisUser, channel as Channel))
     if (channel !== undefined && isOwner(thisUser, channel)) {
       return (
         <PopUpBox open={editChanOpen} setOpen={setEditChanOpen}>
           <EditChannel
-            channelId={channelId}
-            setChannels={setChannels}
+            channel={channel}
+            setChannel={setChannel}
             setOpen={setEditChanOpen}
-            // setNewChanOpen={setEditChanOpen}
           />
         </PopUpBox>
       )
@@ -86,7 +91,7 @@ export default function ChatOpen({
   function SvgButtons() {
     // Redundant Styles
     const svgClass = 'w-7 h-7 fill-gray hover:fill-violet duration-300'
-    if (channel && channel.status !== 'direct-message')
+    if (channel && channel.status !== 'direct_message')
       return (
         <div className="flex justify-end gap-5">
           {isOwner(thisUser, channel) ? (
@@ -101,11 +106,17 @@ export default function ChatOpen({
           <LeaveSvg
             className={svgClass}
             onClick={(e) =>
-              socket?.emit(
+              socket.emit(
                 'leave_channel',
                 { id: channelId.toString() },
-                () => {
-                  chatService.getChannels(setChannels)
+                (data: any) => {
+                  navigate('/chat')
+                  setChannels((channels) => {
+                    let newChannels = [...channels]
+                    return newChannels.filter(
+                      (chan) => chan.id !== parseInt(data.channelId)
+                    )
+                  })
                 }
               )
             }
@@ -119,7 +130,7 @@ export default function ChatOpen({
     <>
       {EditPopUp()}
       <ContentBox className="w-[400px] sm:max-w-[836px] sm:grow">
-        <div className="flex items-center justify-between gap-3 mb-4 px-2">
+        <div className="flex items-center justify-between gap-3 mb-4 px-2 flex-wrap">
           <h1 className={'text-[2rem] leading-[2.625rem] font-semibold'}>
             {channelName(channel, thisUser)}
           </h1>
@@ -132,7 +143,12 @@ export default function ChatOpen({
           socket={socket}
         />
       </ContentBox>
-      <ConvInfo channel={channel} thisUser={thisUser}></ConvInfo>
+      <ConvInfo
+        channel={channel}
+        setChannel={setChannel}
+        thisUser={thisUser}
+        socket={socket}
+      ></ConvInfo>
     </>
   )
 }

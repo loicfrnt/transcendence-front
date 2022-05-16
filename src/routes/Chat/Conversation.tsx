@@ -10,7 +10,7 @@ interface Props {
   thisUser: User
   messages: Message[]
   channelId: number
-  socket: Socket | null
+  socket: Socket
 }
 
 export default function Conversation({
@@ -23,7 +23,6 @@ export default function Conversation({
   let convRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const conv = convRef.current as HTMLDivElement
-    // console.log(conv)
     conv.scrollTop = conv.scrollHeight
   }, [messages.length])
 
@@ -56,7 +55,7 @@ export default function Conversation({
 
   const handleSend = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Enter') {
-      socket?.emit('send_channel_message', {
+      socket.emit('send_channel_message', {
         channelId: channelId,
         content: (e.target as HTMLInputElement).value,
       })
