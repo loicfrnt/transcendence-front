@@ -8,7 +8,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Login } from './routes/Login/Login'
 import Navbar from './routes/Navbar/Navbar'
 import Home from './routes/Home/Home'
-import Game from './routes/Game/Game'
+import Pong from './routes/Game/Pong'
 import Chat from './routes/Chat/Chat'
 import OtherProfile from './routes/Profile/OtherProfile'
 import { Register } from './routes/Register/Register'
@@ -16,6 +16,7 @@ import Profile from './routes/Profile/Profile'
 import { User } from './types/user'
 import authenticationService from './services/authentication.service'
 import { io, Socket } from 'socket.io-client'
+import ConnectError from './components/ConnectError'
 export default function App() {
   const [currUser, setCurrUser] = useState<User>(() => {
     return authenticationService.getCurrentUser()
@@ -33,24 +34,19 @@ export default function App() {
   }, [connected])
 
   // WebSocket management
-  const socket = useRef<Socket | null>(null)
+  const [socket, setSocket] = useState<Socket | null>(null)
+  const sockRef = useRef<Socket | null>(null)
   useEffect(() => {
-    // //WS
-    socket.current = io(process.env.REACT_APP_BACK_LINK as string, {
-      withCredentials: true,
-    })
-    return () => {
-      socket.current?.close()
+    if (connected) {
+      sockRef.current = io(process.env.REACT_APP_BACK_LINK as string, {
+        withCredentials: true,
+      })
+      setSocket(sockRef.current)
+      return () => {
+        sockRef.current?.close()
+      }
     }
-  }, [])
-
-  if (!socket.current) {
-    return (
-      <div className="h-screen w-screen flex justify-center items-center">
-        <span className="text-2xl">Couldn't connect to server...</span>
-      </div>
-    )
-  }
+  }, [connected])
 
   if (!connected) {
     return (
@@ -63,12 +59,18 @@ export default function App() {
       </BrowserRouter>
     )
   }
+
+  if (socket === null) {
+    return <ConnectError />
+  }
+
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
-          <Route path="play" element={<Game currUser={currUser} />} />
+          <Route path="play" element={<Pong currUser={currUser} />} />
           <Route
             path="profile/*"
             element={
@@ -78,7 +80,7 @@ export default function App() {
           <Route path="login" element={<Login setConnected={setConnected} />} />
           <Route
             path="chat/*"
-            element={<Chat user={currUser} socket={socket.current} />}
+            element={<Chat user={currUser} socket={socket} />}
           />
           <Route path="*" element={'404'} />
         </Route>
