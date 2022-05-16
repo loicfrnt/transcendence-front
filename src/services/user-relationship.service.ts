@@ -4,9 +4,10 @@ const ROUTE = "/api/user-relationships/";
 
 class UserRelationshipService {
 
-    add(id : number) {
+    add(id : number, status: number) {
         return api.post(ROUTE, {
-            id: id
+            id: id,
+            status: status
         }).then((response) => {
             return response;
         });

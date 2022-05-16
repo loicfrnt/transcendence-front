@@ -15,13 +15,14 @@ export default function OtherProfile({user} : {user: User}) {
   const params = useParams();
   const username = params.username!;
   const isFriend = (firstUser: User, secondUser: User) => {
-    console.log(secondUser);
     if (firstUser.received_relationships)
       for(let relationship of firstUser.received_relationships)
       {
         if ((relationship.issuer_id === firstUser.id && relationship.receiver_id === secondUser?.id) || 
         (relationship.issuer_id === secondUser?.id && relationship.receiver_id === firstUser.id))
         {
+          if (relationship.status === RelStatus.Blocked)
+            setIsBlocked(true);
           return true;
         }
       }
@@ -33,14 +34,15 @@ export default function OtherProfile({user} : {user: User}) {
         {
           if (relationship.status === RelStatus.Pending && relationship.issuer_id === firstUser.id)
             setRmContent("Unrequest");
+          if (relationship.status === RelStatus.Blocked)
+            setIsBlocked(true);
           return true;
         }
       }
     return false;
   }
-
+  let navigate = useNavigate();
   const useUser = async (username: string) => {
-    let navigate = useNavigate();
     const [otherUser, setOtherUser] = useState<User>();
     useEffect(() => {
       usersService.getByUsername(username).then((response) => {
@@ -48,20 +50,25 @@ export default function OtherProfile({user} : {user: User}) {
       }, () => {
         navigate("/404");
       });
-    }, [username, navigate]);
+    }, [username]);
     return await Promise.resolve(otherUser);
   }
   const [otherUser, setOtherUser] = useState<User>();
   const [rmContent, setRmContent] = useState<string>("Unfriend");
-  useUser(username). then((otherUser) => {
+  const [isBlocked, setIsBlocked] = useState<boolean>(false);
+  useUser(username).then((otherUser) => {
     setOtherUser(otherUser);
-    setFriend(isFriend(user,otherUser!));
+    setFriend(isFriend(currUser!,otherUser!));
+    if (isBlocked === true)
+      navigate('/404');
   });
 
   const [friend, setFriend] = useState<boolean>(false);
-
+  const [currUser, setCurrUser] = useState<User>(user);
   function addFriend() {
-    userRelationshipService.add(otherUser!.id).then(() => {
+    userRelationshipService.add(otherUser!.id, RelStatus.Pending).then((response) => {
+      localStorage.setItem("user", JSON.stringify(response.data));
+      setCurrUser(authenticationService.getCurrentUser());
       setFriend(true);
     });
   }
@@ -69,10 +76,29 @@ export default function OtherProfile({user} : {user: User}) {
   function removeFriend() {
     userRelationshipService.delete(otherUser!.id).then((response) => {
       localStorage.setItem("user", JSON.stringify(response.data));
-      user = authenticationService.getCurrentUser();
+      setCurrUser(authenticationService.getCurrentUser());
       setFriend(false);
-      console.log(friend);
     });
+  }
+
+  function block() {
+    if (friend)
+    {
+      userRelationshipService.updateStatus(otherUser!.id, RelStatus.Blocked).then((response) => {
+        if (response.data.id) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          navigate("/profile");
+        }
+      });
+    }
+    else 
+    {
+      userRelationshipService.add(otherUser!.id, RelStatus.Blocked).then((response) => {
+        localStorage.setItem("user", JSON.stringify(response.data));
+        navigate("/profile");
+      });
+    }
+
   }
 
   return (
@@ -87,7 +113,7 @@ export default function OtherProfile({user} : {user: User}) {
           <SocialButton content="Message" handleClick={(e) => null} />
           {/* isIngame ? Spectate : Duel */}
           <SocialButton content="Spectate" handleClick={(e) => null} />
-          <SocialButton content="Block" handleClick={(e) => null} />
+          <SocialButton content="Block" handleClick={() => {block()}} />
         </MainUser>
         <Friends user={user}/>
         <MatchHistory user={user}/>
