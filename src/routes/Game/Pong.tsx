@@ -35,7 +35,16 @@ export default function Pong({ currUser }: Props) {
     }
     switch (step) {
       case 'match':
-        return <PlayMatch currUser={currUser} socket={socket} />
+        if (game)
+          return (
+            <PlayMatch
+              currUser={currUser}
+              socket={socket}
+              game={game}
+              setGame={setGame}
+            />
+          )
+        return <ConnectError />
       case 'setup':
         if (game)
           return (
