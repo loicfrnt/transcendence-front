@@ -1,5 +1,5 @@
 import { User } from '../../types/user'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import MainContainer from '../../components/MainContainer'
 import FindMatch from './FindMatch'
 import PlayMatch from './PlayMatch'
@@ -18,14 +18,15 @@ export default function Pong({ currUser }: Props) {
   const [game, setGame] = useState<Game | null>(null)
   //WS
   const [socket, setSocket] = useState<Socket | null>(null)
+  const sockRef = useRef<Socket | null>(null)
   useEffect(() => {
-    setSocket(
-      io((process.env.REACT_APP_BACK_LINK as string) + 'pong', {
-        withCredentials: true,
-      })
-    )
+    sockRef.current = io((process.env.REACT_APP_BACK_LINK as string) + 'pong', {
+      withCredentials: true,
+    })
+    setSocket(sockRef.current)
+    console.log(sockRef.current)
     return () => {
-      socket?.close()
+      sockRef.current?.close()
     }
   }, [])
 
