@@ -35,15 +35,14 @@ export default function App() {
 
   // WebSocket management
   const [socket, setSocket] = useState<Socket | null>(null)
+  const sockRef = useRef<Socket | null>(null)
   useEffect(() => {
-    // //WS
-    setSocket(
-      io(process.env.REACT_APP_BACK_LINK as string, {
-        withCredentials: true,
-      })
-    )
+    sockRef.current = io((process.env.REACT_APP_BACK_LINK as string) + 'pong', {
+      withCredentials: true,
+    })
+    setSocket(sockRef.current)
     return () => {
-      socket?.close()
+      sockRef.current?.close()
     }
   }, [])
 
