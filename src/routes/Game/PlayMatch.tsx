@@ -1,18 +1,17 @@
 import { User } from '../../types/user'
-import PongGame from './PongGame'
 import UserDesc from './UserDesc'
 import ContentBox from '../../components/ContentBox'
 import { Socket } from 'socket.io-client'
 import Game from '../../types/game'
+import ControlGame from './ControlGame'
 
 interface Props {
   currUser: User
   socket: Socket
   game: Game
-  setGame: React.Dispatch<React.SetStateAction<Game | null>>
 }
 
-export default function PlayMatch({ currUser, socket, game, setGame }: Props) {
+export default function PlayMatch({ currUser, socket, game }: Props) {
   const oppenent =
     game.player1.user.id === currUser.id ? game.player2 : game.player1
   const instructions = `Use the mouse to move. Score ${game.maxPoints} points to win the game`
@@ -29,7 +28,7 @@ export default function PlayMatch({ currUser, socket, game, setGame }: Props) {
           {instructions}
         </p>
       </ContentBox>
-      <PongGame socket={socket} game={game} setGame={setGame} />
+      <ControlGame socket={socket} game={game} />
       <UserDesc user={oppenent.user} role="Oppenent" />
     </div>
   )

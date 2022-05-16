@@ -58,7 +58,7 @@ function Navbar() {
     <div className="flex h-full font-body text-sm">
       <nav className="bg-white  space-y-6 flex flex-col w-[88px] px-[5px] pt-3 ">
         {renderLink('', Home)}
-        {renderLink('play', Game)}
+        {renderLink('game', Game)}
         {renderLink('profile', Profile)}
         {renderLink('chat', Chat)}
       </nav>

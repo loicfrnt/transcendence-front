@@ -77,14 +77,7 @@ export default function Pong({ currUser }: Props) {
         />
       )
     } else {
-      return (
-        <PlayMatch
-          currUser={currUser}
-          socket={socket}
-          game={game}
-          setGame={setGame}
-        />
-      )
+      return <PlayMatch currUser={currUser} socket={socket} game={game} />
     }
   }
 

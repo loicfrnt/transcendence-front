@@ -1,10 +1,7 @@
 import { User } from '../../types/user'
-import PongGame from './PongGame'
-import UserDesc from './UserDesc'
 import ContentBox from '../../components/ContentBox'
 import { Socket } from 'socket.io-client'
 import Game from '../../types/game'
-import { setTokenSourceMapRange } from 'typescript'
 
 interface Props {
   currUser: User
