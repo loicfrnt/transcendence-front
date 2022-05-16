@@ -13,7 +13,6 @@ export default function InQueue({ setStep, socket, setGame }: FindMatchProps) {
   useEffect(() => {
     socket.on('setupGame', (data) => {
       setGame(data)
-      console.log('switch to setup', data)
     })
     return () => {
       socket.off('setupGame')

@@ -88,8 +88,6 @@ export default function SetupMatch({
   const optionGroupStyle = 'flex flex-col gap-2 items-center'
   const optionTitleStyle = 'font-semibold text-lg'
   const optionButtonDivStyle = 'flex gap-2'
-  //dev
-  console.log(game)
   return (
     <div className="flex items-center justify-evenly h-full w-full flex-wrap gap-5">
       <ContentBox className="flex flex-col gap-6 items-center">
