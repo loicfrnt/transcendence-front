@@ -63,7 +63,6 @@ export default function App() {
       </BrowserRouter>
     )
   }
-
   return (
     <BrowserRouter>
       <Routes>
@@ -76,7 +75,6 @@ export default function App() {
               <Profile thisUser={currUser} setConnected={setConnected} />
             }
           />
-          <Route path=":username" element={<OtherProfile user={currUser} />} />
           <Route path="login" element={<Login setConnected={setConnected} />} />
           <Route
             path="chat/*"

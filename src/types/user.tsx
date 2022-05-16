@@ -38,8 +38,8 @@ export interface User {
   defeats: number
   history: History[]
   channels: Channel[]
-  sentRelationships: Relationship[]
-  receivedRelationships: Relationship[]
+  sent_relationships: Relationship[]
+  received_relationships: Relationship[]
 }
 
 export interface ProtoUser {

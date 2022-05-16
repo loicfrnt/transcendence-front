@@ -1,12 +1,17 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '../../components/Avatar'
-import { userList } from '../../data/users'
-import { User } from '../../types/user'
+import usersService from '../../services/users.service'
+import { RelStatus, User } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
 
-export default function Friends() {
+interface Props {
+  user : User
+}
+
+export default function Friends({ user }: Props) {
   function renderFriend(user: User, id: number) {
     return (
       <div key={id}>
@@ -26,9 +31,41 @@ export default function Friends() {
     )
   }
 
+  const [userList, setUserList] = useState<User[]>([]);
+  useEffect(() =>{
+    if (user.received_relationships)
+    {
+      for (let relationship of user.received_relationships) {
+        if (relationship.status === RelStatus.Friends)
+        {
+          usersService.getById(relationship.issuer_id).then((response) => {
+            if (!userList.includes(response))
+              setUserList([...userList, response]);
+          });
+        }
+      }
+    }
+    if (user.sent_relationships)
+    {
+      for (let relationship of user.sent_relationships) {
+        if (relationship.status === RelStatus.Friends)
+        {
+          usersService.getById(relationship.receiver_id).then((response) => {
+            if (!userList.includes(response))
+              setUserList([...userList, response]);
+          });
+        }
+      }
+    }
+  },[]);
+
+  function isObjectEmpty(obj: any) {
+    return Object.keys(obj).length === 0;
+  }
+
   return (
     <SocialItemContainer title="Friends">
-      {!userList ? (
+      {isObjectEmpty(userList) ? (
         <SocialNoItem msg="No one here :c" />
       ) : (
         <SocialItemList>
