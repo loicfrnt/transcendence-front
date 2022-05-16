@@ -146,6 +146,7 @@ export default function ChatOpen({
       <ConvInfo
         channel={channel}
         setChannel={setChannel}
+        setChannels={setChannels}
         thisUser={thisUser}
         socket={socket}
       ></ConvInfo>

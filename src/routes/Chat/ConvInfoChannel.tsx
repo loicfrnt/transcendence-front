@@ -1,6 +1,6 @@
 import Avatar from '../../components/Avatar'
-import { Channel, ChannelUser } from '../../types/chat'
-import { User } from '../../types/user'
+import { Channel, ChannelUser, ProtoChannel } from '../../types/chat'
+import { RelStatus, User } from '../../types/user'
 import { ReactComponent as SvgDuel } from '../../assets/game.svg'
 import { ReactComponent as SvgAddFriend } from '../../assets/addFriend.svg'
 import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
@@ -19,6 +19,7 @@ import AdminPanel from './AdminPanel'
 import { useEffect } from 'react'
 import InviteMembers from './InviteMembers'
 import dmUser from '../../utils/dmUser'
+import userRelationshipService from '../../services/user-relationship.service'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -65,14 +66,27 @@ interface ConvMemberProps {
   cUser: ChannelUser
   thisCUser: ChannelUser
   socket: Socket
+  setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
 }
 
-function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
+function ConvMember({
+  cUser,
+  thisCUser,
+  socket,
+  setChannels,
+}: ConvMemberProps) {
   const user = cUser.user
   // User is not owner, and this User is admin or owner
   const isAdmin = cUser.role !== 3 && [2, 3].includes(thisCUser.role)
   const [adminPanelOpen, setAdminPanelOpen] = useState(false)
   let navigate = useNavigate()
+
+  function addFriend() {
+    userRelationshipService
+      .add(cUser.user.id, RelStatus.Pending)
+      .then((resp) => console.log(resp))
+  }
+
   return (
     <>
       {isAdmin && adminPanelOpen && (
@@ -104,7 +118,7 @@ function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
                 Svg={SvgRmFriend}
                 tooltip="Remove Friend"
                 id={`${cUser.id}rm`}
-                handleClick={() => null}
+                handleClick={addFriend}
               />
             ) : (
               <UserButton
@@ -119,7 +133,7 @@ function ConvMember({ cUser, thisCUser, socket }: ConvMemberProps) {
               Svg={SvgMessage}
               tooltip="Direct Message"
               id={`${cUser.id}dm`}
-              handleClick={() => dmUser(user, socket, navigate)}
+              handleClick={() => dmUser(user, socket, navigate, setChannels)}
             />
             {
               // If user is admin or owner
@@ -150,6 +164,7 @@ interface Props {
   thisUser: User
   socket: Socket
   setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
+  setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
 }
 
 export function ConvInfoChannel({
@@ -157,6 +172,7 @@ export function ConvInfoChannel({
   thisUser,
   socket,
   setChannel,
+  setChannels,
 }: Props) {
   const thisCUser = getChannelUser(channel, thisUser)
   const otherUsers = channel.channelUsers
@@ -240,6 +256,7 @@ export function ConvInfoChannel({
         >
           {otherUsers.map((cUser) => (
             <ConvMember
+              setChannels={setChannels}
               cUser={cUser}
               thisCUser={thisCUser}
               socket={socket}
