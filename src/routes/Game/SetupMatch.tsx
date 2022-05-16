@@ -71,10 +71,11 @@ export default function SetupMatch({
       setGame(data)
     })
     socket.on('startGame', (data) => {
-      setStep('match')
+      setGame(data)
     })
     return () => {
       socket.off('setupGame')
+      socket.off('startGame')
     }
   }, [socket, setStep, setGame])
 

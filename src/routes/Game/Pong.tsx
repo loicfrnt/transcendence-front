@@ -7,7 +7,7 @@ import SetupMatch from './SetupMatch'
 import InQueue from './InQueue'
 import { io, Socket } from 'socket.io-client'
 import ConnectError from '../../components/ConnectError'
-import Game from '../../types/game'
+import Game, { GameStatus } from '../../types/game'
 
 interface Props {
   currUser: User
@@ -29,39 +29,46 @@ export default function Pong({ currUser }: Props) {
     }
   }, [])
 
+  useEffect(() => {
+    sockRef.current?.on('update', (game: Game) => {
+      setGame(game)
+    })
+    return () => {
+      sockRef.current?.off('update')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sockRef.current])
+
   function returnState() {
-    if (socket === null) {
+    if (!socket) {
       return <ConnectError />
     }
-    switch (step) {
-      case 'match':
-        if (game)
-          return (
-            <PlayMatch
-              currUser={currUser}
-              socket={socket}
-              game={game}
-              setGame={setGame}
-            />
-          )
-        return <ConnectError />
-      case 'setup':
-        if (game)
-          return (
-            <SetupMatch
-              setStep={setStep}
-              socket={socket}
-              game={game}
-              setGame={setGame}
-              currUser={currUser}
-            />
-          )
-        return <ConnectError />
-      case 'queue':
-        return <InQueue setStep={setStep} setGame={setGame} socket={socket} />
-      default:
-      case 'idle':
+    if (!game) {
+      if (step === 'idle')
         return <FindMatch setStep={setStep} socket={socket} />
+      else
+        return <InQueue setStep={setStep} setGame={setGame} socket={socket} />
+    }
+
+    if (game?.status === GameStatus.INITIALIZATION) {
+      return (
+        <SetupMatch
+          setStep={setStep}
+          socket={socket}
+          game={game}
+          setGame={setGame}
+          currUser={currUser}
+        />
+      )
+    } else {
+      return (
+        <PlayMatch
+          currUser={currUser}
+          socket={socket}
+          game={game}
+          setGame={setGame}
+        />
+      )
     }
   }
 

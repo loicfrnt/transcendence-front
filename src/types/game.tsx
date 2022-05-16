@@ -1,6 +1,6 @@
 import { User } from './user'
 
-enum GameStatus {
+export enum GameStatus {
   RUNNING = 'running',
   INITIALIZATION = 'initialization',
   STOPPED = 'stopped',

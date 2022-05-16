@@ -53,27 +53,16 @@ export default function PongGame({ socket, game, setGame }: Props) {
   const canvas = useRef<HTMLCanvasElement | null>(null)
 
   useEffect(() => {
-    socket.on('update', (game: Game) => {
-      setGame(game)
-      draw(canvas.current as HTMLCanvasElement, game)
-    })
-    return () => {
-      socket.off('update')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket])
+    draw(canvas.current as HTMLCanvasElement, game)
+  }, [game])
 
   function sendMouse(event: MouseEvent) {
     // if (game && game.status === 'running')
-    socket.emit(
-      'mousemove',
-      {
-        id: game.id,
-        canvasLocationY: canvas.current?.getBoundingClientRect().y,
-        clientY: event.clientY,
-      },
-      (rep: any) => console.log(rep)
-    )
+    socket.emit('mousemove', {
+      id: game.id,
+      canvasLocationY: canvas.current?.getBoundingClientRect().y,
+      clientY: event.clientY,
+    })
   }
 
   return (

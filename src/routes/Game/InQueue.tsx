@@ -12,7 +12,6 @@ interface FindMatchProps {
 export default function InQueue({ setStep, socket, setGame }: FindMatchProps) {
   useEffect(() => {
     socket.on('setupGame', (data) => {
-      setStep('setup')
       setGame(data)
       console.log('switch to setup', data)
     })
