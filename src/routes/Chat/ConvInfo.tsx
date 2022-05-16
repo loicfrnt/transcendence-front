@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io-client'
 import ContentBox from '../../components/ContentBox'
-import { Channel } from '../../types/chat'
+import { Channel, ProtoChannel } from '../../types/chat'
 import { User } from '../../types/user'
 import { ConvInfoChannel } from './ConvInfoChannel'
 import ConvInfoDm from './ConvInfoDm'
@@ -8,6 +8,7 @@ import ConvInfoDm from './ConvInfoDm'
 interface Props {
   channel: Channel
   setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
+  setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   thisUser: User
   socket: Socket
 }
@@ -15,6 +16,7 @@ interface Props {
 export default function ConvInfo({
   channel,
   setChannel,
+  setChannels,
   thisUser,
   socket,
 }: Props) {
@@ -24,6 +26,7 @@ export default function ConvInfo({
         <ConvInfoChannel
           channel={channel}
           setChannel={setChannel}
+          setChannels={setChannels}
           thisUser={thisUser}
           socket={socket}
         />
