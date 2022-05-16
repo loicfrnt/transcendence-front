@@ -1,6 +1,3 @@
-// TMP static vars
-import { userList } from '../../data/users'
-
 import MainContainer from '../../components/MainContainer'
 import { User } from '../../types/user'
 import MainUser from './MainUser'
@@ -10,7 +7,7 @@ import Friends from './Friends'
 import MatchHistory from './MatchHistory'
 import FriendRequests from './FriendRequests'
 import Blocked from './Blocked'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PopUpBox from '../../components/PopUpBox'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import twoFactorsAuthenticationService from '../../services/two-factors-authentication.service'
@@ -176,7 +173,7 @@ export default function UserProfile({ user, setConnected }: Props) {
       fetchImage();
       setQrInit(false);
     }
-  });
+  },[qrInit]);
   return (
     <MainContainer>
       <PopUpBox open={editOpen} setOpen={setEditOpen}>
@@ -294,10 +291,10 @@ export default function UserProfile({ user, setConnected }: Props) {
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => setEditOpen(true)} />
         </MainUser>
-        <Friends />
+        <Friends user={user}/>
         <MatchHistory user={user} />
-        <FriendRequests requests={userList} />
-        <Blocked blocked={[userList[1]]} />
+        <FriendRequests user={user} />
+        <Blocked user={user} />
       </ProfileMasonry>
     </MainContainer>
   )

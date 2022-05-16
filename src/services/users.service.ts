@@ -1,10 +1,7 @@
-import axios from "axios";
-//import useAxiosPrivate from "../hooks/use-axios-private";
 import api from '../api/api';
 const ROUTE = "/api/users/";
 
 class UsersService {
-    //const axiosPrivate = useAxiosPrivate();
     checkIfEmailExists(email?: string) {
         return api.get(ROUTE + "check_mail/" + email).then(response => {
             return response;
@@ -26,6 +23,18 @@ class UsersService {
             if (response.data.id) {
                 localStorage.setItem("user", JSON.stringify(response.data));
             }
+            return response.data;
+        });
+    }
+
+    getById(id: number) {
+        return api.get(ROUTE + id).then(response => {
+            return response.data;
+        });
+    }
+
+    getByUsername(username: string) {
+        return api.get(ROUTE +"username/" + username).then(response => {
             return response.data;
         });
     }
