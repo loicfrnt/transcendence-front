@@ -50,8 +50,18 @@ export default function Blocked({ user }: Props) {
     if (user.received_relationships)
     {
       for (let relationship of user.received_relationships) {
-        if (relationship.status === RelStatus.Pending)
+        if (relationship.status === RelStatus.Blocked)
           usersService.getById(relationship.issuer_id).then((response) => {
+            if (!blocked.includes(response))
+              setBlocked([...blocked, response]);
+          });
+      }
+    }
+    if (user.sent_relationships)
+    {
+      for (let relationship of user.sent_relationships) {
+        if (relationship.status === RelStatus.Blocked)
+          usersService.getById(relationship.receiver_id).then((response) => {
             if (!blocked.includes(response))
               setBlocked([...blocked, response]);
           });

@@ -37,10 +37,24 @@ export default function Friends({ user }: Props) {
     {
       for (let relationship of user.received_relationships) {
         if (relationship.status === RelStatus.Friends)
+        {
           usersService.getById(relationship.issuer_id).then((response) => {
             if (!userList.includes(response))
               setUserList([...userList, response]);
           });
+        }
+      }
+    }
+    if (user.sent_relationships)
+    {
+      for (let relationship of user.sent_relationships) {
+        if (relationship.status === RelStatus.Friends)
+        {
+          usersService.getById(relationship.receiver_id).then((response) => {
+            if (!userList.includes(response))
+              setUserList([...userList, response]);
+          });
+        }
       }
     }
   },[]);

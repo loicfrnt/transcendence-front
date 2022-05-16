@@ -3,6 +3,15 @@ import api from '../api/api';
 const ROUTE = "/api/user-relationships/";
 
 class UserRelationshipService {
+
+    add(id : number) {
+        return api.post(ROUTE, {
+            id: id
+        }).then((response) => {
+            return response;
+        });
+    }
+
     updateStatus(id:number, status: number)
     {
         return api.post(ROUTE + "update-status", {

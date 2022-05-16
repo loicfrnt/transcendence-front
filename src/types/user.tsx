@@ -38,7 +38,7 @@ export interface User {
   defeats: number
   history: History[]
   channels: Channel[]
-  sentRelationships: Relationship[]
+  sent_relationships: Relationship[]
   received_relationships: Relationship[]
 }
 

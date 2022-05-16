@@ -9,7 +9,7 @@ export const mechant: User = {
   status: 0,
   victories: 13,
   defeats: 3,
-  sentRelationships: [],
+  sent_relationships: [],
   received_relationships: [],
   channels: [],
   history: [],
@@ -24,7 +24,7 @@ export const thisUser: User = {
   status: 0,
   victories: 1,
   defeats: 1,
-  sentRelationships: [
+  sent_relationships: [
     {
       id: 3,
       issuer_id: 1,
@@ -73,7 +73,7 @@ export const userList: User[] = [
     status: 0,
     victories: 3,
     defeats: 2,
-    sentRelationships: [],
+    sent_relationships: [],
     received_relationships: [],
     history: [],
     channels: [],
@@ -87,7 +87,7 @@ export const userList: User[] = [
     status: 0,
     victories: 0,
     defeats: 9890,
-    sentRelationships: [],
+    sent_relationships: [],
     received_relationships: [],
     history: [],
     channels: [],

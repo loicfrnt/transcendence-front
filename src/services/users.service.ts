@@ -30,7 +30,13 @@ class UsersService {
     getById(id: number) {
         return api.get(ROUTE + id).then(response => {
             return response.data;
-        })
+        });
+    }
+
+    getByUsername(username: string) {
+        return api.get(ROUTE +"username/" + username).then(response => {
+            return response.data;
+        });
     }
 }
 
