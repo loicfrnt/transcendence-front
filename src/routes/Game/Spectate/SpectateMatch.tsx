@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { Socket } from 'socket.io-client'
 import { draw } from '../../../pong/pong'
-import Game from '../../../types/game'
+import Game, { GameStatus } from '../../../types/game'
+import PlayerLeft from '../PlayerLeft'
 import UserDesc from '../UserDesc'
 
 interface Props {
@@ -21,6 +22,7 @@ export default function SpectateMatch({ socket, game, userId }: Props) {
     <div
       className={`flex flex-wrap items-center justify-evenly h-full w-full gap-5}`}
     >
+      {game.status === GameStatus.STOPPED && <PlayerLeft role="Oppenent" />}
       <UserDesc
         user={game.player1.user}
         role={game.player1.user.id === userId ? 'Spectating' : 'Oppenent'}
