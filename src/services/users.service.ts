@@ -38,6 +38,16 @@ class UsersService {
             return response.data;
         });
     }
+
+    uploadFile(fd: FormData)
+    {
+
+      return api.post(ROUTE + 'avatar/', fd, {
+          headers: {
+              'Content-Type' : 'multipart/form-data'
+          }
+      });
+    }
 }
 
 export default new UsersService();

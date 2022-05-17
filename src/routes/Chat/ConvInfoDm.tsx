@@ -46,6 +46,7 @@ export default function ConvInfoDm({ channel, thisUser }: Props) {
         username={user.username}
         avatarId={user.avatar_id}
         size="h-[146px]"
+        noLink={false}
       />
       <h1 className="font-semibold text-[2rem] leading-[3rem] mt-4">
         {user.username}

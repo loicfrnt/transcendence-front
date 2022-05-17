@@ -29,7 +29,7 @@ export default function Blocked({ user }: Props) {
         <div className='flex justify-between bg-gray-light rounded-3xl h-24 pl-2 w-full'>
           <div className="flex items-center gap-5">
             <Avatar
-              noLink
+              noLink={false}
               size="h-20 w-20"
               username={user.username}
               avatarId={user.avatar_id}
