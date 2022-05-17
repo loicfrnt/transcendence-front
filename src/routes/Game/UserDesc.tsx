@@ -17,7 +17,8 @@ export default function UserDesc({ user, role, children }: Props) {
     return victories / defeats
   }
 
-  const titleStyle = 'text-[2rem] leading-[2.625rem] font-semibold '
+  const titleStyle =
+    'text-[2rem] leading-[2.625rem] font-semibold break-words w-full '
   const statsStyle = 'text-[1.375rem] leading-[2.625rem] font-normal'
 
   return (
