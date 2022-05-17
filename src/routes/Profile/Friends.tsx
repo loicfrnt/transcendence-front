@@ -20,7 +20,7 @@ export default function Friends({ user }: Props) {
           className="bg-gray-light rounded-3xl h-24 pl-2 w-full flex items-center gap-5"
         >
           <Avatar
-            noLink
+            noLink = {false}
             size="h-20 w-20"
             username={user.username}
             avatarId={user.avatar_id}
