@@ -66,7 +66,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navbar />}>
+        <Route path="/" element={<Navbar socket={socket} />}>
           <Route index element={<Home />} />
           <Route
             path="game/*"
