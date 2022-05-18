@@ -5,9 +5,10 @@ import { io, Socket } from 'socket.io-client'
 import ConnectError from '../../../components/ConnectError'
 import MainContainer from '../../../components/MainContainer'
 import usersService from '../../../services/users.service'
-import Game from '../../../types/game'
+import Game, { GameStatus } from '../../../types/game'
 import NotInGame from './NotInGame'
 import SpectateMatch from './SpectateMatch'
+import SpectateResults from './SpectateResults'
 
 export default function GameSpectate() {
   const params = useParams()
@@ -65,6 +66,9 @@ export default function GameSpectate() {
     }
     if (!game) {
       return <NotInGame />
+    }
+    if (game.status === GameStatus.ENDED) {
+      return <SpectateResults game={game} />
     }
     return <SpectateMatch socket={socket} game={game} userId={userId} />
   }
