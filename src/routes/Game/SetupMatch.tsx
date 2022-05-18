@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Socket } from 'socket.io-client'
 import ContentBox from '../../components/ContentBox'
 import Game, {
@@ -59,26 +58,7 @@ interface SetupProps {
   currUser: User
 }
 
-export default function SetupMatch({
-  setStep,
-  socket,
-  game,
-  setGame,
-  currUser,
-}: SetupProps) {
-  useEffect(() => {
-    socket.on('setupGame', (data) => {
-      setGame(data)
-    })
-    socket.on('startGame', (data) => {
-      setGame(data)
-    })
-    return () => {
-      socket.off('setupGame')
-      socket.off('startGame')
-    }
-  }, [socket, setStep, setGame])
-
+export default function SetupMatch({ socket, game, currUser }: SetupProps) {
   const oppenent =
     game.player1.user.id === currUser.id ? game.player2 : game.player1
   const player =

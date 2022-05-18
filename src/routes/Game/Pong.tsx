@@ -1,22 +1,25 @@
-import { RelStatus, User } from '../../types/user'
+import { User } from '../../types/user'
 import { useEffect, useRef, useState } from 'react'
 import MainContainer from '../../components/MainContainer'
-import FindMatch from './FindMatch'
+import Landing from './Landing'
 import PlayMatch from './PlayMatch'
 import SetupMatch from './SetupMatch'
 import InQueue from './InQueue'
 import { io, Socket } from 'socket.io-client'
 import ConnectError from '../../components/ConnectError'
-import Game, { GameStatus } from '../../types/game'
+import Game, { Duel, GameStatus } from '../../types/game'
 import Results from './Results'
+import WaitingFor from './WaitingFor'
 
 interface Props {
   currUser: User
+  socketChannel: Socket
 }
 
-export default function Pong({ currUser }: Props) {
+export default function Pong({ currUser, socketChannel }: Props) {
   const [step, setStep] = useState('idle')
   const [game, setGame] = useState<Game | null>(null)
+  const [duels, setDuels] = useState<Duel[]>([])
   //WS
   const [socket, setSocket] = useState<Socket | null>(null)
   const sockRef = useRef<Socket | null>(null)
@@ -34,27 +37,60 @@ export default function Pong({ currUser }: Props) {
     sockRef.current?.on('update', (game: Game) => {
       setGame(game)
     })
-    sockRef.current?.on('endGame', (game: Game) => {
-      setGame(game)
+    sockRef.current?.on('duels-update', (duels: Duel[]) => {
+      console.log(duels)
+      setDuels(duels)
+    })
+    sockRef.current?.on('deletedDuelInvitation', (duel: Duel) => {
+      console.log(duel)
+      setDuels((duels) => duels.filter((curr) => curr.id !== duel.id))
     })
     return () => {
       sockRef.current?.off('update')
-      sockRef.current?.off('endGame')
+      sockRef.current?.off('duels-update')
+      sockRef.current?.off('deletedDuelInvitation')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sockRef.current])
+
+  useEffect(() => {
+    const pushDuel = (duel: Duel) => {
+      setDuels((duels) => {
+        let newDuels = [...duels]
+        if (newDuels.find((curr) => curr.id === duel.id) === undefined) {
+          newDuels.push(duel)
+        }
+        return newDuels
+      })
+    }
+    socketChannel.on('newDuelInvitation', pushDuel)
+
+    return () => {
+      sockRef.current?.off('newDuelInvitation', pushDuel)
+    }
+  }, [socketChannel])
 
   function returnState() {
     if (!socket) {
       return <ConnectError />
     }
     if (!game) {
-      if (step === 'idle')
-        return <FindMatch setStep={setStep} socket={socket} />
-      else
-        return <InQueue setStep={setStep} setGame={setGame} socket={socket} />
+      if (step === 'idle') {
+        return (
+          <Landing
+            setStep={setStep}
+            socket={socket}
+            duels={duels}
+            currUser={currUser}
+          />
+        )
+      } else {
+        return <InQueue setGame={setGame} socket={socket} />
+      }
     }
-
+    if (game?.status === GameStatus.WAITING) {
+      return <WaitingFor message="Waiting for oppenent to join the room" />
+    }
     if (game?.status === GameStatus.INITIALIZATION) {
       return (
         <SetupMatch

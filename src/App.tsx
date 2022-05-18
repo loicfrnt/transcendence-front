@@ -68,7 +68,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
-          <Route path="game/*" element={<GameRoutes currUser={currUser} />} />
+          <Route
+            path="game/*"
+            element={<GameRoutes currUser={currUser} socketChannel={socket} />}
+          />
           <Route
             path="profile/*"
             element={
