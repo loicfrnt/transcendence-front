@@ -33,6 +33,7 @@ export default function Blocked({ user }: Props) {
               size="h-20 w-20"
               username={user.username}
               avatarId={user.avatar_id}
+              status={user.status}
             ></Avatar>
             <h2 className="font-semibold text-lg">{user.username}</h2>
           </div>
@@ -45,29 +46,43 @@ export default function Blocked({ user }: Props) {
       </div>
     )
   }
-  const [blocked, setBlocked] = useState<User[]>([]);
-  useEffect(() =>{
+  const [blocked, setBlocked] = useState<User[]>([])
+
+  const getBlocked = async () => {
+    let users : User[] = [];
     if (user.received_relationships)
     {
       for (let relationship of user.received_relationships) {
         if (relationship.status === RelStatus.Blocked)
-          usersService.getById(relationship.issuer_id).then((response) => {
-            if (!blocked.includes(response))
-              setBlocked([...blocked, response]);
-          });
+        {
+          const user = await usersService.getById(relationship.issuer_id);
+          if (!users.includes(user))
+          {
+
+            users.push(user);
+          }
+        }
       }
     }
     if (user.sent_relationships)
     {
       for (let relationship of user.sent_relationships) {
         if (relationship.status === RelStatus.Blocked)
-          usersService.getById(relationship.receiver_id).then((response) => {
-            if (!blocked.includes(response))
-              setBlocked([...blocked, response]);
-          });
+        {
+          const user = await usersService.getById(relationship.receiver_id);
+          if (!users.includes(user))
+          {
+            users.push(user);
+          }
+        }
       }
     }
-  },[]);
+    setBlocked(users);
+  }
+
+  useEffect(() =>{
+    getBlocked();
+  },[])
 
   return (
     <SocialItemContainer title="Blocked">

@@ -44,6 +44,7 @@ localStorage.setItem("user", JSON.stringify(response.data));
               size="h-20 w-20"
               username={user.username}
               avatarId={user.avatar_id}
+              status={user.status}
             ></Avatar>
             <h2 className="font-semibold text-lg">{user.username}</h2>
           </div>
@@ -61,18 +62,29 @@ localStorage.setItem("user", JSON.stringify(response.data));
   }
 
   const [requests, setRequests] = useState<User[]>([]);
-  useEffect(() =>{
+
+  const getFreindRequests = async () => {
+    let users : User[] = [];
     if (user.received_relationships)
     {
       for (let relationship of user.received_relationships) {
         if (relationship.status === RelStatus.Pending)
-          usersService.getById(relationship.issuer_id).then((response) => {
-            if (!requests.includes(response))
-              setRequests([...requests, response]);
-          });
+        {
+          const user = await usersService.getById(relationship.issuer_id);
+          if (!users.includes(user))
+          {
+
+            users.push(user);
+          }
+        }
       }
     }
-  },[]);
+    setRequests(users);
+  }
+
+  useEffect(() =>{
+    getFreindRequests();
+  },[])
 
   function isObjectEmpty(obj: any) {
     return Object.keys(obj).length === 0;

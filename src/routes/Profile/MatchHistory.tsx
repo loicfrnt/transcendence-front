@@ -32,6 +32,7 @@ export default function MatchHistory({ user }: Props) {
               size="h-9 w-9"
               username={user.username}
               avatarId={user.avatar_id}
+              status={user.status}
             />
             <span className="font-semibold text-lg">
               {match.scorePlayer} - {match.scoreOppenent}
@@ -41,6 +42,7 @@ export default function MatchHistory({ user }: Props) {
               size="h-9 w-9"
               username={match.oppenent.username}
               avatarId={match.oppenent.avatar_id}
+              status={match.oppenent.status}
             />
           </div>
         </div>

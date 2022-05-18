@@ -21,6 +21,7 @@ export default function MainUser({ user, children }: MyProps) {
         avatarId={user?.avatar_id}
         size="max-h-[316px] max-w-[316px] w-full"
         noLink = {noLink}
+        status = {user?.status}
       />
       <h2 className={titleStyle + 'mt-5'}>{user?.username}</h2>
       <div className="w-full flex justify-evenly mt-2">

@@ -39,6 +39,7 @@ export default function Conversation({
             username={message.author.username}
             size={'h-7 w-7 mt-1.5 mr-1.5'}
             noLink={false}
+            status={message.author.status}
           />
         )
       }

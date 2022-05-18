@@ -24,6 +24,8 @@ export default function Friends({ user }: Props) {
             size="h-20 w-20"
             username={user.username}
             avatarId={user.avatar_id}
+            status={user.status}
+            addStatus = {true}
           ></Avatar>
           <h2 className="font-semibold text-lg">{user.username}</h2>
         </Link>
@@ -32,32 +34,44 @@ export default function Friends({ user }: Props) {
   }
 
   const [userList, setUserList] = useState<User[]>([]);
-  useEffect(() =>{
-    if (user.received_relationships)
-    {
-      for (let relationship of user.received_relationships) {
-        if (relationship.status === RelStatus.Friends)
-        {
-          usersService.getById(relationship.issuer_id).then((response) => {
-            if (!userList.includes(response))
-              setUserList([...userList, response]);
-          });
+    const getFreinds = async () => {
+      let users : User[] = [];
+      if (user.received_relationships)
+      {
+        for (let relationship of user.received_relationships) {
+          if (relationship.status === RelStatus.Friends)
+          {
+            const user = await usersService.getById(relationship.issuer_id);
+            if (!users.includes(user))
+            {
+
+              users.push(user);
+            }
+          }
         }
       }
-    }
-    if (user.sent_relationships)
-    {
-      for (let relationship of user.sent_relationships) {
-        if (relationship.status === RelStatus.Friends)
-        {
-          usersService.getById(relationship.receiver_id).then((response) => {
-            if (!userList.includes(response))
-              setUserList([...userList, response]);
-          });
+      if (user.sent_relationships)
+      {
+        for (let relationship of user.sent_relationships) {
+          if (relationship.status === RelStatus.Friends)
+          {
+            const user = await usersService.getById(relationship.receiver_id);
+            if (!users.includes(user))
+            {
+              users.push(user);
+            }
+          }
         }
       }
+      setUserList(users);
     }
-  },[]);
+
+    useEffect(() =>{
+      getFreinds();
+    },[])
+
+
+
 
   function isObjectEmpty(obj: any) {
     return Object.keys(obj).length === 0;
@@ -72,6 +86,7 @@ export default function Friends({ user }: Props) {
           <>{userList.map(renderFriend)}</>
         </SocialItemList>
       )}
+      
     </SocialItemContainer>
   )
 }

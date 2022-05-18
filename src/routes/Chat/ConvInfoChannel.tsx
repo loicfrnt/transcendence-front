@@ -98,7 +98,7 @@ function ConvMember({
         to={'/profile/' + user.username}
         className="duration-300 hover:bg-gray-light  p-2 flex"
       >
-        <Avatar username={user.username} avatarId={user.avatar_id} noLink = {false} />
+        <Avatar username={user.username} avatarId={user.avatar_id} noLink = {false} status={user.status}/>
         <div className="flex flex-col">
           <div className="flex gap-x-1 ml-2 items-center flex-wrap">
             <h2 className="font-semibold text-lg">{user.username}</h2>

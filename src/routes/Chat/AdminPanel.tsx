@@ -89,6 +89,7 @@ export default function AdminPanel({ cUser, socket }: Props) {
           username={user.username}
           size="h-8 w-8"
           noLink = {false}
+          status = {user.status}
         />
         <h2 className="font-semibold text-xl ml-2">{user.username}</h2>
       </div>
