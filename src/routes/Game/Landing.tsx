@@ -7,11 +7,18 @@ import GameInvites from './GameInvites'
 interface Props {
   setStep: React.Dispatch<React.SetStateAction<string>>
   socket: Socket
+  socketChannel: Socket
   duels: Duel[]
   currUser: User
 }
 
-export default function Landing({ setStep, socket, duels, currUser }: Props) {
+export default function Landing({
+  setStep,
+  socket,
+  socketChannel,
+  duels,
+  currUser,
+}: Props) {
   function handleClick() {
     socket.emit('joinQueue', (rep: any) => console.log(rep))
     setStep('queue')
@@ -25,7 +32,12 @@ export default function Landing({ setStep, socket, duels, currUser }: Props) {
         </p>
       </ContentBox>
       {duels.length ? (
-        <GameInvites socket={socket} duels={duels} currUser={currUser} />
+        <GameInvites
+          socket={socket}
+          socketChannel={socketChannel}
+          duels={duels}
+          currUser={currUser}
+        />
       ) : null}
     </div>
   )

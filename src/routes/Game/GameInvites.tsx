@@ -10,9 +10,15 @@ interface InvitationProps {
   duel: Duel
   inviteUser: User
   socket: Socket
+  socketChannel: Socket
 }
 
-const Invitation = ({ duel, socket, inviteUser }: InvitationProps) => {
+const Invitation = ({
+  duel,
+  socket,
+  socketChannel,
+  inviteUser,
+}: InvitationProps) => {
   const acceptInvite = () => {
     socket.emit('joinWaitingRoom', { id: duel.id.toString() }, (resp: any) =>
       console.log(resp)
@@ -20,7 +26,7 @@ const Invitation = ({ duel, socket, inviteUser }: InvitationProps) => {
   }
 
   const rejectInvite = () => {
-    socket.emit(
+    socketChannel.emit(
       'deleteDuelInvitation',
       { id: duel.id.toString() },
       (resp: any) => console.log(resp)
@@ -47,11 +53,17 @@ const Invitation = ({ duel, socket, inviteUser }: InvitationProps) => {
 
 interface Props {
   socket: Socket
+  socketChannel: Socket
   duels: Duel[]
   currUser: User
 }
 
-export default function GameInvites({ socket, duels, currUser }: Props) {
+export default function GameInvites({
+  socket,
+  socketChannel,
+  duels,
+  currUser,
+}: Props) {
   return (
     <ContentBox className="min-w-[200px] duration-75">
       <h1 className="font-semibold text-2xl mb-3">Invitations</h1>
@@ -62,6 +74,7 @@ export default function GameInvites({ socket, duels, currUser }: Props) {
           return (
             <Invitation
               socket={socket}
+              socketChannel={socketChannel}
               duel={duel}
               inviteUser={inviteUser}
               key={duel.id}

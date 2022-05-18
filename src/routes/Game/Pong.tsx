@@ -41,14 +41,10 @@ export default function Pong({ currUser, socketChannel }: Props) {
       console.log(duels)
       setDuels(duels)
     })
-    sockRef.current?.on('deletedDuelInvitation', (duel: Duel) => {
-      console.log(duel)
-      setDuels((duels) => duels.filter((curr) => curr.id !== duel.id))
-    })
+
     return () => {
       sockRef.current?.off('update')
       sockRef.current?.off('duels-update')
-      sockRef.current?.off('deletedDuelInvitation')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sockRef.current])
@@ -65,8 +61,14 @@ export default function Pong({ currUser, socketChannel }: Props) {
     }
     socketChannel.on('newDuelInvitation', pushDuel)
 
+    socketChannel.on('deletedDuelInvitation', (duel: Duel) => {
+      console.log(duel)
+      setDuels((duels) => duels.filter((curr) => curr.id !== duel.id))
+    })
+
     return () => {
-      sockRef.current?.off('newDuelInvitation', pushDuel)
+      socketChannel.off('newDuelInvitation', pushDuel)
+      socketChannel.off('deletedDuelInvitation')
     }
   }, [socketChannel])
 
@@ -80,6 +82,7 @@ export default function Pong({ currUser, socketChannel }: Props) {
           <Landing
             setStep={setStep}
             socket={socket}
+            socketChannel={socketChannel}
             duels={duels}
             currUser={currUser}
           />
