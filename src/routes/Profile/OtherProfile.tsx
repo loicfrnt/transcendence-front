@@ -119,8 +119,8 @@ export default function OtherProfile({ user, socket }: Props) {
 
   return (
     <MainContainer>
-      <ProfileMasonry>
-        <MainUser user={otherUser!}>
+      {otherUser && <ProfileMasonry>
+        <MainUser user={otherUser}>
           {friend ? (
             <SocialButton
               content={rmContent}
@@ -138,7 +138,7 @@ export default function OtherProfile({ user, socket }: Props) {
           )}
           <SocialButton
             content="Message"
-            handleClick={() => dmUser(otherUser!, socket, navigate)}
+            handleClick={() => dmUser(otherUser, socket, navigate)}
           />
           {/* isIngame ? Spectate : Duel */}
           <SocialButton
@@ -152,9 +152,10 @@ export default function OtherProfile({ user, socket }: Props) {
             }}
           />
         </MainUser>
-        <Friends user={user} />
-        <MatchHistory user={user} />
+        <Friends user={otherUser} />
+        <MatchHistory user={otherUser} />
       </ProfileMasonry>
+      }
     </MainContainer>
   )
 }

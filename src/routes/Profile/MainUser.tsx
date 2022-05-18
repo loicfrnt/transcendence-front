@@ -2,6 +2,8 @@ import Avatar from '../../components/Avatar'
 import ContentBox from '../../components/ContentBox'
 import ratio from '../../utils/ratio'
 import { User } from '../../types/user'
+import { useState } from 'react'
+import authenticationService from '../../services/authentication.service'
 
 interface MyProps {
   user: User
@@ -11,13 +13,14 @@ interface MyProps {
 export default function MainUser({ user, children }: MyProps) {
   const titleStyle = 'text-[2rem] leading-[2.625rem] font-semibold '
   const statsStyle = 'text-[1.375rem] leading-[2.625rem] font-normal text-center'
+  const [noLink] = useState<boolean>(user.id === authenticationService.getCurrentUser().id);
   return (
     <ContentBox className="max-w-[400px] flex flex-col items-center py-7 grid-item mb-10">
       <Avatar
         username={user?.username}
         avatarId={user?.avatar_id}
         size="max-h-[316px] max-w-[316px] w-full"
-        noLink
+        noLink = {noLink}
       />
       <h2 className={titleStyle + 'mt-5'}>{user?.username}</h2>
       <div className="w-full flex justify-evenly mt-2">
