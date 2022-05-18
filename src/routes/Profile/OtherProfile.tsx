@@ -145,7 +145,7 @@ export default function OtherProfile({ user, socket }: Props) {
             {/* isIngame ? Spectate : Duel */}
             <SocialButton
               content="Duel"
-              handleClick={() => sendGameInvite(user, socket)}
+              handleClick={() => sendGameInvite(otherUser, socket)}
             />{' '}
             <SocialButton
               content="Spectate"
