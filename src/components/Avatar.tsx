@@ -4,22 +4,25 @@ import usersService from '../services/users.service'
 import {ReactComponent as Add} from '../assets/add.svg'
 import { stat } from 'fs'
 import { UserStatus } from '../types/user'
+import { Link } from 'react-router-dom'
 
 interface AvatarProps {
   avatarId: number
   username: string
-  noLink?: boolean
+  withStatus?: boolean
   size?: string
   status: UserStatus
   addStatus?: boolean
+  noLink?: boolean
 }
 
 export default function Avatar({
   avatarId,
   username,
-  noLink,
+  withStatus = false,
   size = 'h-16 w-16',
   status,
+  noLink = true,
   addStatus = false,
 }: AvatarProps) {
   const classes = `block bg-cover rounded-full aspect-square ${size}`
@@ -33,6 +36,13 @@ export default function Avatar({
     color: 'bg-gray-400',
     title: 'unavailable'
   });
+  useEffect(() =>{
+    setState({
+      username : username,
+      avatarId : avatarId,
+      status: status
+    });
+  }, [status]);
   useEffect( () =>{
     const fetchImage = async() =>{
       const imgUrl = await localFilesService.retriveFile(state.avatarId);
@@ -61,8 +71,7 @@ export default function Avatar({
         color: 'bg-gray-400',
         title: 'unavailable'
       });
-    }   
-
+    }
   }, [state.status])
   const imageUploader = useRef(document.createElement("input"));
   const handleSetImage = (event: ChangeEvent<HTMLInputElement>) => {
@@ -83,13 +92,22 @@ export default function Avatar({
       });
     }
   }
-  if (!noLink) {
-    return (
-      <div className='flex relative'>
-        <img src={img}  className={classes} alt='Profile pic'/>
-        {addStatus && <span className={`inline-flex items-center p-3 mr-1 text-sm font-semibold ${badge.color} rounded-full absolute`} title={badge.title}></span>}
-      </div>
-    )
+  if (!withStatus) {
+    if (!noLink)
+    {
+      return (
+        <div>
+        <Link to={'/profile/' + username}><img src={img}  className={classes} alt='Profile pic'/> </Link>
+        </div>
+      )
+    }
+    else
+      return (
+        <div className='flex relative'>
+          <img src={img}  className={classes} alt='Profile pic'/>
+          {addStatus && <span className={`inline-flex items-center p-3 mr-1 text-sm font-semibold ${badge.color} rounded-full absolute`} title={badge.title}></span>}
+        </div>
+      )
   }
 
   return (

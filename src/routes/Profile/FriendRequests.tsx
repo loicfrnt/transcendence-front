@@ -10,17 +10,17 @@ import usersService from '../../services/users.service'
 import userRelationshipService from '../../services/user-relationship.service'
 
 interface Props {
-  user : User
+  parentRequests? : User[]
 }
 
-export default function FriendRequests({ user }: Props) {
+export default function FriendRequests({ parentRequests }: Props) {
   const svgClass = 'ease-in-out duration-300 fill-gray group-hover:fill-violet'
 
   function acceptRelation(id: number) {
     userRelationshipService.updateStatus(id, RelStatus.Friends).then((response) => {
       if (response.data.id) {
         localStorage.setItem("user", JSON.stringify(response.data));
-        const arr = requests.filter((request) => request.id !== id)
+        const arr = requests!.filter((request) => request.id !== id)
         setRequests(arr);
     }
     });
@@ -29,7 +29,7 @@ export default function FriendRequests({ user }: Props) {
   function declineRelation(id: number) {
     userRelationshipService.delete(id).then((response) => {
 localStorage.setItem("user", JSON.stringify(response.data));
-        const arr = requests.filter((request) => request.id !== id)
+        const arr = requests!.filter((request) => request.id !== id)
         setRequests(arr);
     });
   }
@@ -40,7 +40,7 @@ localStorage.setItem("user", JSON.stringify(response.data));
         <div className="flex justify-between bg-gray-light rounded-3xl h-24 pl-2 w-full ">
           <div className="flex items-center gap-5">
             <Avatar
-              noLink={false}
+              withStatus={false}
               size="h-20 w-20"
               username={user.username}
               avatarId={user.avatar_id}
@@ -61,30 +61,12 @@ localStorage.setItem("user", JSON.stringify(response.data));
     )
   }
 
-  const [requests, setRequests] = useState<User[]>([]);
+  const [requests, setRequests] = useState<User[]>();
 
-  const getFreindRequests = async () => {
-    let users : User[] = [];
-    if (user.received_relationships)
-    {
-      for (let relationship of user.received_relationships) {
-        if (relationship.status === RelStatus.Pending)
-        {
-          const user = await usersService.getById(relationship.issuer_id);
-          if (!users.includes(user))
-          {
-
-            users.push(user);
-          }
-        }
-      }
-    }
-    setRequests(users);
-  }
 
   useEffect(() =>{
-    getFreindRequests();
-  },[])
+    setRequests(parentRequests);
+  },[parentRequests])
 
   function isObjectEmpty(obj: any) {
     return Object.keys(obj).length === 0;
@@ -92,7 +74,7 @@ localStorage.setItem("user", JSON.stringify(response.data));
 
   return (
     <SocialItemContainer title="Friend Requests">
-      {isObjectEmpty(requests) ? (
+      {!requests || isObjectEmpty(requests) ? (
         <SocialNoItem msg="No requests.. (yet!)" />
       ) : (
         <SocialItemList>

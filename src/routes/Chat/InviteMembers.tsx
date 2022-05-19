@@ -25,7 +25,7 @@ const Friend = ({ friend, socket, channel }: FriendProps) => {
       className="duration-300 hover:bg-gray-light p-2 flex items-center group"
       onClick={(e) => inviteMe()}
     >
-      <Avatar username={user.username} avatarId={user.avatar_id} noLink={false} status={user.status}/>
+      <Avatar username={user.username} avatarId={user.avatar_id} status={user.status}/>
       <div className="flex gap-x-1 mx-3 items-center flex-wrap justify-between w-full">
         <h2 className="font-semibold text-lg">{user.username}</h2>
         <SvgArrow className="h-4 group-hover:opacity-100 opacity-0 duration-150 fill-violet" />

@@ -1,4 +1,6 @@
 import axios from "axios";
+import { appendFile } from "fs";
+import api from "../api/api";
 
 const ROUTE = "/api/authentication/";
 
@@ -30,6 +32,10 @@ class AuthenticationService {
         if (usrStr)
             return JSON.parse(usrStr);
         return null;
+    }
+
+    logout() {
+        return api.post(ROUTE + "log-out");
     }
 }
 

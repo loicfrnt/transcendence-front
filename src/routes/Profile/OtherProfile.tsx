@@ -57,14 +57,18 @@ export default function OtherProfile({ user, socket }: Props) {
   const useUser = async (username: string) => {
     const [otherUser, setOtherUser] = useState<User>()
     useEffect(() => {
-      usersService.getByUsername(username).then(
-        (response) => {
-          setOtherUser(response)
-        },
-        () => {
-          navigate('/404')
-        }
-      )
+      if (user.username === username)
+        navigate('/profile');
+      else
+        usersService.getByUsername(username).then(
+          (response) => {
+            setOtherUser(response)
+            getRelations(response);
+          },
+          () => {
+            navigate('/404')
+          }
+        )
     }, [username])
     return await Promise.resolve(otherUser)
   }
@@ -116,6 +120,34 @@ export default function OtherProfile({ user, socket }: Props) {
         })
     }
   }
+  const [friendsList, setFriendsList] = useState<User[]>();
+
+  const getRelations = async (currUser: User) => {
+    let friends : User[] = [];
+    if (currUser.received_relationships)
+    {
+      for (let relationship of currUser.received_relationships) {
+        if (relationship.status === RelStatus.Friends)
+        {
+          const user = await usersService.getById(relationship.issuer_id);
+          if (!friends.includes(user))
+            friends.push(user);
+        }
+      }
+    }
+    if (currUser.sent_relationships)
+    {
+      for (let relationship of currUser.sent_relationships) {
+        if (relationship.status === RelStatus.Friends)
+        {
+          const user = await usersService.getById(relationship.receiver_id);
+          if (!friends.includes(user))
+            friends.push(user);
+        }
+      }
+    }
+    setFriendsList(friends);
+  }
 
   return (
     <MainContainer>
@@ -149,7 +181,7 @@ export default function OtherProfile({ user, socket }: Props) {
             }}
           />
         </MainUser>
-        <Friends user={otherUser} />
+        <Friends userList={friendsList} />
         <MatchHistory user={otherUser} />
       </ProfileMasonry>
       }

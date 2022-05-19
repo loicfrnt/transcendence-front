@@ -27,7 +27,6 @@ export default function UserDesc({ user, role, children }: Props) {
         username={user.username}
         avatarId={user.avatar_id}
         size="w-[173px]"
-        noLink={false}
         status={user.status}
       />
       <h2 className={titleStyle + 'mt-[5px]'}>{user.username}</h2>
