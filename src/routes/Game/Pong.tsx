@@ -38,7 +38,6 @@ export default function Pong({ currUser, socketChannel }: Props) {
       setGame(game)
     })
     sockRef.current?.on('duels-update', (duels: Duel[]) => {
-      console.log(duels)
       setDuels(duels)
     })
 

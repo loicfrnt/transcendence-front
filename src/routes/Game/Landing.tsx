@@ -27,7 +27,7 @@ export default function Landing({
   return (
     <div className="flex items-center justify-evenly h-full w-full">
       <ContentBox button handleClick={(e) => handleClick()}>
-        <p className="font-semibold text-[2rem] m-3 ease-in-out duration-300 group-hover:text-white">
+        <p className="font-semibold text-[2rem] leading-[2rem] m-3 ease-in-out duration-300 group-hover:text-white">
           Find match
         </p>
       </ContentBox>
