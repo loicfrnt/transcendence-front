@@ -2,6 +2,7 @@ import Avatar from '../../components/Avatar'
 import { Channel, ChannelUser, ProtoChannel } from '../../types/chat'
 import { RelStatus, User } from '../../types/user'
 import { ReactComponent as SvgDuel } from '../../assets/game.svg'
+import { ReactComponent as SvgSpectate } from '../../assets/eye.svg'
 import { ReactComponent as SvgAddFriend } from '../../assets/addFriend.svg'
 import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
 import { ReactComponent as SvgBlock } from '../../assets/block.svg'
@@ -114,6 +115,13 @@ function ConvMember({
               id={`${cUser.id}duel`}
               handleClick={() => sendGameInvite(user, socket)}
             />
+            <UserButton
+              Svg={SvgSpectate}
+              tooltip="Spectate"
+              id={`${cUser.id}spectate`}
+              handleClick={() => navigate('/game/' + cUser.user.username)}
+            />
+
             {isFriend(user, thisCUser.user) ? (
               <UserButton
                 Svg={SvgRmFriend}
