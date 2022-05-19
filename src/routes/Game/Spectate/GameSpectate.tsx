@@ -44,16 +44,18 @@ export default function GameSpectate() {
   const [game, setGame] = useState<Game | null>(null)
 
   useEffect(() => {
-    const payload = { id: userId?.toString() }
-    socket?.emit('viewGame', payload, (data: any) => console.log(data))
-    sockRef.current?.on('update', (game: Game) => {
-      setGame(game)
-    })
-    sockRef.current?.on('endGame', (game: Game) => {
-      setGame(game)
-    })
-    return () => {
-      socket?.emit('leaveRoom', payload)
+    if (userId) {
+      const payload = { id: userId.toString() }
+      socket?.emit('viewGame', payload, (data: any) => console.log(data))
+      sockRef.current?.on('update', (game: Game) => {
+        setGame(game)
+      })
+      sockRef.current?.on('endGame', (game: Game) => {
+        setGame(game)
+      })
+      return () => {
+        socket?.emit('leaveRoom', payload)
+      }
     }
   }, [socket, userId])
 
