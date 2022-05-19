@@ -9,16 +9,20 @@ import usersService from '../../services/users.service'
 import userRelationshipService from '../../services/user-relationship.service'
 
 interface Props {
-  user: User
+  blocked?: User[]
 }
 
-export default function Blocked({ user }: Props) {
+export default function Blocked({ blocked }: Props) {
+  const [blockedUsrs, setBlockedUsers] = useState<User[]>();
+  useEffect(() =>{
+    setBlockedUsers(blocked);
+  }, [blocked])
   function unblock(id: number) {
     userRelationshipService.delete(id).then((response) => {
       if (response.data.id) {
         localStorage.setItem("user", JSON.stringify(response.data));
-        const arr = blocked.filter((request) => request.id !== id)
-        setBlocked(arr);
+        const arr = blockedUsrs!.filter((request) => request.id !== id)
+        setBlockedUsers(arr);
       }
     });
   }
@@ -29,10 +33,11 @@ export default function Blocked({ user }: Props) {
         <div className='flex justify-between bg-gray-light rounded-3xl h-24 pl-2 w-full'>
           <div className="flex items-center gap-5">
             <Avatar
-              noLink={false}
+              withStatus={false}
               size="h-20 w-20"
               username={user.username}
               avatarId={user.avatar_id}
+              status={user.status}
             ></Avatar>
             <h2 className="font-semibold text-lg">{user.username}</h2>
           </div>
@@ -45,37 +50,13 @@ export default function Blocked({ user }: Props) {
       </div>
     )
   }
-  const [blocked, setBlocked] = useState<User[]>([]);
-  useEffect(() =>{
-    if (user.received_relationships)
-    {
-      for (let relationship of user.received_relationships) {
-        if (relationship.status === RelStatus.Blocked)
-          usersService.getById(relationship.issuer_id).then((response) => {
-            if (!blocked.includes(response))
-              setBlocked([...blocked, response]);
-          });
-      }
-    }
-    if (user.sent_relationships)
-    {
-      for (let relationship of user.sent_relationships) {
-        if (relationship.status === RelStatus.Blocked)
-          usersService.getById(relationship.receiver_id).then((response) => {
-            if (!blocked.includes(response))
-              setBlocked([...blocked, response]);
-          });
-      }
-    }
-  },[]);
-
   return (
     <SocialItemContainer title="Blocked">
       <SocialItemList>
-        {!blocked.length ? (
+        {!blocked || !blockedUsrs || !blockedUsrs.length ? (
           <SocialNoItem msg="You didn't block anyone, great!!" />
         ) : (
-          <>{blocked.map(renderBlocked)}</>
+          <>{blockedUsrs.map(renderBlocked)}</>
         )}
       </SocialItemList>
     </SocialItemContainer>

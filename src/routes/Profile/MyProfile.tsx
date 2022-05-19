@@ -1,5 +1,5 @@
 import MainContainer from '../../components/MainContainer'
-import { User } from '../../types/user'
+import { RelStatus, User } from '../../types/user'
 import MainUser from './MainUser'
 import ProfileMasonry from './ProfileMasonry'
 import SocialButton from './SocialButton'
@@ -13,6 +13,8 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import twoFactorsAuthenticationService from '../../services/two-factors-authentication.service'
 import *  as Yup from 'yup';
 import UsersService from '../../services/users.service'
+import usersService from '../../services/users.service'
+import authenticationService from '../../services/authentication.service'
 
 interface Props {
   user: User
@@ -23,13 +25,15 @@ export default function UserProfile({ user, setConnected }: Props) {
   function logout() {
     setConnected(false);
     localStorage.removeItem("user");
+    authenticationService.logout();
   }
+  const [currUser, setCurrUser] = useState<User>(authenticationService.getCurrentUser());
   const [editOpen, setEditOpen] = useState(false);
   const [qrClassDiv, setQrClassDiv] = useState<string>('');
   const [qrClicked, setQrClicked] = useState(false);
   const [tfaOffClicked, settfaOffClicked] = useState(false);
   const [tfaActivated, setTfaActivated] = useState(() =>{
-   return user.isTwoFactorAuthenticationEnabled
+   return currUser.isTwoFactorAuthenticationEnabled
   });
   const [qrInit, setQrInit] = useState(false);
   const [img, setImg] = useState<string>();
@@ -38,15 +42,15 @@ export default function UserProfile({ user, setConnected }: Props) {
     message : ""
   });
   const [state, setState] = useState({
-    username: user.username,
-    email: user.email,
+    username: currUser.username,
+    email: currUser.email,
     password: "",
     message: ""
   });
 
   const initialValues = {
-    username: user.username,
-    email: user.email,
+    username: currUser.username,
+    email: currUser.email,
     password: ""
   };
 
@@ -65,6 +69,20 @@ export default function UserProfile({ user, setConnected }: Props) {
       (val: any) => val && val.toString().length === 6),
     });
   }
+  useEffect(() =>{
+    getRelations(currUser);
+  },[]);
+  useEffect(() => {
+
+      const intervalId = setInterval(() => {
+        usersService.getById(user.id).then((response) =>{
+          setCurrUser(response);
+          localStorage.setItem("user", JSON.stringify(response));
+          getRelations(response);
+        });
+        }, 5000);
+        return () => clearInterval(intervalId);
+  }, [])
   
   function validationSchemaTfaOff() {
     return Yup.object().shape({
@@ -79,8 +97,12 @@ export default function UserProfile({ user, setConnected }: Props) {
     twoFactorsAuthenticationService.turnOn(tfacode.toString()).then(() =>{
       setQrClicked(false);
       setQrClassDiv('');
-      user.isTwoFactorAuthenticationEnabled = true;
-      localStorage.setItem("user", JSON.stringify(user));
+      setCurrUser(prevState => {
+        let olduser = Object.assign({}, prevState);
+        olduser.isTwoFactorAuthenticationEnabled = true;
+        return olduser
+      });
+      localStorage.setItem("user", JSON.stringify(currUser));
       setTfaActivated(true);
     }, error => {
       const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -174,6 +196,59 @@ export default function UserProfile({ user, setConnected }: Props) {
       setQrInit(false);
     }
   },[qrInit]);
+  const [friendsList, setFriendsList] = useState<User[]>();
+  const [blockedList, setBlockedList] = useState<User[]>();
+  const [requestsList, setRequestsList] = useState<User[]>();
+
+  const getRelations = async (currUser: User) => {
+    let friends : User[] = [];
+    let blocked : User[] = [];
+    let requested: User[] = [];
+    if (currUser.received_relationships)
+    {
+      for (let relationship of currUser.received_relationships) {
+        if (relationship.status === RelStatus.Friends)
+        {
+          const user = await usersService.getById(relationship.issuer_id);
+          if (!friends.includes(user))
+            friends.push(user);
+        }
+        else if (relationship.status === RelStatus.Blocked)
+        {
+          const user = await usersService.getById(relationship.issuer_id);
+          if (!blocked.includes(user))
+            blocked.push(user);
+        }
+        else if (relationship.status === RelStatus.Pending)
+        {
+          const user = await usersService.getById(relationship.issuer_id);
+          if (!requested.includes(user))
+            requested.push(user);
+        }
+      }
+    }
+    if (currUser.sent_relationships)
+    {
+      for (let relationship of currUser.sent_relationships) {
+        if (relationship.status === RelStatus.Friends)
+        {
+          const user = await usersService.getById(relationship.receiver_id);
+          if (!friends.includes(user))
+            friends.push(user);
+        }
+        else if (relationship.status === RelStatus.Blocked)
+        {
+          const user = await usersService.getById(relationship.receiver_id);
+          if (!blocked.includes(user))
+            blocked.push(user);
+        }
+      }
+    }
+    setFriendsList(friends);
+    setBlockedList(blocked);
+    setRequestsList(requested);
+  }
+
   return (
     <MainContainer>
       <PopUpBox open={editOpen} setOpen={setEditOpen}>
@@ -287,14 +362,14 @@ export default function UserProfile({ user, setConnected }: Props) {
     </Formik>
     </PopUpBox>
       <ProfileMasonry>
-        <MainUser user={user}>
+        <MainUser user={currUser}>
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => setEditOpen(true)} />
         </MainUser>
-        <Friends user={user}/>
-        <MatchHistory user={user} />
-        <FriendRequests user={user} />
-        <Blocked user={user} />
+        <Friends userList={friendsList}/>
+        <MatchHistory user={currUser} />
+        <FriendRequests parentRequests={requestsList} />
+        <Blocked blocked={blockedList} />
       </ProfileMasonry>
     </MainContainer>
   )

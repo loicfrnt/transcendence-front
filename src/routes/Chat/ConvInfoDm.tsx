@@ -49,7 +49,7 @@ export default function ConvInfoDm({ channel, thisUser, socket }: Props) {
         username={user.username}
         avatarId={user.avatar_id}
         size="h-[146px]"
-        noLink={false}
+        status={user.status}
       />
       <h1 className="font-semibold text-[2rem] leading-[3rem] mt-4">
         {user.username}

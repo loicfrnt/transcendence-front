@@ -8,10 +8,10 @@ import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
 
 interface Props {
-  user : User
+  userList? : User[]
 }
 
-export default function Friends({ user }: Props) {
+export default function Friends({ userList }: Props) {
   function renderFriend(user: User, id: number) {
     return (
       <div key={id}>
@@ -20,10 +20,12 @@ export default function Friends({ user }: Props) {
           className="bg-gray-light rounded-3xl h-24 pl-2 w-full flex items-center gap-5"
         >
           <Avatar
-            noLink = {false}
+            withStatus = {false}
             size="h-20 w-20"
             username={user.username}
             avatarId={user.avatar_id}
+            status={user.status}
+            addStatus = {true}
           ></Avatar>
           <h2 className="font-semibold text-lg">{user.username}</h2>
         </Link>
@@ -31,47 +33,20 @@ export default function Friends({ user }: Props) {
     )
   }
 
-  const [userList, setUserList] = useState<User[]>([]);
-  useEffect(() =>{
-    if (user.received_relationships)
-    {
-      for (let relationship of user.received_relationships) {
-        if (relationship.status === RelStatus.Friends)
-        {
-          usersService.getById(relationship.issuer_id).then((response) => {
-            if (!userList.includes(response))
-              setUserList([...userList, response]);
-          });
-        }
-      }
-    }
-    if (user.sent_relationships)
-    {
-      for (let relationship of user.sent_relationships) {
-        if (relationship.status === RelStatus.Friends)
-        {
-          usersService.getById(relationship.receiver_id).then((response) => {
-            if (!userList.includes(response))
-              setUserList([...userList, response]);
-          });
-        }
-      }
-    }
-  },[]);
-
   function isObjectEmpty(obj: any) {
     return Object.keys(obj).length === 0;
   }
 
   return (
     <SocialItemContainer title="Friends">
-      {isObjectEmpty(userList) ? (
+      {!userList || isObjectEmpty(userList) ? (
         <SocialNoItem msg="No one here :c" />
       ) : (
         <SocialItemList>
           <>{userList.map(renderFriend)}</>
         </SocialItemList>
       )}
+      
     </SocialItemContainer>
   )
 }

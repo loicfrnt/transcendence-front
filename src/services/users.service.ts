@@ -27,8 +27,8 @@ class UsersService {
         });
     }
 
-    getById(id: number) {
-        return api.get(ROUTE + id).then(response => {
+    async getById(id: number) {
+        return await api.get(ROUTE + id).then(response => {
             return response.data;
         });
     }
