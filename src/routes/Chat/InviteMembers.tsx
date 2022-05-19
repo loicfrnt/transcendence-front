@@ -11,7 +11,6 @@ interface FriendProps {
 const Friend = ({ friend, socket, channel }: FriendProps) => {
   const user = friend.user
   const inviteMe = () => {
-    console.log('???')
     socket.emit(
       'channel_invitation',
       { channelId: channel.id, invitedId: user.id },

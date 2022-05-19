@@ -24,6 +24,7 @@ module.exports = {
         title: ['Protomo'],
       },
       screens: {
+        mini: '426px',
         sm: '966px',
         md: '1413px',
         lg: '1839px',

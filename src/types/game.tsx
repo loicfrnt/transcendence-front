@@ -1,8 +1,15 @@
 import { User } from './user'
 
+export interface Duel {
+  id: number
+  sender: User
+  receiver: User
+}
+
 export enum GameStatus {
-  RUNNING = 'running',
+  WAITING = 'waiting',
   INITIALIZATION = 'initialization',
+  RUNNING = 'running',
   STOPPED = 'stopped',
   ENDED = 'ended',
 }

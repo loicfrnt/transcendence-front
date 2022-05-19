@@ -35,7 +35,7 @@ export default function ConvInfo({
   else
     return (
       <ContentBox className="w-[400px] pt-5">
-        <ConvInfoDm channel={channel} thisUser={thisUser} />
+        <ConvInfoDm channel={channel} thisUser={thisUser} socket={socket} />
       </ContentBox>
     )
 }
