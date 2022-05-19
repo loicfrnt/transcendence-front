@@ -13,77 +13,72 @@ import authenticationService from '../../services/authentication.service'
 import dmUser from '../../utils/dmUser'
 import { Socket } from 'socket.io-client'
 import sendGameInvite from '../../utils/sendGameInvite'
+import Spinner from '../../components/Spinner'
 
 interface Props {
-  user: User
+  currUser: User
+  setCurrUser: React.Dispatch<React.SetStateAction<User>>
   socket: Socket
 }
 
-export default function OtherProfile({ user, socket }: Props) {
+export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
   const params = useParams()
   const username = params.username!
-  const isFriend = (firstUser: User, secondUser: User) => {
-    if (firstUser.received_relationships)
-      for (let relationship of firstUser.received_relationships) {
-        if (
-          (relationship.issuer_id === firstUser.id &&
-            relationship.receiver_id === secondUser?.id) ||
-          (relationship.issuer_id === secondUser?.id &&
-            relationship.receiver_id === firstUser.id)
-        ) {
-          if (relationship.status === RelStatus.Blocked) setIsBlocked(true)
-          return true
-        }
-      }
-    if (firstUser.sent_relationships)
-      for (let relationship of firstUser.sent_relationships) {
-        if (
-          (relationship.issuer_id === firstUser.id &&
-            relationship.receiver_id === secondUser?.id) ||
-          (relationship.issuer_id === secondUser?.id &&
-            relationship.receiver_id === firstUser.id)
-        ) {
-          if (
-            relationship.status === RelStatus.Pending &&
-            relationship.issuer_id === firstUser.id
-          )
-            setRmContent('Unrequest')
-          if (relationship.status === RelStatus.Blocked) setIsBlocked(true)
-          return true
-        }
-      }
-    return false
-  }
-  let navigate = useNavigate()
-  const useUser = async (username: string) => {
-    const [otherUser, setOtherUser] = useState<User>()
-    useEffect(() => {
-      if (user.username === username)
-        navigate('/profile');
-      else
-        usersService.getByUsername(username).then(
-          (response) => {
-            setOtherUser(response)
-            getRelations(response);
-          },
-          () => {
-            navigate('/404')
-          }
-        )
-    }, [username])
-    return await Promise.resolve(otherUser)
-  }
-  const [otherUser, setOtherUser] = useState<User>()
-  const [rmContent, setRmContent] = useState<string>('Unfriend')
-  const [isBlocked, setIsBlocked] = useState<boolean>(false)
-  useUser(username).then((otherUser) => {
-    setOtherUser(otherUser)
-    setFriend(isFriend(currUser!, otherUser!))
-    if (isBlocked === true) navigate('/404')
-  })
 
+  let navigate = useNavigate()
+  const [otherUser, setOtherUser] = useState<User | null>(null)
+  const [rmContent, setRmContent] = useState<string>('Unfriend')
   const [friend, setFriend] = useState<boolean>(false)
-  const [currUser, setCurrUser] = useState<User>(user)
+
+  useEffect(() => {
+    // Is user Friend
+    const isFriend = (firstUser: User, secondUser: User) => {
+      if (firstUser.received_relationships)
+        for (let relationship of firstUser.received_relationships) {
+          if (
+            (relationship.issuer_id === firstUser.id &&
+              relationship.receiver_id === secondUser?.id) ||
+            (relationship.issuer_id === secondUser?.id &&
+              relationship.receiver_id === firstUser.id)
+          ) {
+            if (relationship.status === RelStatus.Blocked) navigate('/404')
+            return true
+          }
+        }
+      if (firstUser.sent_relationships)
+        for (let relationship of firstUser.sent_relationships) {
+          if (
+            (relationship.issuer_id === firstUser.id &&
+              relationship.receiver_id === secondUser?.id) ||
+            (relationship.issuer_id === secondUser?.id &&
+              relationship.receiver_id === firstUser.id)
+          ) {
+            if (
+              relationship.status === RelStatus.Pending &&
+              relationship.issuer_id === firstUser.id
+            )
+              setRmContent('Unrequest')
+            if (relationship.status === RelStatus.Blocked) navigate('/404')
+            return true
+          }
+        }
+      return false
+    }
+    // prevent seeing you own profile
+    if (currUser.username === username) navigate('/profile')
+    else
+      usersService.getByUsername(username).then(
+        (response) => {
+          setOtherUser(response)
+          getRelations(response)
+          setFriend(isFriend(currUser, response))
+        },
+        () => {
+          navigate('/404')
+        }
+      )
+  }, [username, currUser, navigate])
+
   function addFriend() {
     userRelationshipService
       .add(otherUser!.id, RelStatus.Pending)
@@ -121,34 +116,37 @@ export default function OtherProfile({ user, socket }: Props) {
         })
     }
   }
-  const [friendsList, setFriendsList] = useState<User[]>();
+  const [friendsList, setFriendsList] = useState<User[]>()
 
   const getRelations = async (currUser: User) => {
-    let friends : User[] = [];
-    if (currUser.received_relationships)
-    {
+    let friends: User[] = []
+    if (currUser.received_relationships) {
       for (let relationship of currUser.received_relationships) {
-        if (relationship.status === RelStatus.Friends)
-        {
-          const user = await usersService.getById(relationship.issuer_id);
-          if (!friends.includes(user))
-            friends.push(user);
+        if (relationship.status === RelStatus.Friends) {
+          const user = await usersService.getById(relationship.issuer_id)
+          if (!friends.includes(user)) friends.push(user)
         }
       }
     }
-    if (currUser.sent_relationships)
-    {
+    if (currUser.sent_relationships) {
       for (let relationship of currUser.sent_relationships) {
-        if (relationship.status === RelStatus.Friends)
-        {
-          const user = await usersService.getById(relationship.receiver_id);
-          if (!friends.includes(user))
-            friends.push(user);
+        if (relationship.status === RelStatus.Friends) {
+          const user = await usersService.getById(relationship.receiver_id)
+          if (!friends.includes(user)) friends.push(user)
         }
       }
     }
-    setFriendsList(friends);
+    setFriendsList(friends)
   }
+
+  if (!otherUser)
+    return (
+      <MainContainer>
+        <div className="h-full flex items-center">
+          <Spinner />
+        </div>
+      </MainContainer>
+    )
 
   return (
     <MainContainer>

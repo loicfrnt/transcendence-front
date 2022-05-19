@@ -22,7 +22,7 @@ export default function PopUpBox({
 
   return (
     <div
-      className={`${display} bg-opacity-80 bg-violet-black items-center justify-center fixed w-screen h-screen inset-0 `}
+      className={`${display} z-10 bg-opacity-80 bg-violet-black items-center justify-center fixed w-screen h-screen inset-0 `}
       onClick={(e) => setOpen(false)}
     >
       <ContentBox

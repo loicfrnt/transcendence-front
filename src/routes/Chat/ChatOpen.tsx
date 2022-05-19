@@ -14,6 +14,29 @@ import { ReactComponent as LeaveSvg } from '../../assets/leave.svg'
 import chatService from '../../services/chat.service'
 import { useEffect } from 'react'
 import isOwner from '../../utils/isOwner'
+import Spinner from '../../components/Spinner'
+
+const ChannelNotFound = () => {
+  const [notFound, setNotFound] = useState(false)
+  useEffect(() => {
+    setTimeout(() => {
+      setNotFound(true)
+    }, 6000)
+  })
+  return (
+    <ContentBox className="w-[400px] sm:max-w-[836px] sm:grow duration-300">
+      {notFound ? (
+        <h1 className="font-semibold text-lg text-center">
+          Channel not found..
+        </h1>
+      ) : (
+        <div className="flex justify-center">
+          <Spinner />
+        </div>
+      )}
+    </ContentBox>
+  )
+}
 
 interface Props {
   thisUser: User
@@ -36,6 +59,7 @@ export default function ChatOpen({
   let navigate = useNavigate()
 
   useEffect(() => {
+    setChannel(undefined)
     chatService.getChannel(channelId, setChannel)
   }, [channelId, channelsLength])
 
@@ -63,13 +87,7 @@ export default function ChatOpen({
     channel === undefined ||
     channels.find((chan) => chan.id === channelId) === undefined
   ) {
-    return (
-      <ContentBox className="w-[400px] sm:max-w-[836px] sm:grow">
-        <h1 className="font-semibold text-lg text-center">
-          Channel not found..
-        </h1>
-      </ContentBox>
-    )
+    return <ChannelNotFound />
   }
 
   // in a function, rendered conditionnaly
@@ -100,9 +118,7 @@ export default function ChatOpen({
               onClick={(e) => setEditChanOpen(true)}
               cursor={'pointer'}
             />
-          ) : (
-            <></>
-          )}
+          ) : null}
           <LeaveSvg
             className={svgClass}
             onClick={(e) =>
@@ -149,7 +165,7 @@ export default function ChatOpen({
         setChannels={setChannels}
         thisUser={thisUser}
         socket={socket}
-      ></ConvInfo>
+      />
     </>
   )
 }

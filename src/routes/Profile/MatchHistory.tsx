@@ -58,7 +58,6 @@ export default function MatchHistory({ user }: Props) {
     setGameHistory((curr) => {
       let newHist: GameHistory[] = []
       user.gamesAsPlayer1.forEach((game) => {
-        console.log(game)
         newHist.push({
           oppenent: game.player2,
           scoreOppenent: game.player2Points as number,
@@ -84,8 +83,6 @@ export default function MatchHistory({ user }: Props) {
       return newHist
     })
   }, [user.gamesAsPlayer1, user.gamesAsPlayer2])
-
-  console.log(gameHistory.length)
 
   return (
     <SocialItemContainer title="Match History">
