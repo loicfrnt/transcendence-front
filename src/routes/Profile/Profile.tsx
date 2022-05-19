@@ -21,7 +21,13 @@ export default function Profile({
     <Routes>
       <Route
         index
-        element={<UserProfile user={currUser} setConnected={setConnected} />}
+        element={
+          <UserProfile
+            currUser={currUser}
+            setCurrUser={setCurrUser}
+            setConnected={setConnected}
+          />
+        }
       />
       <Route
         path=":username"
