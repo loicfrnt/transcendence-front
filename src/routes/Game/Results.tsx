@@ -44,9 +44,9 @@ export default function Results({
           setStep('queue')
           setGame(null)
         }}
-        className="bg-white p-3 rounded-2xl hover:bg-violet group ease-in-out duration-300 "
+        className="bg-white p-3 rounded-2xl hover:bg-violet group ease-in-out duration-300 mx-10"
       >
-        <p className="font-semibold text-[2rem] m-3 ease-in-out duration-300 group-hover:text-white">
+        <p className="font-semibold text-[2rem] leading-[2rem] m-3 ease-in-out duration-300 group-hover:text-white">
           Find another match
         </p>
       </button>
