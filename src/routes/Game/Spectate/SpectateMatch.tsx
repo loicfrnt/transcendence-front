@@ -34,7 +34,7 @@ export default function SpectateMatch({ socket, game, userId }: Props) {
         <canvas
           ref={canvas}
           id="pongCanvas"
-          className="rounded-2xl"
+          className="rounded-2xl max-w-[80vw]"
           width="640"
           height="480"
         />

@@ -19,10 +19,11 @@ export default function ControlGame({ socket, game }: Props) {
 
   function sendMouse(event: MouseEvent) {
     // if (game && game.status === 'running')
+    const hRatio = 460 / canvas.current?.getBoundingClientRect().height!
     socket.emit('mousemove', {
       id: game.id,
-      canvasLocationY: canvas.current?.getBoundingClientRect().y,
-      clientY: event.clientY,
+      canvasLocationY: canvas.current?.getBoundingClientRect().y! * hRatio,
+      clientY: event.clientY * hRatio,
     })
   }
 
@@ -35,7 +36,7 @@ export default function ControlGame({ socket, game }: Props) {
         onMouseMove={sendMouse}
         ref={canvas}
         id="pongCanvas"
-        className="rounded-2xl"
+        className="rounded-2xl max-w-[80vw]"
         width="640"
         height="480"
       />
