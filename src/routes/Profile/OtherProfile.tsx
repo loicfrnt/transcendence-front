@@ -13,6 +13,7 @@ import authenticationService from '../../services/authentication.service'
 import dmUser from '../../utils/dmUser'
 import { Socket } from 'socket.io-client'
 import sendGameInvite from '../../utils/sendGameInvite'
+import Spinner from '../../components/Spinner'
 
 interface Props {
   currUser: User
@@ -137,6 +138,15 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
     }
     setFriendsList(friends)
   }
+
+  if (!otherUser)
+    return (
+      <MainContainer>
+        <div className="h-full flex items-center">
+          <Spinner />
+        </div>
+      </MainContainer>
+    )
 
   return (
     <MainContainer>
