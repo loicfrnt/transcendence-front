@@ -76,7 +76,8 @@ export default function App() {
             path="profile/*"
             element={
               <Profile
-                thisUser={currUser}
+                currUser={currUser}
+                setCurrUser={setCurrUser}
                 setConnected={setConnected}
                 socket={socket}
               />

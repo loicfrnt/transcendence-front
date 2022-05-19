@@ -5,21 +5,33 @@ import UserProfile from './MyProfile'
 import OtherProfile from './OtherProfile'
 
 interface Props {
-  thisUser: User
+  currUser: User
+  setCurrUser: React.Dispatch<React.SetStateAction<User>>
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
   socket: Socket
 }
 
-export default function Profile({ thisUser, setConnected, socket }: Props) {
+export default function Profile({
+  currUser,
+  setCurrUser,
+  setConnected,
+  socket,
+}: Props) {
   return (
     <Routes>
       <Route
         index
-        element={<UserProfile user={thisUser} setConnected={setConnected} />}
+        element={<UserProfile user={currUser} setConnected={setConnected} />}
       />
       <Route
         path=":username"
-        element={<OtherProfile user={thisUser} socket={socket} />}
+        element={
+          <OtherProfile
+            currUser={currUser}
+            setCurrUser={setCurrUser}
+            socket={socket}
+          />
+        }
       />
     </Routes>
   )
