@@ -20,11 +20,12 @@ export interface Relationship {
   status: RelStatus
 }
 
-export interface History {
+export interface GameHistory {
   oppenent: User
   won: boolean
   scoreOppenent: number
   scorePlayer: number
+  created_at: string
 }
 
 export interface User {
@@ -36,7 +37,9 @@ export interface User {
   status: UserStatus
   victories: number
   defeats: number
-  history: History[]
+  gamesAsPlayer1: any[]
+  gamesAsPlayer2: any[]
+  // history: History[]
   channels: Channel[]
   sent_relationships: Relationship[]
   received_relationships: Relationship[]

@@ -12,6 +12,7 @@ import userRelationshipService from '../../services/user-relationship.service'
 import authenticationService from '../../services/authentication.service'
 import dmUser from '../../utils/dmUser'
 import { Socket } from 'socket.io-client'
+import sendGameInvite from '../../utils/sendGameInvite'
 
 interface Props {
   user: User
@@ -151,40 +152,48 @@ export default function OtherProfile({ user, socket }: Props) {
 
   return (
     <MainContainer>
-      {otherUser && <ProfileMasonry>
-        <MainUser user={otherUser}>
-          {friend ? (
+      {otherUser && (
+        <ProfileMasonry>
+          <MainUser user={otherUser}>
+            {friend ? (
+              <SocialButton
+                content={rmContent}
+                handleClick={() => {
+                  removeFriend()
+                }}
+              />
+            ) : (
+              <SocialButton
+                content="Add friend"
+                handleClick={() => {
+                  addFriend()
+                }}
+              />
+            )}
             <SocialButton
-              content={rmContent}
+              content="Message"
+              handleClick={() => dmUser(otherUser, socket, navigate)}
+            />
+            {/* isIngame ? Spectate : Duel */}
+            <SocialButton
+              content="Duel"
+              handleClick={() => sendGameInvite(otherUser, socket)}
+            />{' '}
+            <SocialButton
+              content="Spectate"
+              handleClick={() => navigate('/game/' + otherUser?.username)}
+            />
+            <SocialButton
+              content="Block"
               handleClick={() => {
-                removeFriend()
+                block()
               }}
             />
-          ) : (
-            <SocialButton
-              content="Add friend"
-              handleClick={() => {
-                addFriend()
-              }}
-            />
-          )}
-          <SocialButton
-            content="Message"
-            handleClick={() => dmUser(otherUser, socket, navigate)}
-          />
-          {/* isIngame ? Spectate : Duel */}
-          <SocialButton content="Spectate" handleClick={(e) => null} />
-          <SocialButton
-            content="Block"
-            handleClick={() => {
-              block()
-            }}
-          />
-        </MainUser>
-        <Friends userList={friendsList} />
-        <MatchHistory user={otherUser} />
-      </ProfileMasonry>
-      }
+          </MainUser>
+          <Friends userList={friendsList} />
+          <MatchHistory user={otherUser} />
+        </ProfileMasonry>
+      )}
     </MainContainer>
   )
 }

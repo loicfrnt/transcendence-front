@@ -8,7 +8,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Login } from './routes/Login/Login'
 import Navbar from './routes/Navbar/Navbar'
 import Home from './routes/Home/Home'
-import Pong from './routes/Game/Pong'
 import Chat from './routes/Chat/Chat'
 import { Register } from './routes/Register/Register'
 import Profile from './routes/Profile/Profile'
@@ -16,6 +15,7 @@ import { User } from './types/user'
 import authenticationService from './services/authentication.service'
 import { io, Socket } from 'socket.io-client'
 import ConnectError from './components/ConnectError'
+import GameRoutes from './routes/Game/GameRoutes'
 export default function App() {
   const [currUser, setCurrUser] = useState<User>(() => {
     return authenticationService.getCurrentUser()
@@ -66,9 +66,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navbar />}>
+        <Route path="/" element={<Navbar socket={socket} />}>
           <Route index element={<Home />} />
-          <Route path="play" element={<Pong currUser={currUser} />} />
+          <Route
+            path="game/*"
+            element={<GameRoutes currUser={currUser} socketChannel={socket} />}
+          />
           <Route
             path="profile/*"
             element={

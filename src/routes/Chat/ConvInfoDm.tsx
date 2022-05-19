@@ -5,11 +5,8 @@ import { ReactComponent as SvgDuel } from '../../assets/game.svg'
 import { ReactComponent as SvgAddFriend } from '../../assets/addFriend.svg'
 import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
 import { ReactComponent as SvgBlock } from '../../assets/block.svg'
-
-interface Props {
-  channel: Channel
-  thisUser: User
-}
+import sendGameInvite from '../../utils/sendGameInvite'
+import { Socket } from 'socket.io-client'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -17,7 +14,13 @@ function isFriend(user: User, thisUser: User) {
   return false
 }
 
-export default function ConvInfoDm({ channel, thisUser }: Props) {
+interface Props {
+  channel: Channel
+  thisUser: User
+  socket: Socket
+}
+
+export default function ConvInfoDm({ channel, thisUser, socket }: Props) {
   function dmButton(
     Svg: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
     content: string,
@@ -52,7 +55,7 @@ export default function ConvInfoDm({ channel, thisUser }: Props) {
         {user.username}
       </h1>
       <div className="flex flex-col mt-5 w-full px-2">
-        {dmButton(SvgDuel, 'Duel', (e) => null)}
+        {dmButton(SvgDuel, 'Duel', (e) => sendGameInvite(user, socket))}
         {isFriend(user, thisUser)
           ? dmButton(SvgRmFriend, 'Remove Friend', (e) => null)
           : dmButton(SvgAddFriend, 'Add Friend', (e) => null)}

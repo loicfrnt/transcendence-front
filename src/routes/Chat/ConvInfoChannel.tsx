@@ -20,6 +20,7 @@ import { useEffect } from 'react'
 import InviteMembers from './InviteMembers'
 import dmUser from '../../utils/dmUser'
 import userRelationshipService from '../../services/user-relationship.service'
+import sendGameInvite from '../../utils/sendGameInvite'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -111,7 +112,7 @@ function ConvMember({
               Svg={SvgDuel}
               tooltip="Duel"
               id={`${cUser.id}duel`}
-              handleClick={() => null}
+              handleClick={() => sendGameInvite(user, socket)}
             />
             {isFriend(user, thisCUser.user) ? (
               <UserButton

@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Socket } from 'socket.io-client'
 import ContentBox from '../../components/ContentBox'
 import Game, {
@@ -59,26 +58,7 @@ interface SetupProps {
   currUser: User
 }
 
-export default function SetupMatch({
-  setStep,
-  socket,
-  game,
-  setGame,
-  currUser,
-}: SetupProps) {
-  useEffect(() => {
-    socket.on('setupGame', (data) => {
-      setGame(data)
-    })
-    socket.on('startGame', (data) => {
-      setGame(data)
-    })
-    return () => {
-      socket.off('setupGame')
-      socket.off('startGame')
-    }
-  }, [socket, setStep, setGame])
-
+export default function SetupMatch({ socket, game, currUser }: SetupProps) {
   const oppenent =
     game.player1.user.id === currUser.id ? game.player2 : game.player1
   const player =
@@ -87,12 +67,10 @@ export default function SetupMatch({
   // Styling
   const optionGroupStyle = 'flex flex-col gap-2 items-center'
   const optionTitleStyle = 'font-semibold text-lg'
-  const optionButtonDivStyle = 'flex gap-2'
-  //dev
-  console.log(game)
+  const optionButtonDivStyle = 'flex flex-wrap gap-2 justify-center'
   return (
-    <div className="flex items-center justify-evenly h-full w-full flex-wrap gap-5">
-      <ContentBox className="flex flex-col gap-6 items-center">
+    <div className="flex items-center justify-evenly h-full w-full flex-wrap gap-5 my-3">
+      <ContentBox className="flex flex-col gap-6 items-center max-w-[90vw]">
         <div className={optionGroupStyle}>
           <h2 className={optionTitleStyle}>Paddle size</h2>
           <div className={optionButtonDivStyle}>
