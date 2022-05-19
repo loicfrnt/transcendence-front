@@ -1,4 +1,4 @@
-import { ReactComponent as SvgSpinner } from '../../assets/spinner.svg'
+import Spinner from '../../components/Spinner'
 
 interface FindMatchProps {
   message: string
@@ -10,7 +10,7 @@ export default function InQueue({ message }: FindMatchProps) {
       <p className="text-center font-semibold text-[2rem] leading-[2rem]">
         {message}
       </p>
-      <SvgSpinner className="fill-violet h-16 w-16 animate-spin" />
+      <Spinner />
     </div>
   )
 }
