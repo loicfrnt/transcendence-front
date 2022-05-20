@@ -14,6 +14,7 @@ import dmUser from '../../utils/dmUser'
 import { Socket } from 'socket.io-client'
 import sendGameInvite from '../../utils/sendGameInvite'
 import Spinner from '../../components/Spinner'
+import Achievements from './Achievements'
 
 interface Props {
   currUser: User
@@ -172,7 +173,6 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
               content="Message"
               handleClick={() => dmUser(otherUser, socket, navigate)}
             />
-            {/* isIngame ? Spectate : Duel */}
             <SocialButton
               content="Duel"
               handleClick={() => sendGameInvite(otherUser, socket)}
@@ -190,6 +190,7 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
           </MainUser>
           <Friends userList={friendsList} />
           <MatchHistory user={otherUser} />
+          <Achievements user={otherUser} />
         </ProfileMasonry>
       )}
     </MainContainer>
