@@ -244,7 +244,7 @@ export function ConvInfoChannel({
       return (
         <PopUpBox open={inviteOpen} setOpen={setInviteOpen}>
           <InviteMembers
-            friends={channel.channelUsers}
+            currUser={thisUser}
             socket={socket}
             channel={channel}
           />
