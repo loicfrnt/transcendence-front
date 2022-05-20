@@ -2,13 +2,14 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import localFilesService from '../services/local-files.service'
 import usersService from '../services/users.service'
 import { ReactComponent as Add } from '../assets/add.svg'
-import { UserStatus } from '../types/user'
+import { User, UserStatus } from '../types/user'
 import { Link } from 'react-router-dom'
 
 interface AvatarProps {
   avatarId: number
   username: string
   currUser?: boolean
+  setCurrUser?: React.Dispatch<React.SetStateAction<User>> | null
   size?: string
   status: UserStatus
   addStatus?: boolean
@@ -19,6 +20,7 @@ export default function Avatar({
   avatarId,
   username,
   currUser = false,
+  setCurrUser = null,
   size = 'h-16 w-16',
   status,
   noLink = false,
@@ -63,7 +65,7 @@ export default function Avatar({
       fd.append('file', event.target.files[0])
       usersService.uploadFile(fd).then((response) => {
         localStorage.setItem('user', JSON.stringify(response.data))
-        // Mayber SetUser here
+        setCurrUser && setCurrUser(response.data)
       })
     }
   }

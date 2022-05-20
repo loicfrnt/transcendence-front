@@ -15,6 +15,7 @@ import * as Yup from 'yup'
 import UsersService from '../../services/users.service'
 import usersService from '../../services/users.service'
 import authenticationService from '../../services/authentication.service'
+import Achievements from './Achievements'
 
 interface Props {
   currUser: User
@@ -35,7 +36,7 @@ export default function MyProfile({
   // Load CurrentUser on page load
   useEffect(() => {
     setCurrUser(authenticationService.getCurrentUser())
-  }, [])
+  }, [setCurrUser])
 
   const [editOpen, setEditOpen] = useState(false)
   const [qrClassDiv, setQrClassDiv] = useState<string>('')
@@ -544,7 +545,7 @@ export default function MyProfile({
         </Formik>
       </PopUpBox>
       <ProfileMasonry>
-        <MainUser user={currUser} currUser>
+        <MainUser user={currUser} setCurrUser={setCurrUser} currUser>
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => setEditOpen(true)} />
         </MainUser>
@@ -552,6 +553,7 @@ export default function MyProfile({
         <MatchHistory user={currUser} />
         <FriendRequests parentRequests={requestsList} />
         <Blocked blocked={blockedList} />
+        <Achievements user={currUser} />
       </ProfileMasonry>
     </MainContainer>
   )
