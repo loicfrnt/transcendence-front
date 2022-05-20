@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
 import Avatar from '../../components/Avatar'
+import Spinner from '../../components/Spinner'
 import { User } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
 
 interface Props {
-  userList?: User[]
+  userList?: User[] | null
 }
 
 export default function Friends({ userList }: Props) {
@@ -37,7 +38,9 @@ export default function Friends({ userList }: Props) {
 
   return (
     <SocialItemContainer title="Friends">
-      {!userList || isObjectEmpty(userList) ? (
+      {!userList ? (
+        <Spinner center />
+      ) : isObjectEmpty(userList) ? (
         <SocialNoItem msg="No one here :c" />
       ) : (
         <SocialItemList>

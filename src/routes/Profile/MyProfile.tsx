@@ -251,9 +251,9 @@ export default function MyProfile({
       setQrInit(false)
     }
   }, [qrInit])
-  const [friendsList, setFriendsList] = useState<User[]>()
-  const [blockedList, setBlockedList] = useState<User[]>()
-  const [requestsList, setRequestsList] = useState<User[]>()
+  const [friendsList, setFriendsList] = useState<User[] | null>(null)
+  const [blockedList, setBlockedList] = useState<User[] | null>(null)
+  const [requestsList, setRequestsList] = useState<User[] | null>(null)
 
   const getRelations = async (currUser: User) => {
     let friends: User[] = []

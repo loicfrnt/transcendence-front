@@ -6,13 +6,14 @@ import SocialNoItem from './SocialNoItem'
 import { ReactComponent as Add } from '../../assets/add.svg'
 import { useEffect, useState } from 'react'
 import userRelationshipService from '../../services/user-relationship.service'
+import Spinner from '../../components/Spinner'
 
 interface Props {
-  blocked?: User[]
+  blocked?: User[] | null
 }
 
 export default function Blocked({ blocked }: Props) {
-  const [blockedUsrs, setBlockedUsers] = useState<User[]>()
+  const [blockedUsrs, setBlockedUsers] = useState<User[] | null>()
   useEffect(() => {
     setBlockedUsers(blocked)
   }, [blocked])
@@ -56,7 +57,9 @@ export default function Blocked({ blocked }: Props) {
   return (
     <SocialItemContainer title="Blocked">
       <SocialItemList>
-        {!blocked || !blockedUsrs || !blockedUsrs.length ? (
+        {!blocked ? (
+          <Spinner center />
+        ) : !blockedUsrs || !blockedUsrs.length ? (
           <SocialNoItem msg="You didn't block anyone, great!!" />
         ) : (
           <>{blockedUsrs.map(renderBlocked)}</>

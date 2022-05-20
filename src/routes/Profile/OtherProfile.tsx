@@ -117,7 +117,7 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
         })
     }
   }
-  const [friendsList, setFriendsList] = useState<User[]>()
+  const [friendsList, setFriendsList] = useState<User[] | null>(null)
 
   const getRelations = async (currUser: User) => {
     let friends: User[] = []
