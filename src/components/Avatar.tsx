@@ -21,7 +21,7 @@ export default function Avatar({
   currUser = false,
   size = 'h-16 w-16',
   status,
-  noLink = true,
+  noLink = false,
   addStatus = false,
 }: AvatarProps) {
   const classes = `block bg-cover rounded-full aspect-square ${size}`

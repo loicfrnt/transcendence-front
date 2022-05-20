@@ -26,6 +26,7 @@ export default function MainUser({
         size="max-h-[316px] max-w-[316px] w-full"
         status={user?.status}
         currUser={currUser}
+        noLink
       />
       <h2 className={titleStyle + 'mt-5'}>{user?.username}</h2>
       <div className="w-full flex justify-evenly mt-2">

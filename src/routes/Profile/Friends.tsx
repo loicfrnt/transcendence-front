@@ -23,6 +23,7 @@ export default function Friends({ userList }: Props) {
             avatarId={user.avatar_id}
             status={user.status}
             addStatus={true}
+            noLink
           ></Avatar>
           <h2 className="font-semibold text-lg">{user.username}</h2>
         </Link>

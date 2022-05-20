@@ -35,6 +35,7 @@ export default function MatchHistory({ user }: Props) {
               username={user.username}
               avatarId={user.avatar_id}
               status={user.status}
+              noLink
             />
             <span className="font-semibold text-lg">
               {match.scorePlayer} - {match.scoreOppenent}
