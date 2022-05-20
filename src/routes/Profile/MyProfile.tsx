@@ -22,7 +22,7 @@ interface Props {
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function UserProfile({
+export default function MyProfile({
   currUser,
   setCurrUser,
   setConnected,
@@ -544,7 +544,7 @@ export default function UserProfile({
         </Formik>
       </PopUpBox>
       <ProfileMasonry>
-        <MainUser user={currUser}>
+        <MainUser user={currUser} currUser>
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => setEditOpen(true)} />
         </MainUser>

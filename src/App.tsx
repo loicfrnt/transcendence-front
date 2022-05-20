@@ -17,9 +17,9 @@ import { io, Socket } from 'socket.io-client'
 import ConnectError from './components/ConnectError'
 import GameRoutes from './routes/Game/GameRoutes'
 export default function App() {
-  const [currUser, setCurrUser] = useState<User>(() => {
-    return authenticationService.getCurrentUser()
-  })
+  const [currUser, setCurrUser] = useState<User>(
+    authenticationService.getCurrentUser()
+  )
   const savedConnected = localStorage.getItem('connected')
   const [connected, setConnected] = useState(
     // Recover Connected state from cache
