@@ -25,23 +25,13 @@ export default function Avatar({
   addStatus = false,
 }: AvatarProps) {
   const classes = `block bg-cover rounded-full aspect-square ${size}`
-  // const [state, setState] = useState({
-  //   username : username,
-  //   avatarId : avatarId,
-  //   status: status
-  // });
+
   const [img, setImg] = useState<string>()
-  const [badge, setBadge] = useState({
-    color: 'bg-gray-400',
-    title: 'unavailable',
-  })
-  // useEffect(() =>{
-  //   setState({
-  //     username : username,
-  //     avatarId : avatarId,
-  //     status: status
-  //   });
-  // }, [status]);
+  // const [badge, setBadge] = useState({
+  //   color: 'bg-gray-400',
+  //   title: 'unavailable',
+  // })
+
   useEffect(() => {
     const fetchImage = async () => {
       const imgUrl = await localFilesService.retriveFile(avatarId)
@@ -49,24 +39,21 @@ export default function Avatar({
     }
     fetchImage()
   }, [avatarId])
-  useEffect(() => {
-    if (status === UserStatus.Online) {
-      setBadge({
-        color: 'bg-green',
-        title: 'connected',
-      })
-    } else if (status === UserStatus.Playing) {
-      setBadge({
-        color: 'bg-orange',
-        title: 'Playing',
-      })
-    } else {
-      setBadge({
-        color: 'bg-gray-400',
-        title: 'unavailable',
-      })
-    }
-  }, [status])
+  const badge = {
+    color:
+      status === UserStatus.Online
+        ? 'bg-green'
+        : status === UserStatus.Playing
+        ? 'bg-orange'
+        : 'bg-gray-400',
+    title:
+      status === UserStatus.Online
+        ? 'Online'
+        : status === UserStatus.Playing
+        ? 'Playing'
+        : 'Offline',
+  }
+
   const imageUploader = useRef(document.createElement('input'))
   const handleSetImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return
@@ -76,11 +63,7 @@ export default function Avatar({
       fd.append('file', event.target.files[0])
       usersService.uploadFile(fd).then((response) => {
         localStorage.setItem('user', JSON.stringify(response.data))
-        // setState({
-        //   avatarId: response.data.avatar_id,
-        //   username: response.data.username,
-        //   status: response.data.status,
-        // })
+        // Mayber SetUser here
       })
     }
   }
