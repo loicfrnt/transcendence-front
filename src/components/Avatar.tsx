@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 interface AvatarProps {
   avatarId: number
   username: string
-  withStatus?: boolean
+  currUser?: boolean
   size?: string
   status: UserStatus
   addStatus?: boolean
@@ -18,7 +18,7 @@ interface AvatarProps {
 export default function Avatar({
   avatarId,
   username,
-  withStatus = false,
+  currUser = false,
   size = 'h-16 w-16',
   status,
   noLink = true,
@@ -67,7 +67,7 @@ export default function Avatar({
       })
     }
   }
-  if (!withStatus) {
+  if (!currUser) {
     if (!noLink) {
       return (
         <div>
@@ -84,7 +84,7 @@ export default function Avatar({
             <span
               className={`inline-flex items-center p-3 mr-1 text-sm font-semibold ${badge.color} rounded-full absolute`}
               title={badge.title}
-            ></span>
+            />
           )}
         </div>
       )

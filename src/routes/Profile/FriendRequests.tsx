@@ -6,32 +6,33 @@ import SocialNoItem from './SocialNoItem'
 import { ReactComponent as Accept } from '../../assets/accept.svg'
 import { ReactComponent as Reject } from '../../assets/reject.svg'
 import { useEffect, useState } from 'react'
-import usersService from '../../services/users.service'
 import userRelationshipService from '../../services/user-relationship.service'
 
 interface Props {
-  parentRequests? : User[]
+  parentRequests?: User[]
 }
 
 export default function FriendRequests({ parentRequests }: Props) {
   const svgClass = 'ease-in-out duration-300 fill-gray group-hover:fill-violet'
 
   function acceptRelation(id: number) {
-    userRelationshipService.updateStatus(id, RelStatus.Friends).then((response) => {
-      if (response.data.id) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        const arr = requests!.filter((request) => request.id !== id)
-        setRequests(arr);
-    }
-    });
+    userRelationshipService
+      .updateStatus(id, RelStatus.Friends)
+      .then((response) => {
+        if (response.data.id) {
+          localStorage.setItem('user', JSON.stringify(response.data))
+          const arr = requests!.filter((request) => request.id !== id)
+          setRequests(arr)
+        }
+      })
   }
 
   function declineRelation(id: number) {
     userRelationshipService.delete(id).then((response) => {
-localStorage.setItem("user", JSON.stringify(response.data));
-        const arr = requests!.filter((request) => request.id !== id)
-        setRequests(arr);
-    });
+      localStorage.setItem('user', JSON.stringify(response.data))
+      const arr = requests!.filter((request) => request.id !== id)
+      setRequests(arr)
+    })
   }
 
   function renderRequest(user: User, id: number) {
@@ -40,7 +41,6 @@ localStorage.setItem("user", JSON.stringify(response.data));
         <div className="flex justify-between bg-gray-light rounded-3xl h-24 pl-2 w-full ">
           <div className="flex items-center gap-5">
             <Avatar
-              withStatus={false}
               size="h-20 w-20"
               username={user.username}
               avatarId={user.avatar_id}
@@ -50,10 +50,20 @@ localStorage.setItem("user", JSON.stringify(response.data));
           </div>
           <div className="flex flex-col justify-center gap-1.5 h-full pr-3">
             <button className="group">
-              <Accept className={svgClass} onClick={() => {acceptRelation(user.id);}}/>
+              <Accept
+                className={svgClass}
+                onClick={() => {
+                  acceptRelation(user.id)
+                }}
+              />
             </button>
             <button className="group">
-              <Reject className={svgClass} onClick={() => {declineRelation(user.id);}}/>
+              <Reject
+                className={svgClass}
+                onClick={() => {
+                  declineRelation(user.id)
+                }}
+              />
             </button>
           </div>
         </div>
@@ -61,15 +71,14 @@ localStorage.setItem("user", JSON.stringify(response.data));
     )
   }
 
-  const [requests, setRequests] = useState<User[]>();
+  const [requests, setRequests] = useState<User[]>()
 
-
-  useEffect(() =>{
-    setRequests(parentRequests);
-  },[parentRequests])
+  useEffect(() => {
+    setRequests(parentRequests)
+  }, [parentRequests])
 
   function isObjectEmpty(obj: any) {
-    return Object.keys(obj).length === 0;
+    return Object.keys(obj).length === 0
   }
 
   return (

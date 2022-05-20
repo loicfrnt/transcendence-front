@@ -2,6 +2,7 @@ import { User } from '../../types/user'
 import Avatar from '../../components/Avatar'
 import ContentBox from '../../components/ContentBox'
 import { ReactElement } from 'react'
+import ratio from '../../utils/ratio'
 
 interface Props {
   user: User
@@ -10,13 +11,6 @@ interface Props {
 }
 
 export default function UserDesc({ user, role, children }: Props) {
-  function ratio(victories: number, defeats: number): number {
-    if (!defeats) {
-      return victories ? 1 : 0
-    }
-    return victories / defeats
-  }
-
   const titleStyle =
     'text-[2rem] leading-[2.625rem] font-semibold break-words w-full '
   const statsStyle = 'text-[1.375rem] leading-[2.625rem] font-normal'
@@ -33,8 +27,8 @@ export default function UserDesc({ user, role, children }: Props) {
       <h2 className={titleStyle + 'mt-[5px]'}>{user.username}</h2>
       <div className={statsStyle}>{user.victories} Wins</div>
       <div className={statsStyle}>{user.defeats} Loses</div>
-      <div className={statsStyle}>
-        {ratio(user.victories, user.defeats)} Ratio
+      <div className={statsStyle} title="Winrate">
+        {ratio(user.victories, user.defeats)}%
       </div>
       {children}
     </ContentBox>

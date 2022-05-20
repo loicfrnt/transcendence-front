@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import { Socket } from 'socket.io-client'
 import { User } from '../../types/user'
-import UserProfile from './MyProfile'
+import MyProfile from './MyProfile'
 import OtherProfile from './OtherProfile'
 
 interface Props {
@@ -22,7 +22,7 @@ export default function Profile({
       <Route
         index
         element={
-          <UserProfile
+          <MyProfile
             currUser={currUser}
             setCurrUser={setCurrUser}
             setConnected={setConnected}

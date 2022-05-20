@@ -31,7 +31,6 @@ export default function MatchHistory({ user }: Props) {
           </span>
           <div className="flex items-center gap-3">
             <Avatar
-              withStatus={false}
               size="h-9 w-9"
               username={user.username}
               avatarId={user.avatar_id}
@@ -41,7 +40,6 @@ export default function MatchHistory({ user }: Props) {
               {match.scorePlayer} - {match.scoreOppenent}
             </span>
             <Avatar
-              withStatus={false}
               size="h-9 w-9"
               username={match.oppenent.username}
               avatarId={match.oppenent.avatar_id}
