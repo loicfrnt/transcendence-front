@@ -1,3 +1,4 @@
+import { AcheivementHistory } from './acheivement-history'
 import { Channel } from './chat'
 
 export enum UserStatus {
@@ -43,6 +44,7 @@ export interface User {
   channels: Channel[]
   sent_relationships: Relationship[]
   received_relationships: Relationship[]
+  acheivements_history: AcheivementHistory[]
 }
 
 export interface ProtoUser {
