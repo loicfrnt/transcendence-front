@@ -140,18 +140,11 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
     setFriendsList(friends)
   }
 
-  if (!otherUser)
-    return (
-      <MainContainer>
-        <div className="h-full flex items-center">
-          <Spinner />
-        </div>
-      </MainContainer>
-    )
-
   return (
     <MainContainer>
-      {otherUser && (
+      {!otherUser ? (
+        <Spinner center />
+      ) : (
         <ProfileMasonry>
           <MainUser user={otherUser}>
             {friend ? (

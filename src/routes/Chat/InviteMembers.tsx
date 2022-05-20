@@ -96,11 +96,7 @@ export default function InviteMembers({ currUser, socket, channel }: Props) {
   return (
     <div className="flex flex-col gap-3 min-w-[250px] max-w-[400px]">
       <h1 className="font-bold text-3xl mb">Invite Friends</h1>
-      {loading && (
-        <div className="flex justify-center">
-          <Spinner />
-        </div>
-      )}
+      {loading && <Spinner center />}
       <div
         className={`flex flex-col gap-0 rounded-3xl border-gray overflow-auto ${border}`}
       >
