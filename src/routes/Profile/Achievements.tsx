@@ -1,16 +1,14 @@
 import { Link } from 'react-router-dom'
 import Avatar from '../../components/Avatar'
-import Spinner from '../../components/Spinner'
 import { User } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
-import SocialNoItem from './SocialNoItem'
 
 interface Props {
-  userList?: User[] | null
+  user: User
 }
 
-export default function Friends({ userList }: Props) {
+export default function Friends({ user }: Props) {
   function renderFriend(user: User, id: number) {
     return (
       <div key={id}>
@@ -31,22 +29,11 @@ export default function Friends({ userList }: Props) {
       </div>
     )
   }
-
-  function isObjectEmpty(obj: any) {
-    return Object.keys(obj).length === 0
-  }
-
   return (
-    <SocialItemContainer title="Friends">
-      {!userList ? (
-        <Spinner center />
-      ) : isObjectEmpty(userList) ? (
-        <SocialNoItem msg="No one here :c" />
-      ) : (
-        <SocialItemList>
-          <>{userList.map(renderFriend)}</>
-        </SocialItemList>
-      )}
+    <SocialItemContainer title="Achievements">
+      <SocialItemList>
+        <p>liste d'achievements</p>
+      </SocialItemList>
     </SocialItemContainer>
   )
 }

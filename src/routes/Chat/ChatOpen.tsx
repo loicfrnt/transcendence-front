@@ -30,9 +30,7 @@ const ChannelNotFound = () => {
           Channel not found..
         </h1>
       ) : (
-        <div className="flex justify-center">
-          <Spinner />
-        </div>
+        <Spinner center />
       )}
     </ContentBox>
   )

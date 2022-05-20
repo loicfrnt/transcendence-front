@@ -7,12 +7,14 @@ interface MyProps {
   user: User
   children?: React.ReactNode
   currUser?: boolean
+  setCurrUser?: React.Dispatch<React.SetStateAction<User>> | null
 }
 
 export default function MainUser({
   user,
   children,
   currUser = false,
+  setCurrUser = null,
 }: MyProps) {
   const titleStyle = 'text-[2rem] leading-[2.625rem] font-semibold '
   const statsStyle =
@@ -26,6 +28,7 @@ export default function MainUser({
         size="max-h-[316px] max-w-[316px] w-full"
         status={user?.status}
         currUser={currUser}
+        setCurrUser={setCurrUser}
         noLink
       />
       <h2 className={titleStyle + 'mt-5'}>{user?.username}</h2>

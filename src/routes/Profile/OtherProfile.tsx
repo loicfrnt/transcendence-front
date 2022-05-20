@@ -14,6 +14,7 @@ import dmUser from '../../utils/dmUser'
 import { Socket } from 'socket.io-client'
 import sendGameInvite from '../../utils/sendGameInvite'
 import Spinner from '../../components/Spinner'
+import Achievements from './Achievements'
 
 interface Props {
   currUser: User
@@ -116,7 +117,7 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
         })
     }
   }
-  const [friendsList, setFriendsList] = useState<User[]>()
+  const [friendsList, setFriendsList] = useState<User[] | null>(null)
 
   const getRelations = async (currUser: User) => {
     let friends: User[] = []
@@ -139,18 +140,11 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
     setFriendsList(friends)
   }
 
-  if (!otherUser)
-    return (
-      <MainContainer>
-        <div className="h-full flex items-center">
-          <Spinner />
-        </div>
-      </MainContainer>
-    )
-
   return (
     <MainContainer>
-      {otherUser && (
+      {!otherUser ? (
+        <Spinner center />
+      ) : (
         <ProfileMasonry>
           <MainUser user={otherUser}>
             {friend ? (
@@ -172,7 +166,6 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
               content="Message"
               handleClick={() => dmUser(otherUser, socket, navigate)}
             />
-            {/* isIngame ? Spectate : Duel */}
             <SocialButton
               content="Duel"
               handleClick={() => sendGameInvite(otherUser, socket)}
@@ -190,6 +183,7 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
           </MainUser>
           <Friends userList={friendsList} />
           <MatchHistory user={otherUser} />
+          <Achievements user={otherUser} />
         </ProfileMasonry>
       )}
     </MainContainer>

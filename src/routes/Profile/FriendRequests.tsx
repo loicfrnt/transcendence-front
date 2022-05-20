@@ -7,9 +7,10 @@ import { ReactComponent as Accept } from '../../assets/accept.svg'
 import { ReactComponent as Reject } from '../../assets/reject.svg'
 import { useEffect, useState } from 'react'
 import userRelationshipService from '../../services/user-relationship.service'
+import Spinner from '../../components/Spinner'
 
 interface Props {
-  parentRequests?: User[]
+  parentRequests?: User[] | null
 }
 
 export default function FriendRequests({ parentRequests }: Props) {
@@ -71,7 +72,7 @@ export default function FriendRequests({ parentRequests }: Props) {
     )
   }
 
-  const [requests, setRequests] = useState<User[]>()
+  const [requests, setRequests] = useState<User[] | null>()
 
   useEffect(() => {
     setRequests(parentRequests)
@@ -83,7 +84,9 @@ export default function FriendRequests({ parentRequests }: Props) {
 
   return (
     <SocialItemContainer title="Friend Requests">
-      {!requests || isObjectEmpty(requests) ? (
+      {!requests ? (
+        <Spinner center />
+      ) : isObjectEmpty(requests) ? (
         <SocialNoItem msg="No requests.. (yet!)" />
       ) : (
         <SocialItemList>
