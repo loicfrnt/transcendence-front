@@ -553,7 +553,7 @@ export default function MyProfile({
         <MatchHistory user={currUser} />
         <FriendRequests parentRequests={requestsList} />
         <Blocked blocked={blockedList} />
-        <Achievements user={currUser} />
+        <Achievements achievementHistory={currUser.acheivements_history} />
       </ProfileMasonry>
     </MainContainer>
   )
