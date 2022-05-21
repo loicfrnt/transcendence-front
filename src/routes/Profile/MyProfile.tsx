@@ -92,6 +92,7 @@ export default function MyProfile({
         setCurrUser(response)
         localStorage.setItem('user', JSON.stringify(response))
         getRelations(response)
+        console.log(response);
       })
     }, 5000)
     return () => clearInterval(intervalId)

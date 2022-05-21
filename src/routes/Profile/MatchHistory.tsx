@@ -6,6 +6,7 @@ import { User, GameHistory } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
+import GameService from '../../services/game.service'
 
 interface Props {
   user: User
@@ -54,32 +55,8 @@ export default function MatchHistory({ user }: Props) {
   const [gameHistory, setGameHistory] = useState<GameHistory[]>([])
 
   useEffect(() => {
-    setGameHistory((curr) => {
-      let newHist: GameHistory[] = []
-      user.gamesAsPlayer1.forEach((game) => {
-        newHist.push({
-          oppenent: game.player2,
-          scoreOppenent: game.player2Points as number,
-          scorePlayer: game.player1Points as number,
-          won: game.player1Points >= game.player2Points,
-          created_at: game.created_at,
-        })
-      })
-      user.gamesAsPlayer2.forEach((game) => {
-        newHist.push({
-          oppenent: game.player1,
-          scoreOppenent: game.player1Points as number,
-          scorePlayer: game.player2Points as number,
-          won: game.player2Points >= game.player1Points,
-          created_at: game.created_at,
-        })
-      })
-      newHist.sort((a, b) => {
-        let d1 = Date.parse(a.created_at)
-        let d2 = Date.parse(b.created_at)
-        return d2 - d1
-      })
-      return newHist
+    setGameHistory(() => {
+      return GameService.getGameHistory(user);
     })
   }, [user.gamesAsPlayer1, user.gamesAsPlayer2])
 
