@@ -2,11 +2,13 @@ import Avatar from '../../components/Avatar'
 import { Channel } from '../../types/chat'
 import { User } from '../../types/user'
 import { ReactComponent as SvgDuel } from '../../assets/game.svg'
+import { ReactComponent as SvgSpectate } from '../../assets/eye.svg'
 import { ReactComponent as SvgAddFriend } from '../../assets/addFriend.svg'
 import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
 import { ReactComponent as SvgBlock } from '../../assets/block.svg'
 import sendGameInvite from '../../utils/sendGameInvite'
 import { Socket } from 'socket.io-client'
+import { useNavigate } from 'react-router-dom'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -39,6 +41,7 @@ export default function ConvInfoDm({ channel, thisUser, socket }: Props) {
   const cUser = channel.channelUsers.find(
     (cUser) => cUser.user.id !== thisUser.id
   )
+  let navigate = useNavigate()
   if (cUser === undefined) {
     return <span>Something went wrong</span>
   }
@@ -56,6 +59,9 @@ export default function ConvInfoDm({ channel, thisUser, socket }: Props) {
       </h1>
       <div className="flex flex-col mt-5 w-full px-2">
         {dmButton(SvgDuel, 'Duel', (e) => sendGameInvite(user, socket))}
+        {dmButton(SvgSpectate, 'Spectate', (e) =>
+          navigate('/game/' + user.username)
+        )}
         {isFriend(user, thisUser)
           ? dmButton(SvgRmFriend, 'Remove Friend', (e) => null)
           : dmButton(SvgAddFriend, 'Add Friend', (e) => null)}

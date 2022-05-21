@@ -2,6 +2,7 @@ import Avatar from '../../components/Avatar'
 import { Channel, ChannelUser, ProtoChannel } from '../../types/chat'
 import { RelStatus, User } from '../../types/user'
 import { ReactComponent as SvgDuel } from '../../assets/game.svg'
+import { ReactComponent as SvgSpectate } from '../../assets/eye.svg'
 import { ReactComponent as SvgAddFriend } from '../../assets/addFriend.svg'
 import { ReactComponent as SvgRmFriend } from '../../assets/rmFriend.svg'
 import { ReactComponent as SvgBlock } from '../../assets/block.svg'
@@ -99,7 +100,12 @@ function ConvMember({
         to={'/profile/' + user.username}
         className="duration-300 hover:bg-gray-light  p-2 flex"
       >
-        <Avatar username={user.username} avatarId={user.avatar_id} status={user.status}/>
+        <Avatar
+          username={user.username}
+          avatarId={user.avatar_id}
+          status={user.status}
+          noLink
+        />
         <div className="flex flex-col">
           <div className="flex gap-x-1 ml-2 items-center flex-wrap">
             <h2 className="font-semibold text-lg">{user.username}</h2>
@@ -114,6 +120,13 @@ function ConvMember({
               id={`${cUser.id}duel`}
               handleClick={() => sendGameInvite(user, socket)}
             />
+            <UserButton
+              Svg={SvgSpectate}
+              tooltip="Spectate"
+              id={`${cUser.id}spectate`}
+              handleClick={() => navigate('/game/' + cUser.user.username)}
+            />
+
             {isFriend(user, thisCUser.user) ? (
               <UserButton
                 Svg={SvgRmFriend}
@@ -231,7 +244,7 @@ export function ConvInfoChannel({
       return (
         <PopUpBox open={inviteOpen} setOpen={setInviteOpen}>
           <InviteMembers
-            friends={channel.channelUsers}
+            currUser={thisUser}
             socket={socket}
             channel={channel}
           />

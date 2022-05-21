@@ -1,15 +1,15 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import localFilesService from '../services/local-files.service'
 import usersService from '../services/users.service'
-import {ReactComponent as Add} from '../assets/add.svg'
-import { stat } from 'fs'
-import { UserStatus } from '../types/user'
+import { ReactComponent as Edit } from '../assets/pen.svg'
+import { User, UserStatus } from '../types/user'
 import { Link } from 'react-router-dom'
 
 interface AvatarProps {
   avatarId: number
   username: string
-  withStatus?: boolean
+  currUser?: boolean
+  setCurrUser?: React.Dispatch<React.SetStateAction<User>> | null
   size?: string
   status: UserStatus
   addStatus?: boolean
@@ -19,110 +19,100 @@ interface AvatarProps {
 export default function Avatar({
   avatarId,
   username,
-  withStatus = false,
+  currUser = false,
+  setCurrUser = null,
   size = 'h-16 w-16',
   status,
-  noLink = true,
+  noLink = false,
   addStatus = false,
 }: AvatarProps) {
   const classes = `block bg-cover rounded-full aspect-square ${size}`
-  const [state, setState] = useState({
-    username : username,
-    avatarId : avatarId,
-    status: status
-  });
-  const [img, setImg] = useState<string>();
-  const [badge, setBadge] = useState({
-    color: 'bg-gray-400',
-    title: 'unavailable'
-  });
-  useEffect(() =>{
-    setState({
-      username : username,
-      avatarId : avatarId,
-      status: status
-    });
-  }, [status]);
-  useEffect( () =>{
-    const fetchImage = async() =>{
-      const imgUrl = await localFilesService.retriveFile(state.avatarId);
-      setImg(imgUrl);
-    };
-    fetchImage();
-  }, [state.avatarId]);
+
+  const [img, setImg] = useState<string>()
+  // const [badge, setBadge] = useState({
+  //   color: 'bg-gray-400',
+  //   title: 'unavailable',
+  // })
+
   useEffect(() => {
-    if (state.status === UserStatus.Online)
-    {
-      setBadge({
-        color: 'bg-green',
-        title: 'connected'
-      });
+    const fetchImage = async () => {
+      const imgUrl = await localFilesService.retriveFile(avatarId)
+      setImg(imgUrl)
     }
-    else if (state.status === UserStatus.Playing)
-    {
-      setBadge({
-        color: 'bg-orange',
-        title: 'Playing'
-      });
-    }
-    else
-    {
-      setBadge({
-        color: 'bg-gray-400',
-        title: 'unavailable'
-      });
-    }
-  }, [state.status])
-  const imageUploader = useRef(document.createElement("input"));
+    fetchImage()
+  }, [avatarId])
+  const badge = {
+    color:
+      status === UserStatus.Online
+        ? 'bg-green'
+        : status === UserStatus.Playing
+        ? 'bg-orange'
+        : 'bg-gray-400',
+    title:
+      status === UserStatus.Online
+        ? 'Online'
+        : status === UserStatus.Playing
+        ? 'Playing'
+        : 'Offline',
+  }
+
+  const imageUploader = useRef(document.createElement('input'))
   const handleSetImage = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files)
-      return;
-    else
-    {
-      console.log(event.target.files);
-      let fd = new FormData();
-      fd.append('file', event.target.files[0]);
+    if (!event.target.files) return
+    else {
+      console.log(event.target.files)
+      let fd = new FormData()
+      fd.append('file', event.target.files[0])
       usersService.uploadFile(fd).then((response) => {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        setState({
-          avatarId: response.data.avatar_id,
-          username: response.data.username,
-          status: response.data.status
-        });
-      });
+        localStorage.setItem('user', JSON.stringify(response.data))
+        setCurrUser && setCurrUser(response.data)
+      })
     }
   }
-  if (!withStatus) {
-    if (!noLink)
-    {
+  if (!currUser) {
+    if (!noLink) {
       return (
         <div>
-        <Link to={'/profile/' + username}><img src={img}  className={classes} alt='Profile pic'/> </Link>
+          <Link to={'/profile/' + username}>
+            <img src={img} className={classes} alt="Profile pic" />{' '}
+          </Link>
         </div>
       )
-    }
-    else
+    } else
       return (
-        <div className='flex relative'>
-          <img src={img}  className={classes} alt='Profile pic'/>
-          {addStatus && <span className={`inline-flex items-center p-3 mr-1 text-sm font-semibold ${badge.color} rounded-full absolute`} title={badge.title}></span>}
+        <div className="flex relative">
+          <img src={img} className={classes} alt="Profile pic" />
+          {addStatus && (
+            <span
+              className={`inline-flex items-center p-3 mr-1 text-sm font-semibold ${badge.color} rounded-full absolute`}
+              title={badge.title}
+            />
+          )}
         </div>
       )
   }
 
   return (
-    <div>
+    <div className="relative">
       <input
-          type="file"
-          accept="image/*"
-          onChange={e => handleSetImage(e)}
-          ref={imageUploader}
-          style={{
-            display: "none"
-          }}
-        />
-      <Add title='Upload Profile Image' className='ease-in-out duration-300 fill-gray group-hover:fill-violet float-right' onClick={() => {imageUploader.current.click()}}/>
-      <img src={img} className={classes} alt='Profile pic'/>
+        type="file"
+        accept="image/*"
+        onChange={(e) => handleSetImage(e)}
+        ref={imageUploader}
+        style={{
+          display: 'none',
+        }}
+      />
+      <button
+        title="Upload Profile Picture"
+        className="absolute top-[8%] right-[8%] duration-300 border border-gray bg-white hover:bg-gray h-14 w-14 rounded-full flex items-center justify-center group"
+        onClick={() => {
+          imageUploader.current.click()
+        }}
+      >
+        <Edit className="h-8 w-8 ease-in-out duration-300 fill-gray group-hover:fill-violet float-right" />
+      </button>
+      <img src={img} className={classes} alt="Profile pic" />
     </div>
   )
 }

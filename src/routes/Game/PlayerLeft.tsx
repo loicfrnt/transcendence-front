@@ -7,7 +7,7 @@ interface Props {
 export default function PlayerLeft({ role }: Props) {
   return (
     <div
-      className={`flex bg-opacity-80 bg-violet-black items-center justify-center fixed w-screen h-screen inset-0 `}
+      className={`flex bg-opacity-80 bg-violet-black items-center justify-center fixed w-screen h-screen inset-0 z-10`}
     >
       <ContentBox
         className={

@@ -41,9 +41,13 @@ const Invitation = ({
       </div>
       <div className="flex flex-col justify-center gap-1.5 h-full pr-3">
         <button className="group" onClick={acceptInvite}>
-          <Accept className={svgClass} />
+          <Accept title="Join waiting room" className={svgClass} />
         </button>
-        <button className="group" onClick={rejectInvite}>
+        <button
+          title="Remove invitation"
+          className="group"
+          onClick={rejectInvite}
+        >
           <Reject className={svgClass} />
         </button>
       </div>

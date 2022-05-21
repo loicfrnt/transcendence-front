@@ -31,17 +31,16 @@ export default function MatchHistory({ user }: Props) {
           </span>
           <div className="flex items-center gap-3">
             <Avatar
-              withStatus={false}
               size="h-9 w-9"
               username={user.username}
               avatarId={user.avatar_id}
               status={user.status}
+              noLink
             />
             <span className="font-semibold text-lg">
               {match.scorePlayer} - {match.scoreOppenent}
             </span>
             <Avatar
-              withStatus={false}
               size="h-9 w-9"
               username={match.oppenent.username}
               avatarId={match.oppenent.avatar_id}
@@ -58,7 +57,6 @@ export default function MatchHistory({ user }: Props) {
     setGameHistory((curr) => {
       let newHist: GameHistory[] = []
       user.gamesAsPlayer1.forEach((game) => {
-        console.log(game)
         newHist.push({
           oppenent: game.player2,
           scoreOppenent: game.player2Points as number,
@@ -84,8 +82,6 @@ export default function MatchHistory({ user }: Props) {
       return newHist
     })
   }, [user.gamesAsPlayer1, user.gamesAsPlayer2])
-
-  console.log(gameHistory.length)
 
   return (
     <SocialItemContainer title="Match History">
