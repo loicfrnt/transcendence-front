@@ -16,6 +16,7 @@ import authenticationService from './services/authentication.service'
 import { io, Socket } from 'socket.io-client'
 import ConnectError from './components/ConnectError'
 import GameRoutes from './routes/Game/GameRoutes'
+import acheivementsService from './services/acheivements.service'
 export default function App() {
   const [currUser, setCurrUser] = useState<User>(
     authenticationService.getCurrentUser()
@@ -25,6 +26,9 @@ export default function App() {
     // Recover Connected state from cache
     savedConnected ? JSON.parse(savedConnected) : false
   )
+  useEffect(() => {
+    acheivementsService.load();
+  },[])
   // Cache connected state
   useEffect(() => {
     localStorage.setItem('connected', JSON.stringify(connected))

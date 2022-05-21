@@ -44,7 +44,7 @@ export interface User {
   channels: Channel[]
   sent_relationships: Relationship[]
   received_relationships: Relationship[]
-  acheivements_history: AcheivementHistory[]
+  acheivement_history: AcheivementHistory[]
 }
 
 export interface ProtoUser {

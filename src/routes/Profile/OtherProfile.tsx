@@ -183,7 +183,7 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
           </MainUser>
           <MatchHistory user={otherUser} />
           <Friends userList={friendsList} />
-          <Achievements achievementHistory={otherUser.acheivements_history} />
+          <Achievements achievementHistory={otherUser.acheivement_history} />
         </ProfileMasonry>
       )}
     </MainContainer>

@@ -92,6 +92,7 @@ export default function MyProfile({
         setCurrUser(response)
         localStorage.setItem('user', JSON.stringify(response))
         getRelations(response)
+        console.log(response)
       })
     }, 5000)
     return () => clearInterval(intervalId)
@@ -551,7 +552,7 @@ export default function MyProfile({
         </MainUser>
         <MatchHistory user={currUser} />
         <Friends userList={friendsList} />
-        <Achievements achievementHistory={currUser.acheivements_history} />
+        <Achievements achievementHistory={currUser.acheivement_history} />
         <FriendRequests parentRequests={requestsList} />
         <Blocked blocked={blockedList} />
       </ProfileMasonry>

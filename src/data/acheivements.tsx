@@ -5,7 +5,7 @@ export const acheivementsList: Acheivement[] = [
         id: 1,
         type: AcheivementType.BRONZE,
         category: AcheivementCategory.NULL,
-        message: " First null match!"
+        message: " First defeat!"
     },
     {
         id: 2,
@@ -59,7 +59,7 @@ export const acheivementsList: Acheivement[] = [
         id: 10,
         type: AcheivementType.SILVER,
         category: AcheivementCategory.FAST,
-        message: "Win 5 times in a fast ball speed!"
+        message: "Win with a fast ball speed!"
     },
     {
         id: 11,
