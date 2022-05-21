@@ -11,6 +11,7 @@ import CreateChannel from './CreateChannel'
 import JoinChannel from './JoinChannel'
 import { Socket } from 'socket.io-client'
 import InvitedChannels from './InvitedChannels'
+import Spinner from '../../components/Spinner'
 
 interface Props {
   thisUser: User
@@ -94,13 +95,19 @@ export default function ChannelNav({
             />
           </div>
           <div className="flex flex-col gap-2 overflow-hidden hover:overflow-auto">
-            {channels
-              .sort((a, b) => {
-                let d1 = Date.parse(a.last_message_at)
-                let d2 = Date.parse(b.last_message_at)
-                return d2 - d1
-              })
-              .map(renderChannel)}
+            {channels.length ? (
+              channels
+                .sort((a, b) => {
+                  let d1 = Date.parse(a.last_message_at)
+                  let d2 = Date.parse(b.last_message_at)
+                  return d2 - d1
+                })
+                .map(renderChannel)
+            ) : (
+              <div className="flex justify-center">
+                <Spinner />
+              </div>
+            )}
           </div>
         </ContentBox>
         <Outlet />
