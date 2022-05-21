@@ -6,7 +6,7 @@ import { AcheivementType } from '../../types/acheivement'
 
 const fake: AcheivementHistory[] = [
   {
-    id: 2,
+    id: 0,
     isRead: false,
     acheivement: {
       id: 200,
@@ -26,7 +26,7 @@ const fake: AcheivementHistory[] = [
     },
   },
   {
-    id: 1,
+    id: 2,
     isRead: false,
     acheivement: {
       id: 100,
