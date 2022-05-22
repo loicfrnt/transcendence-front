@@ -5,39 +5,6 @@ import { ReactComponent as SvgTrophy } from '../../assets/trophy.svg'
 import { AcheivementType } from '../../types/acheivement'
 import SocialNoItem from './SocialNoItem'
 
-const fake: AcheivementHistory[] = [
-  {
-    id: 0,
-    isRead: false,
-    acheivement: {
-      id: 200,
-      type: AcheivementType.BRONZE,
-      category: 2,
-      message: 'Get a bronze achievement',
-    },
-  },
-  {
-    id: 1,
-    isRead: false,
-    acheivement: {
-      id: 100,
-      type: AcheivementType.SILVER,
-      category: 3,
-      message: 'Get a silver achievement',
-    },
-  },
-  {
-    id: 2,
-    isRead: false,
-    acheivement: {
-      id: 100,
-      type: AcheivementType.GOLD,
-      category: 3,
-      message: 'Get a gold achievement',
-    },
-  },
-]
-
 interface achievementProps {
   ah: AcheivementHistory
 }
