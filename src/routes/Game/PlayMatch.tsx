@@ -16,7 +16,7 @@ export default function PlayMatch({ currUser, socket, game }: Props) {
   const oppenent =
     game.player1.user.id === currUser.id ? game.player2 : game.player1
   const instructions = `Use the mouse to move. Score ${game.maxPoints} points to win the game`
-  const order = oppenent === game.player1 ? 'flex-row-reverse' : ''
+  const order = oppenent.id === game.player1.id ? 'flex-row-reverse' : ''
 
   return (
     <div
