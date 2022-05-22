@@ -9,11 +9,13 @@ import Game, { GameStatus } from '../../../types/game'
 import NotInGame from './NotInGame'
 import SpectateMatch from './SpectateMatch'
 import SpectateResults from './SpectateResults'
+import Spinner from '../../../components/Spinner'
 
 export default function GameSpectate() {
   const params = useParams()
   const username = params.username!
   const [userId, setUserId] = useState<number | null>(null)
+  const [userLoaded, setUserLoaded] = useState(false)
   let navigate = useNavigate()
 
   const [socket, setSocket] = useState<Socket | null>(null)
@@ -33,6 +35,7 @@ export default function GameSpectate() {
     usersService.getByUsername(username).then(
       (response) => {
         setUserId(response.id)
+        setUserLoaded(true)
       },
       (r) => {
         console.log(r)
@@ -63,8 +66,15 @@ export default function GameSpectate() {
     if (!socket) {
       return <ConnectError />
     }
+    if (!userLoaded) {
+      return <Spinner center />
+    }
     if (!userId) {
-      return <p>Couldn't find user</p>
+      return (
+        <div className="flex items-center justify-center">
+          <p>Couldn't find user</p>
+        </div>
+      )
     }
     if (!game) {
       return <NotInGame />
