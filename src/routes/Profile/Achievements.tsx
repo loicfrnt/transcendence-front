@@ -3,6 +3,7 @@ import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import { ReactComponent as SvgTrophy } from '../../assets/trophy.svg'
 import { AcheivementType } from '../../types/acheivement'
+import SocialNoItem from './SocialNoItem'
 
 const fake: AcheivementHistory[] = [
   {
@@ -72,12 +73,15 @@ export default function Achievements({ achievementHistory }: Props) {
   return (
     <SocialItemContainer title="Achievements">
       <SocialItemList>
-        {/* {achievementHistory.map((ah) => renderAchievement(ah))} */}
-        <>
-          {fake.map((ah) => (
-            <RenderAchievement ah={ah} key={ah.id} />
-          ))}
-        </>
+        {achievementHistory === undefined || achievementHistory.length === 0 ? (
+          <SocialNoItem msg="Play to get achievements" />
+        ) : (
+          <>
+            {achievementHistory.map((ah) => (
+              <RenderAchievement ah={ah} key={ah.id} />
+            ))}
+          </>
+        )}
       </SocialItemList>
     </SocialItemContainer>
   )
