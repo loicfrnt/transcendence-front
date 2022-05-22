@@ -13,8 +13,10 @@ interface Props {
 
 export default function MatchHistory({ user }: Props) {
   function renderMatch(match: GameHistory, id: number) {
-    const winText = match.won ? 'Won' : 'Lost'
-    const winClass = 'font-semibold ' + (match.won ? 'text-green' : 'text-red')
+    const winText = match.draw ? 'Draw' : match.won ? 'Won' : 'Lost'
+    const winClass =
+      'font-semibold ' +
+      (match.draw ? 'text-orange' : match.won ? 'text-green' : 'text-red')
 
     return (
       <div key={id}>
@@ -62,6 +64,7 @@ export default function MatchHistory({ user }: Props) {
           scoreOppenent: game.player2Points as number,
           scorePlayer: game.player1Points as number,
           won: game.player1Points >= game.player2Points,
+          draw: game.endGameStatus === 'abort',
           created_at: game.created_at,
         })
       })
@@ -71,6 +74,7 @@ export default function MatchHistory({ user }: Props) {
           scoreOppenent: game.player1Points as number,
           scorePlayer: game.player2Points as number,
           won: game.player2Points >= game.player1Points,
+          draw: game.endGameStatus === 'abort',
           created_at: game.created_at,
         })
       })
