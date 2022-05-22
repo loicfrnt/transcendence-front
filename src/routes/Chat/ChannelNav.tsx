@@ -16,14 +16,15 @@ import Spinner from '../../components/Spinner'
 interface Props {
   thisUser: User
   channels: ProtoChannel[]
+  channelsLoaded: boolean
   invitedChannels: ProtoChannel[]
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   socket: Socket
 }
-
 export default function ChannelNav({
   thisUser,
   channels,
+  channelsLoaded,
   invitedChannels,
   setChannels,
   socket,
@@ -95,7 +96,15 @@ export default function ChannelNav({
             />
           </div>
           <div className="flex flex-col gap-2 overflow-hidden hover:overflow-auto">
-            {channels.length ? (
+            {!channelsLoaded ? (
+              <div className="flex justify-center">
+                <Spinner />
+              </div>
+            ) : !channels.length ? (
+              <p className="text-gray-500">
+                Join a channel to start chatting..
+              </p>
+            ) : (
               channels
                 .sort((a, b) => {
                   let d1 = Date.parse(a.last_message_at)
@@ -103,10 +112,6 @@ export default function ChannelNav({
                   return d2 - d1
                 })
                 .map(renderChannel)
-            ) : (
-              <div className="flex justify-center">
-                <Spinner />
-              </div>
             )}
           </div>
         </ContentBox>
