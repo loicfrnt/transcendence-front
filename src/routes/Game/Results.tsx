@@ -27,7 +27,6 @@ export default function Results({
   const winner = (oppenent.score ?? 1) < (player.score ?? 0)
   const color = winner ? 'text-green' : 'text-red'
   useEffect(() => {
-    console.log(game);
     acheivementHistoriesService.processAcheivements(game, currUser);
   },[])
   return (
