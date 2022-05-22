@@ -80,7 +80,7 @@ export default function Avatar({
       )
     } else
       return (
-        <div className="flex relative">
+        <div className={`flex relative ${size} flex-shrink-0`}>
           <img src={img} className={classes} alt="Profile pic" />
           {addStatus && (
             <span
