@@ -261,9 +261,6 @@ export default function MyProfile({
         if (relationship.status === RelStatus.Friends) {
           const user = await usersService.getById(relationship.issuer_id)
           if (!friends.includes(user)) friends.push(user)
-        } else if (relationship.status === RelStatus.Blocked) {
-          const user = await usersService.getById(relationship.issuer_id)
-          if (!blocked.includes(user)) blocked.push(user)
         } else if (relationship.status === RelStatus.Pending) {
           const user = await usersService.getById(relationship.issuer_id)
           if (!requested.includes(user)) requested.push(user)

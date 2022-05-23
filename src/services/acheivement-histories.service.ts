@@ -20,14 +20,14 @@ class AcheivementHistoriesService {
             });
         }else
         {
-                gameHistory.unshift({
-                    oppenent: game.player1.user,
-                    scoreOppenent: game.player1.score!,
-                    scorePlayer: game.player2.score!,
-                    won: game.player2.score! > game.player1.score!,
-                    draw: false,
-                    created_at: new Date().toString(),
-                });
+            gameHistory.unshift({
+                oppenent: game.player1.user,
+                scoreOppenent: game.player1.score!,
+                scorePlayer: game.player2.score!,
+                won: game.player2.score! > game.player1.score!,
+                draw: false,
+                created_at: new Date().toString(),
+            });
         }
         if (game.status === GameStatus.ENDED)
         {
