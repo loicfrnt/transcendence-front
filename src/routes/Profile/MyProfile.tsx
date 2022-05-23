@@ -33,10 +33,6 @@ export default function MyProfile({
     localStorage.removeItem('user')
     authenticationService.logout()
   }
-  // Load CurrentUser on page load
-  useEffect(() => {
-    setCurrUser(authenticationService.getCurrentUser())
-  }, [setCurrUser])
 
   const [editOpen, setEditOpen] = useState(false)
   const [qrClassDiv, setQrClassDiv] = useState<string>('')
@@ -84,19 +80,19 @@ export default function MyProfile({
         ),
     })
   }
+
   useEffect(() => {
-    getRelations(currUser)
-  }, [currUser])
-  useEffect(() => {
-    const intervalId = setInterval(() => {
+    const getCurrUser = () => {
       usersService.getById(currUser.id).then((response) => {
         setCurrUser(response)
         localStorage.setItem('user', JSON.stringify(response))
         getRelations(response)
       })
-    }, 5000)
+    }
+    getCurrUser()
+    const intervalId = setInterval(getCurrUser, 5000)
     return () => clearInterval(intervalId)
-  }, [currUser])
+  }, [])
 
   function validationSchemaTfaOff() {
     return Yup.object().shape({

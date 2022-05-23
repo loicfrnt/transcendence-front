@@ -24,6 +24,7 @@ export interface Relationship {
 export interface GameHistory {
   oppenent: User
   won: boolean
+  draw: boolean
   scoreOppenent: number
   scorePlayer: number
   created_at: string

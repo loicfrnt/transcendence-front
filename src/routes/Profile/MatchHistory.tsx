@@ -14,8 +14,10 @@ interface Props {
 
 export default function MatchHistory({ user }: Props) {
   function renderMatch(match: GameHistory, id: number) {
-    const winText = match.won ? 'Won' : 'Lost'
-    const winClass = 'font-semibold ' + (match.won ? 'text-green' : 'text-red')
+    const winText = match.draw ? 'Draw' : match.won ? 'Won' : 'Lost'
+    const winClass =
+      'font-semibold ' +
+      (match.draw ? 'text-orange' : match.won ? 'text-green' : 'text-red')
 
     return (
       <div key={id}>
