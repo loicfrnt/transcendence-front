@@ -1,38 +1,54 @@
-import { Link } from 'react-router-dom'
-import Avatar from '../../components/Avatar'
-import { User } from '../../types/user'
+import { AcheivementHistory } from '../../types/acheivement-history'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
+import { ReactComponent as SvgTrophy } from '../../assets/trophy.svg'
+import { AcheivementType } from '../../types/acheivement'
+import SocialNoItem from './SocialNoItem'
 
-interface Props {
-  user: User
+interface achievementProps {
+  ah: AcheivementHistory
 }
 
-export default function Friends({ user }: Props) {
-  function renderFriend(user: User, id: number) {
-    return (
-      <div key={id}>
-        <Link
-          to={'/profile/' + user.username}
-          className="bg-gray-light rounded-3xl h-24 pl-2 w-full flex items-center gap-5"
-        >
-          <Avatar
-            size="h-20 w-20"
-            username={user.username}
-            avatarId={user.avatar_id}
-            status={user.status}
-            addStatus={true}
-            noLink
-          ></Avatar>
-          <h2 className="font-semibold text-lg">{user.username}</h2>
-        </Link>
-      </div>
-    )
+function RenderAchievement({ ah }: achievementProps) {
+  const tropyFill = () => {
+    switch (ah.acheivement.type) {
+      default:
+      case AcheivementType.BRONZE:
+        return 'fill-bronze'
+      case AcheivementType.SILVER:
+        return 'fill-silver'
+      case AcheivementType.GOLD:
+        return 'fill-gold'
+    }
   }
+  return (
+    <div
+      key={ah.id}
+      className="bg-gray-light rounded-3xl h-24 pl-5 w-full flex items-center gap-5"
+    >
+      <SvgTrophy className={`h-12  ${tropyFill()}`} />
+      <h2 className="font-semibold text-lg">{ah.acheivement.message}</h2>
+    </div>
+  )
+}
+
+interface Props {
+  achievementHistory: AcheivementHistory[]
+}
+
+export default function Achievements({ achievementHistory }: Props) {
   return (
     <SocialItemContainer title="Achievements">
       <SocialItemList>
-        <p>liste d'achievements</p>
+        {achievementHistory === undefined || achievementHistory.length === 0 ? (
+          <SocialNoItem msg="Play to get achievements" />
+        ) : (
+          <>
+            {achievementHistory.map((ah) => (
+              <RenderAchievement ah={ah} key={ah.id} />
+            ))}
+          </>
+        )}
       </SocialItemList>
     </SocialItemContainer>
   )

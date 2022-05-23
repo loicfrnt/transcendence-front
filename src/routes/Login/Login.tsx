@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import ContentBox from '../../components/ContentBox'
 import * as Yup from "yup";
 import authenticationService from '../../services/authentication.service';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import PopUpBox from '../../components/PopUpBox';
 import twoFactorsAuthenticationService from '../../services/two-factors-authentication.service';
@@ -157,8 +157,8 @@ export function Login({ setConnected }: LoginProps) {
             )}
           </Form>
         </Formik>
-        
-          <button onClick={handleClick} className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-white bg-zink'>
+        <Link to="/ft_login">
+          <button className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-white bg-zink'>
             <span className='object-cover h-7 w-7'>
               <img src='/images/logo-42-square-reverse.png' alt="42" />
             </span>
@@ -166,6 +166,7 @@ export function Login({ setConnected }: LoginProps) {
               Sign in with the intra
             </span>
           </button>
+        </Link>
       </div>
     </div>
     <PopUpBox open={qrClicked} setOpen={setQrClicked}>

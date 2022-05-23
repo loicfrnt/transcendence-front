@@ -58,6 +58,7 @@ export default function MyProfile({
     username: currUser.username,
     email: currUser.email,
     password: '',
+    confirm_password: ''
   }
 
   const initialValuesQr = {
@@ -187,7 +188,7 @@ export default function MyProfile({
           })
         }),
       password: Yup.string()
-        .min(6, 'Password must have at east 6 characters!')
+        .min(8, 'Password must have at east 8 characters!')
         .max(40, 'Password must have less then 40 characters!'),
       confirm_password: Yup.string()
         .oneOf([Yup.ref('password'), null], 'Passwords must match!')
@@ -260,9 +261,6 @@ export default function MyProfile({
         if (relationship.status === RelStatus.Friends) {
           const user = await usersService.getById(relationship.issuer_id)
           if (!friends.includes(user)) friends.push(user)
-        } else if (relationship.status === RelStatus.Blocked) {
-          const user = await usersService.getById(relationship.issuer_id)
-          if (!blocked.includes(user)) blocked.push(user)
         } else if (relationship.status === RelStatus.Pending) {
           const user = await usersService.getById(relationship.issuer_id)
           if (!requested.includes(user)) requested.push(user)
@@ -545,11 +543,11 @@ export default function MyProfile({
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => setEditOpen(true)} />
         </MainUser>
-        <Friends userList={friendsList} />
         <MatchHistory user={currUser} />
+        <Friends userList={friendsList} />
+        <Achievements achievementHistory={currUser.acheivement_history} />
         <FriendRequests parentRequests={requestsList} />
         <Blocked blocked={blockedList} />
-        <Achievements user={currUser} />
       </ProfileMasonry>
     </MainContainer>
   )
