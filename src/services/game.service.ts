@@ -9,6 +9,7 @@ class GameService {
             scoreOppenent: game.player2Points as number,
             scorePlayer: game.player1Points as number,
             won: game.player1Points >= game.player2Points,
+            draw: game.endGameStatus === 'abort',
             created_at: game.created_at,
           })
         })
@@ -18,6 +19,7 @@ class GameService {
             scoreOppenent: game.player1Points as number,
             scorePlayer: game.player2Points as number,
             won: game.player2Points >= game.player1Points,
+            draw: game.endGameStatus === 'abort',
             created_at: game.created_at,
           })
         })

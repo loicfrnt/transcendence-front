@@ -15,6 +15,7 @@ class AcheivementHistoriesService {
                 scoreOppenent: game.player2.score!,
                 scorePlayer: game.player1.score!,
                 won: game.player1.score! > game.player2.score!,
+                draw: false,
                 created_at: new Date().toString(),
             });
         }else
@@ -24,6 +25,7 @@ class AcheivementHistoriesService {
                     scoreOppenent: game.player1.score!,
                     scorePlayer: game.player2.score!,
                     won: game.player2.score! > game.player1.score!,
+                    draw: false,
                     created_at: new Date().toString(),
                 });
         }
