@@ -7,12 +7,14 @@ const ROUTE = '/api/channels/'
 class ChatService {
   getChannels(
     setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>,
-    setInvitedChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
+    setInvitedChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>,
+    setChannelsLoaded: React.Dispatch<React.SetStateAction<boolean>>
   ) {
     // GET channels list
     api.get(URL + ROUTE).then((response) => {
       if (response.status === 200) {
         setChannels(response.data.user_channels)
+        setChannelsLoaded(true)
         setInvitedChannels(response.data.invited_channels)
       }
     })

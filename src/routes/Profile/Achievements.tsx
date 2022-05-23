@@ -3,39 +3,7 @@ import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import { ReactComponent as SvgTrophy } from '../../assets/trophy.svg'
 import { AcheivementType } from '../../types/acheivement'
-
-const fake: AcheivementHistory[] = [
-  {
-    id: 0,
-    isRead: false,
-    acheivement: {
-      id: 200,
-      type: AcheivementType.BRONZE,
-      category: 2,
-      message: 'Get a bronze achievement',
-    },
-  },
-  {
-    id: 1,
-    isRead: false,
-    acheivement: {
-      id: 100,
-      type: AcheivementType.SILVER,
-      category: 3,
-      message: 'Get a silver achievement',
-    },
-  },
-  {
-    id: 2,
-    isRead: false,
-    acheivement: {
-      id: 100,
-      type: AcheivementType.GOLD,
-      category: 3,
-      message: 'Get a gold achievement',
-    },
-  },
-]
+import SocialNoItem from './SocialNoItem'
 
 interface achievementProps {
   ah: AcheivementHistory
@@ -72,12 +40,15 @@ export default function Achievements({ achievementHistory }: Props) {
   return (
     <SocialItemContainer title="Achievements">
       <SocialItemList>
-        {/* {achievementHistory.map((ah) => renderAchievement(ah))} */}
-        <>
-          {fake.map((ah) => (
-            <RenderAchievement ah={ah} key={ah.id} />
-          ))}
-        </>
+        {achievementHistory === undefined || achievementHistory.length === 0 ? (
+          <SocialNoItem msg="Play to get achievements" />
+        ) : (
+          <>
+            {achievementHistory.map((ah) => (
+              <RenderAchievement ah={ah} key={ah.id} />
+            ))}
+          </>
+        )}
       </SocialItemList>
     </SocialItemContainer>
   )

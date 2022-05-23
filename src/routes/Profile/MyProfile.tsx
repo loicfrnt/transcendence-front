@@ -550,11 +550,11 @@ export default function MyProfile({
           <SocialButton content="Log Out" handleClick={(e) => logout()} />
           <SocialButton content="Edit" handleClick={(e) => setEditOpen(true)} />
         </MainUser>
-        <Friends userList={friendsList} />
         <MatchHistory user={currUser} />
+        <Friends userList={friendsList} />
+        <Achievements achievementHistory={currUser.acheivement_history} />
         <FriendRequests parentRequests={requestsList} />
         <Blocked blocked={blockedList} />
-        <Achievements achievementHistory={currUser.acheivement_history} />
       </ProfileMasonry>
     </MainContainer>
   )

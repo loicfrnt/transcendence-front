@@ -16,12 +16,13 @@ interface Props {
 
 function Chat({ user, socket }: Props) {
   const [channels, setChannels] = useState<ProtoChannel[]>([])
+  const [channelsLoaded, setChannelsLoaded] = useState(false)
   const [invitedChannels, setInvitedChannels] = useState<ProtoChannel[]>([])
   // const socket = useRef<Socket>(null)
 
   useEffect(() => {
     //HTTP
-    chatServices.getChannels(setChannels, setInvitedChannels)
+    chatServices.getChannels(setChannels, setInvitedChannels, setChannelsLoaded)
 
     //WS
     socket.on('updated_channel', (data) => {
@@ -83,6 +84,7 @@ function Chat({ user, socket }: Props) {
           <ChannelNav
             thisUser={user}
             channels={channels}
+            channelsLoaded={channelsLoaded}
             invitedChannels={invitedChannels}
             setChannels={setChannels}
             socket={socket}
