@@ -62,6 +62,7 @@ export default function MyProfile({
     username: currUser.username,
     email: currUser.email,
     password: '',
+    confirm_password: ''
   }
 
   const initialValuesQr = {
@@ -191,7 +192,7 @@ export default function MyProfile({
           })
         }),
       password: Yup.string()
-        .min(6, 'Password must have at east 6 characters!')
+        .min(8, 'Password must have at east 8 characters!')
         .max(40, 'Password must have less then 40 characters!'),
       confirm_password: Yup.string()
         .oneOf([Yup.ref('password'), null], 'Passwords must match!')

@@ -33,6 +33,14 @@ class UsersService {
         });
     }
 
+    getCurrent() {
+        return api.get(ROUTE).then(response => {
+            if (response.data.id)
+                localStorage.setItem("user", JSON.stringify(response.data));
+            return response.data;
+        });
+    }
+
     getByUsername(username: string) {
         return api.get(ROUTE +"username/" + username).then(response => {
             return response.data;

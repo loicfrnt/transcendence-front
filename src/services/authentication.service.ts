@@ -17,11 +17,12 @@ class AuthenticationService {
         });
     }
 
-    register(username: string, email: string, password:string) {
+    register(username: string, email: string, password:string, intra_id: string) {
         return axios.post(process.env.PUBLIC_URL + ROUTE + "register", {
             username,
             email,
-            password
+            password,
+            intra_id
         }).then(response =>{
             return response.data;
         });

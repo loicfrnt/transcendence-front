@@ -93,6 +93,7 @@ class AcheivementHistoriesService {
                 {
                     await api.get(ROUTE + "acheivement/"+ 5).then(async (response) => {
                         if (response.data === '') {
+                            console.log("passed by")
                             await api.post(ROUTE, {
                                 "acheivement_id": 5
                             });
