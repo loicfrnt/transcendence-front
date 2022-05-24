@@ -1,15 +1,28 @@
 import api from '../api/api';
+import axios from '../api/axios';
 const ROUTE = "/api/users/";
 
 class UsersService {
     checkIfEmailExists(email?: string) {
-        return api.get(ROUTE + "check_mail/" + email).then(response => {
+        return api.get(ROUTE + "intern/check_mail/" + email).then(response => {
             return response;
         });
     }
 
     checkIfUsernameExists(username?: string) {
-        return api.get(ROUTE + "check_username/" + username).then(response => {
+        return api.get(ROUTE + "intern/check_username/" + username).then(response => {
+            return response;
+        });
+    }
+
+    checkIfEmailExistsExtern(email?: string) {
+        return axios.get(ROUTE + "extern/check_mail/" + email).then(response => {
+            return response;
+        });
+    }
+
+    checkIfUsernameExistsExtern(username?: string) {
+        return axios.get(ROUTE + "extern/check_username/" + username).then(response => {
             return response;
         });
     }
