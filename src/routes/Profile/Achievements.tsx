@@ -24,9 +24,9 @@ function RenderAchievement({ ah }: achievementProps) {
   return (
     <div
       key={ah.id}
-      className="bg-gray-light rounded-3xl h-24 pl-5 w-full flex items-center gap-5"
+      className="bg-gray-light rounded-3xl pl-5 py-5 w-full flex items-center gap-5"
     >
-      <SvgTrophy className={`h-12  ${tropyFill()}`} />
+      <SvgTrophy className={`h-12 ${tropyFill()}`} />
       <h2 className="font-semibold text-lg">{ah.achievement.message}</h2>
     </div>
   )

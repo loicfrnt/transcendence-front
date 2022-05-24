@@ -10,7 +10,7 @@ interface InvitationProps {
   channels: ProtoChannel[]
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  thisUserId: number
+  currUserId: number
   socket: Socket
 }
 
@@ -19,7 +19,7 @@ const Invitation = ({
   channels,
   socket,
   setChannels,
-  thisUserId,
+  currUserId,
   setIsOpen,
 }: InvitationProps) => {
   let navigate = useNavigate()
@@ -47,7 +47,7 @@ const Invitation = ({
   const rejectInvite = () => {
     socket.emit(
       'channel_invitation',
-      { channelId: channel.id, invitedId: thisUserId },
+      { channelId: channel.id, invitedId: currUserId },
       (data: any) => {
         console.log(data)
       }
@@ -81,7 +81,7 @@ interface Props {
   invitedChannels: ProtoChannel[]
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  thisUserId: number
+  currUserId: number
   socket: Socket
 }
 
@@ -90,7 +90,7 @@ export default function InvitedChannels({
   invitedChannels,
   setChannels,
   setIsOpen,
-  thisUserId,
+  currUserId,
   socket,
 }: Props) {
   return (
@@ -105,7 +105,7 @@ export default function InvitedChannels({
               socket={socket}
               setChannels={setChannels}
               setIsOpen={setIsOpen}
-              thisUserId={thisUserId}
+              currUserId={currUserId}
               key={channel.id}
             />
           )

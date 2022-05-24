@@ -547,7 +547,7 @@ export default function MyProfile({
         <Friends userList={friendsList} />
         <Achievements achievementHistory={currUser.achievement_history} />
         <FriendRequests parentRequests={requestsList} />
-        <Blocked blocked={blockedList} />
+        <Blocked blocked={blockedList} setCurrUser={setCurrUser} />
       </ProfileMasonry>
     </MainContainer>
   )

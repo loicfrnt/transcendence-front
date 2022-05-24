@@ -12,9 +12,10 @@ import JoinChannel from './JoinChannel'
 import { Socket } from 'socket.io-client'
 import InvitedChannels from './InvitedChannels'
 import Spinner from '../../components/Spinner'
+import SocialNoItem from '../Profile/SocialNoItem'
 
 interface Props {
-  thisUser: User
+  currUser: User
   channels: ProtoChannel[]
   channelsLoaded: boolean
   invitedChannels: ProtoChannel[]
@@ -22,7 +23,7 @@ interface Props {
   socket: Socket
 }
 export default function ChannelNav({
-  thisUser,
+  currUser,
   channels,
   channelsLoaded,
   invitedChannels,
@@ -44,7 +45,7 @@ export default function ChannelNav({
           }
         >
           <h2 className="font-semibold text-xl">
-            {channelName(channel, thisUser)}
+            {channelName(channel, currUser)}
           </h2>
         </NavLink>
       </div>
@@ -72,7 +73,7 @@ export default function ChannelNav({
               invitedChannels={invitedChannels}
               setChannels={setChannels}
               setIsOpen={setNewChanOpen}
-              thisUserId={thisUser.id}
+              currUserId={currUser.id}
               socket={socket}
             />
           ) : null}
@@ -101,9 +102,7 @@ export default function ChannelNav({
                 <Spinner />
               </div>
             ) : !channels.length ? (
-              <p className="text-gray-500">
-                Join a channel to start chatting..
-              </p>
+              <SocialNoItem msg="Join a channel to start chatting.." />
             ) : (
               channels
                 .sort((a, b) => {

@@ -9,7 +9,8 @@ interface Props {
   channel: Channel
   setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
-  thisUser: User
+  setCurrUser: React.Dispatch<React.SetStateAction<User>>
+  currUser: User
   socket: Socket
 }
 
@@ -17,7 +18,8 @@ export default function ConvInfo({
   channel,
   setChannel,
   setChannels,
-  thisUser,
+  currUser,
+  setCurrUser,
   socket,
 }: Props) {
   if (channel.status !== 'direct_message')
@@ -27,7 +29,8 @@ export default function ConvInfo({
           channel={channel}
           setChannel={setChannel}
           setChannels={setChannels}
-          thisUser={thisUser}
+          setCurrUser={setCurrUser}
+          currUser={currUser}
           socket={socket}
         />
       </ContentBox>
@@ -35,7 +38,13 @@ export default function ConvInfo({
   else
     return (
       <ContentBox className="w-[400px] pt-5">
-        <ConvInfoDm channel={channel} thisUser={thisUser} socket={socket} />
+        <ConvInfoDm
+          channel={channel}
+          setChannels={setChannels}
+          currUser={currUser}
+          setCurrUser={setCurrUser}
+          socket={socket}
+        />
       </ContentBox>
     )
 }
