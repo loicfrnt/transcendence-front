@@ -13,7 +13,7 @@ import { Login } from './routes/Login/Login'
 import Navbar from './routes/Navbar/Navbar'
 import Profile from './routes/Profile/Profile'
 import { Register } from './routes/Register/Register'
-import acheivementsService from './services/acheivements.service'
+import achievementsService from './services/achievements.service'
 import authenticationService from './services/authentication.service'
 import usersService from './services/users.service'
 import { User } from './types/user'
@@ -38,7 +38,7 @@ export default function App() {
       })
       setConnected(true)
     } else if (ft_user) navigate('/register')
-    acheivementsService.load()
+    achievementsService.load()
   }, [])
   // Cache connected state
   useEffect(() => {

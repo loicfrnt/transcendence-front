@@ -100,7 +100,7 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
 
   async function block() {
     if (friend) {
-      await userRelationshipService.delete(otherUser!.id);
+      await userRelationshipService.delete(otherUser!.id)
     }
     await userRelationshipService
       .add(otherUser!.id, RelStatus.Blocked)
@@ -175,7 +175,7 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
           </MainUser>
           <MatchHistory user={otherUser} />
           <Friends userList={friendsList} />
-          <Achievements achievementHistory={otherUser.acheivement_history} />
+          <Achievements achievementHistory={otherUser.achievement_history} />
         </ProfileMasonry>
       )}
     </MainContainer>
