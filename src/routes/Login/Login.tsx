@@ -26,6 +26,7 @@ export function Login({ setConnected }: LoginProps) {
 
   function handleClick() {
     setConnected(true)
+    localStorage.setItem("connected", JSON.stringify(true))
   }
 
   const initialValues = {

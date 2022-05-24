@@ -27,7 +27,20 @@ export default function App() {
     // Recover Connected state from cache
     savedConnected ? JSON.parse(savedConnected) : false
   )
-  window.addEventListener('storage', () => { setConnected(localStorage.getItem('connected'))})
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value) {
+    const event = new Event('connectedChange');
+    document.dispatchEvent(event);
+    originalSetItem.apply(this, [key, value]);
+
+  }
+  document.addEventListener('connectedChange', () => {
+    const savedConnected = localStorage.getItem('connected')
+    const localConnected = savedConnected ? JSON.parse(savedConnected) : false;
+    console.log("here: " + localConnected);
+    if (localConnected === false)
+      setConnected(false)
+   })
   const cookies = new Cookies()
   const ft_connected = cookies.get('ft_logged')
   const ft_user = cookies.get('user')
@@ -40,14 +53,6 @@ export default function App() {
       setConnected(true)
     } else if (ft_user) navigate('/register')
     achievementsService.load()
-  }, [])
-  useEffect(()=>{
-    function handleChangeStorage() {
-      setConnected(localStorage.getItem('connected'));
-      console.log("strorage event");
-    }
-    window.addEventListener('storage', handleChangeStorage);
-    return () => window.removeEventListener('storage', handleChangeStorage);
   }, [])
   // Cache connected state
   useEffect(() => {

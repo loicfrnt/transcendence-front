@@ -9,3 +9,9 @@ export const axiosPrivate = axios.create({
     headers: {'Content-Type' : 'application/json'},
     withCredentials: true
 });
+
+export const axiosAuth = axios.create({
+    baseURL: process.env.PUBLIC_URL,
+    headers: {'Content-Type' : 'application/json'},
+    withCredentials: true
+});
