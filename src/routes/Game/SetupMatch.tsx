@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Socket } from 'socket.io-client'
 import ContentBox from '../../components/ContentBox'
 import Game, {
@@ -51,18 +52,34 @@ function SetupButton({
 }
 
 interface SetupProps {
-  setStep: React.Dispatch<React.SetStateAction<string>>
   socket: Socket
   game: Game
   setGame: React.Dispatch<React.SetStateAction<Game | null>>
+  setStep: React.Dispatch<React.SetStateAction<string>>
   currUser: User
 }
 
-export default function SetupMatch({ socket, game, currUser }: SetupProps) {
+export default function SetupMatch({
+  socket,
+  game,
+  currUser,
+  setGame,
+  setStep,
+}: SetupProps) {
   const oppenent =
     game.player1.user.id === currUser.id ? game.player2 : game.player1
   const player =
     game.player1.user.id === currUser.id ? game.player1 : game.player2
+
+  useEffect(() => {
+    socket.on('playerLeft', () => {
+      setGame(null)
+      setStep('idle')
+    })
+    return () => {
+      socket.off('playerLeft')
+    }
+  })
 
   // Styling
   const optionGroupStyle = 'flex flex-col gap-2 items-center'
