@@ -27,6 +27,7 @@ export default function App() {
     // Recover Connected state from cache
     savedConnected ? JSON.parse(savedConnected) : false
   )
+  window.addEventListener('storage', () => { setConnected(localStorage.getItem('connected'))})
   const cookies = new Cookies()
   const ft_connected = cookies.get('ft_logged')
   const ft_user = cookies.get('user')
@@ -40,11 +41,26 @@ export default function App() {
     } else if (ft_user) navigate('/register')
     achievementsService.load()
   }, [])
+  useEffect(()=>{
+    function handleChangeStorage() {
+      setConnected(localStorage.getItem('connected'));
+      console.log("strorage event");
+    }
+    window.addEventListener('storage', handleChangeStorage);
+    return () => window.removeEventListener('storage', handleChangeStorage);
+  }, [])
   // Cache connected state
   useEffect(() => {
-    localStorage.setItem('connected', JSON.stringify(connected))
-    const currentUser = authenticationService.getCurrentUser()
-    setCurrUser(currentUser)
+    if (connected === true)
+    {
+      localStorage.setItem('connected', JSON.stringify(connected))
+      const currentUser = authenticationService.getCurrentUser()
+      setCurrUser(currentUser)
+    }
+    else
+    {
+      navigate("/login");
+    }
   }, [connected])
 
   // WebSocket management
