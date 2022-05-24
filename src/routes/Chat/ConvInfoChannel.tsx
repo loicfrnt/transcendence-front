@@ -22,6 +22,7 @@ import InviteMembers from './InviteMembers'
 import dmUser from '../../utils/dmUser'
 import userRelationshipService from '../../services/user-relationship.service'
 import sendGameInvite from '../../utils/sendGameInvite'
+import SocialNoItem from '../Profile/SocialNoItem'
 
 //TEMPORARY
 function isFriend(user: User, thisUser: User) {
@@ -277,7 +278,7 @@ export function ConvInfoChannel({
               key={cUser.id}
             />
           ))}
-          {!otherUsers.length && <p>It's empty in here...</p>}
+          {!otherUsers.length && <SocialNoItem msg="It's empty in here..." />}
         </div>
       </div>
     </>

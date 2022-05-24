@@ -1,17 +1,15 @@
 import { useEffect, useRef } from 'react'
-import { Socket } from 'socket.io-client'
 import { draw } from '../../../pong/pong'
 import Game, { GameStatus } from '../../../types/game'
 import PlayerLeft from '../PlayerLeft'
 import UserDesc from '../UserDesc'
 
 interface Props {
-  socket: Socket
   game: Game
   userId: number
 }
 
-export default function SpectateMatch({ socket, game, userId }: Props) {
+export default function SpectateMatch({ game, userId }: Props) {
   const canvas = useRef<HTMLCanvasElement | null>(null)
 
   useEffect(() => {

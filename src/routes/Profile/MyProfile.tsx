@@ -58,7 +58,7 @@ export default function MyProfile({
     username: currUser.username,
     email: currUser.email,
     password: '',
-    confirm_password: ''
+    confirm_password: '',
   }
 
   const initialValuesQr = {
@@ -545,7 +545,7 @@ export default function MyProfile({
         </MainUser>
         <MatchHistory user={currUser} />
         <Friends userList={friendsList} />
-        <Achievements achievementHistory={currUser.acheivement_history} />
+        <Achievements achievementHistory={currUser.achievement_history} />
         <FriendRequests parentRequests={requestsList} />
         <Blocked blocked={blockedList} />
       </ProfileMasonry>

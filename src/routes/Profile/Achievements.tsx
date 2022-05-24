@@ -1,23 +1,23 @@
-import { AcheivementHistory } from '../../types/acheivement-history'
+import { AchievementHistory } from '../../types/achievement-history'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import { ReactComponent as SvgTrophy } from '../../assets/trophy.svg'
-import { AcheivementType } from '../../types/acheivement'
+import { AchievementType } from '../../types/achievement'
 import SocialNoItem from './SocialNoItem'
 
 interface achievementProps {
-  ah: AcheivementHistory
+  ah: AchievementHistory
 }
 
 function RenderAchievement({ ah }: achievementProps) {
   const tropyFill = () => {
-    switch (ah.acheivement.type) {
+    switch (ah.achievement.type) {
       default:
-      case AcheivementType.BRONZE:
+      case AchievementType.BRONZE:
         return 'fill-bronze'
-      case AcheivementType.SILVER:
+      case AchievementType.SILVER:
         return 'fill-silver'
-      case AcheivementType.GOLD:
+      case AchievementType.GOLD:
         return 'fill-gold'
     }
   }
@@ -27,13 +27,13 @@ function RenderAchievement({ ah }: achievementProps) {
       className="bg-gray-light rounded-3xl h-24 pl-5 w-full flex items-center gap-5"
     >
       <SvgTrophy className={`h-12  ${tropyFill()}`} />
-      <h2 className="font-semibold text-lg">{ah.acheivement.message}</h2>
+      <h2 className="font-semibold text-lg">{ah.achievement.message}</h2>
     </div>
   )
 }
 
 interface Props {
-  achievementHistory: AcheivementHistory[]
+  achievementHistory: AchievementHistory[]
 }
 
 export default function Achievements({ achievementHistory }: Props) {
