@@ -12,6 +12,7 @@ import JoinChannel from './JoinChannel'
 import { Socket } from 'socket.io-client'
 import InvitedChannels from './InvitedChannels'
 import Spinner from '../../components/Spinner'
+import SocialNoItem from '../Profile/SocialNoItem'
 
 interface Props {
   thisUser: User
@@ -101,9 +102,7 @@ export default function ChannelNav({
                 <Spinner />
               </div>
             ) : !channels.length ? (
-              <p className="text-gray-500">
-                Join a channel to start chatting..
-              </p>
+              <SocialNoItem msg="Join a channel to start chatting.." />
             ) : (
               channels
                 .sort((a, b) => {
