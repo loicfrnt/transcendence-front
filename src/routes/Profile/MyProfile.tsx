@@ -111,14 +111,8 @@ export default function MyProfile({
     twoFactorsAuthenticationService.turnOn(tfacode.toString()).then(
       () => {
         setQrClicked(false)
-        setQrClassDiv('')
-        setCurrUser((prevState) => {
-          let olduser = Object.assign({}, prevState)
-          olduser.isTwoFactorAuthenticationEnabled = true
-          return olduser
-        })
-        localStorage.setItem('user', JSON.stringify(currUser))
-        setTfaActivated(true)
+        logout()
+
       },
       (error) => {
         const resMessage =
