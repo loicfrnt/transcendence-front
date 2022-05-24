@@ -1,3 +1,4 @@
+import { AchievementHistory } from './achievement-history'
 import { Channel } from './chat'
 
 export enum UserStatus {
@@ -23,6 +24,7 @@ export interface Relationship {
 export interface GameHistory {
   oppenent: User
   won: boolean
+  draw: boolean
   scoreOppenent: number
   scorePlayer: number
   created_at: string
@@ -43,6 +45,7 @@ export interface User {
   channels: Channel[]
   sent_relationships: Relationship[]
   received_relationships: Relationship[]
+  achievement_history: AchievementHistory[]
 }
 
 export interface ProtoUser {

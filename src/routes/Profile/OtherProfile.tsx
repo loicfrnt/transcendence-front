@@ -98,24 +98,16 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
     })
   }
 
-  function block() {
+  async function block() {
     if (friend) {
-      userRelationshipService
-        .updateStatus(otherUser!.id, RelStatus.Blocked)
-        .then((response) => {
-          if (response.data.id) {
-            localStorage.setItem('user', JSON.stringify(response.data))
-            navigate('/profile')
-          }
-        })
-    } else {
-      userRelationshipService
-        .add(otherUser!.id, RelStatus.Blocked)
-        .then((response) => {
-          localStorage.setItem('user', JSON.stringify(response.data))
-          navigate('/profile')
-        })
+      await userRelationshipService.delete(otherUser!.id)
     }
+    await userRelationshipService
+      .add(otherUser!.id, RelStatus.Blocked)
+      .then((response) => {
+        localStorage.setItem('user', JSON.stringify(response.data))
+        navigate('/profile')
+      })
   }
   const [friendsList, setFriendsList] = useState<User[] | null>(null)
 
@@ -181,9 +173,9 @@ export default function OtherProfile({ currUser, setCurrUser, socket }: Props) {
               }}
             />
           </MainUser>
-          <Friends userList={friendsList} />
           <MatchHistory user={otherUser} />
-          <Achievements user={otherUser} />
+          <Friends userList={friendsList} />
+          <Achievements achievementHistory={otherUser.achievement_history} />
         </ProfileMasonry>
       )}
     </MainContainer>

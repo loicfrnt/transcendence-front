@@ -2,40 +2,73 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from "yup";
 import authenticationService from '../../services/authentication.service';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Cookies from 'universal-cookie';
+import UsersService from '../../services/users.service'
 
-type State = {
-  username: string,
-  email: string,
-  password: string,
-  message: string
-}
 export function Register() {
 
+  const cookies = new Cookies();
+  const userCookie = cookies.get("user");
+  useEffect(()=>{
+
+  },[])
+
   const [state, setState] = useState({
-    username: "",
-    email: "",
+    username: userCookie ? userCookie.username : "",
+    email: userCookie ? userCookie.email : "",
     password: "",
+    intra_id: userCookie ? userCookie.intra_id : "",
     message: ""
   });
   const initialValues = {
-    username: "",
-    email: "",
-    password: ""
+    username: state.username,
+    email: state.email,
+    password: "",
+    confirm_password: ""
   };
   let navigate = useNavigate();
 
   function validationSchema() {
     return Yup.object().shape({
-      username: Yup.string().required("This field is required!").test("len", 
-                                                                      "The username must be between 3 and 20 characters.",
-                                                                      (val: any) => val && val.toString().length >= 3 && val.toString().length <= 20),
-      email: Yup.string().email("This is not a valid email.").required("This field is required!"),
-      password: Yup.string().required("This field is required!").test("len", 
-                                                                     "The password must be between 6 and 40 characters.",
-                                                                     (val: any) => val && val.toString().length >= 6 && val.toString().length <= 40),
-      confirm_password: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match!")
-    });
+      email: Yup.string()
+        .email('This is not a valid email.')
+        .test('Unique Email', 'Email already in use', function (value) {
+          return new Promise((resolve, reject) => {
+            UsersService.checkIfEmailExists(value).then(
+              () => {
+                resolve(true)
+              },
+              (error) => {
+                resolve(false)
+              }
+            )
+          })
+        }),
+      username: Yup.string()
+        .min(3, 'This field must be at least 3 characters!')
+        .max(20, 'This field must be less 20 characters!')
+        .test('Unique Username', 'Username already in use', function (value) {
+          return new Promise((resolve, reject) => {
+            UsersService.checkIfUsernameExists(value).then(
+              () => {
+                resolve(true)
+              },
+              (error) => {
+                resolve(false)
+              }
+            )
+          })
+        }),
+      password: Yup.string()
+        .min(8, 'Password must have at east 8 characters!')
+        .max(40, 'Password must have less then 40 characters!'),
+      confirm_password: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match!')
+        .when('password', (password, schema) => {
+          if (password !== undefined) return schema.required('field required!')
+        }),
+    })
   }
   function handleRegister(formValue: {username:string, email: string, password: string}) {
     const {username, email, password} = formValue;
@@ -43,14 +76,16 @@ export function Register() {
       username: "",
       email: "",
       password: "",
+      intra_id: state.intra_id,
       message: ""
     });
-    authenticationService.register(username,email, password).then(()=> {
+    authenticationService.register(username,email, password, state.intra_id).then(()=> {
     navigate("/login");
     setState({
       username: "",
       email: "",
       password: "",
+      intra_id: "",
       message: ""
     });
     }, error => {
@@ -59,6 +94,7 @@ export function Register() {
         username: "",
         email: "",
         password: "",
+        intra_id: "",
         message: resMessage
       });
     });

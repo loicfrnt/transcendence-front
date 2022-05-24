@@ -82,7 +82,7 @@ export default function GameSpectate() {
     if (game.status === GameStatus.ENDED) {
       return <SpectateResults game={game} />
     }
-    return <SpectateMatch socket={socket} game={game} userId={userId} />
+    return <SpectateMatch game={game} userId={userId} />
   }
   //Get Spectated Game from UserId
   return <MainContainer>{returnState()}</MainContainer>

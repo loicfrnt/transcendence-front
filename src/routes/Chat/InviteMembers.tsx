@@ -7,6 +7,7 @@ import { useState } from 'react'
 import usersService from '../../services/users.service'
 import { useEffect } from 'react'
 import Spinner from '../../components/Spinner'
+import SocialNoItem from '../Profile/SocialNoItem'
 
 interface FriendProps {
   user: User
@@ -108,7 +109,9 @@ export default function InviteMembers({ currUser, socket, channel }: Props) {
             key={friend.id}
           />
         ))}
-        {!friends.length && !loading && <p>It's empty in here...</p>}
+        {!friends.length && !loading && (
+          <SocialNoItem msg="It's empty in here..." />
+        )}
       </div>
     </div>
   )

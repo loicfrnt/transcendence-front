@@ -2,6 +2,8 @@ import { User } from '../../types/user'
 import ContentBox from '../../components/ContentBox'
 import { Socket } from 'socket.io-client'
 import Game from '../../types/game'
+import { useEffect } from 'react'
+import achievementHistoriesService from '../../services/achievement-histories.service'
 
 interface Props {
   currUser: User
@@ -24,6 +26,9 @@ export default function Results({
     game.player1.user.id === currUser.id ? game.player1 : game.player2
   const winner = (oppenent.score ?? 1) < (player.score ?? 0)
   const color = winner ? 'text-green' : 'text-red'
+  useEffect(() => {
+    achievementHistoriesService.processAchievements(game, currUser)
+  }, [])
   return (
     <div
       className={`flex flex-col items-center justify-center gap-10 h-full w-full`}

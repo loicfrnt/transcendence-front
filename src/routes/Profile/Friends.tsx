@@ -26,7 +26,7 @@ export default function Friends({ userList }: Props) {
             addStatus={true}
             noLink
           ></Avatar>
-          <h2 className="font-semibold text-lg">{user.username}</h2>
+          <h2 className="font-semibold text-lg break-words">{user.username}</h2>
         </Link>
       </div>
     )
