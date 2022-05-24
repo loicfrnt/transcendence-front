@@ -5,6 +5,7 @@ import { Socket } from 'socket.io-client'
 import Avatar from '../../components/Avatar'
 import { Message } from '../../types/chat'
 import { User } from '../../types/user'
+import isBlocked from '../../utils/isBlocked'
 
 interface Props {
   currUser: User
@@ -28,8 +29,14 @@ export default function Conversation({
 
   function renderMessage(message: Message) {
     const align = message.author.id === currUser.id ? 'self-end' : ''
-    const color =
-      message.author.id === currUser.id ? 'bg-violet-light' : 'bg-gray-light'
+    const blocked = isBlocked(currUser, message.author)
+    const textColor = blocked ? 'text-gray-200' : ''
+    const avatarOpacity = blocked ? 'opacity-50' : ''
+    const color = blocked
+      ? 'bg-gray-50'
+      : message.author.id === currUser.id
+      ? 'bg-violet-light'
+      : 'bg-gray-light'
 
     function avatar() {
       if (message.author.id !== currUser.id) {
@@ -37,7 +44,7 @@ export default function Conversation({
           <Avatar
             avatarId={message.author.avatar_id}
             username={message.author.username}
-            size={'h-7 w-7 mt-1.5 mr-1.5'}
+            size={`h-7 w-7 mt-1.5 mr-1.5 ${avatarOpacity}`}
             status={message.author.status}
           />
         )
@@ -48,7 +55,9 @@ export default function Conversation({
       <div className={`flex w-fit max-w-[66%] ${align}`} key={message.id}>
         {avatar()}
         <div className={`${color} px-2 py-1.5 rounded-2xl`}>
-          <p className="text-lg break-word">{message.content}</p>
+          <p className={`${textColor} text-lg break-word`}>
+            {blocked ? 'You blocked this user' : message.content}
+          </p>
         </div>
       </div>
     )
