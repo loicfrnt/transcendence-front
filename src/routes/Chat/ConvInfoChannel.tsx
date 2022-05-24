@@ -24,7 +24,6 @@ import userRelationshipService from '../../services/user-relationship.service'
 import sendGameInvite from '../../utils/sendGameInvite'
 import SocialNoItem from '../Profile/SocialNoItem'
 import isFriend from '../../utils/isFriend'
-import authenticationService from '../../services/authentication.service'
 import isBlocked from '../../utils/isBlocked'
 
 interface UserButtonProps {
@@ -111,8 +110,6 @@ function ConvMember({
         setCurrUser(response.data)
       })
   }
-
-  console.log(user, isFriend(thisCUser.user, user))
 
   return (
     <>
