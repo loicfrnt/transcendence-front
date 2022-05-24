@@ -37,7 +37,7 @@ export default function App() {
   const sockRef = useRef<Socket | null>(null)
   useEffect(() => {
     if (connected) {
-      sockRef.current = io(process.env.REACT_APP_BACK_LINK as string, {
+      sockRef.current = io('http://localhost:3000', {
         withCredentials: true,
       })
       setSocket(sockRef.current)

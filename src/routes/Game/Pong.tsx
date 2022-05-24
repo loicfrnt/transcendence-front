@@ -24,7 +24,7 @@ export default function Pong({ currUser, socketChannel }: Props) {
   const [socket, setSocket] = useState<Socket | null>(null)
   const sockRef = useRef<Socket | null>(null)
   useEffect(() => {
-    sockRef.current = io((process.env.REACT_APP_BACK_LINK as string) + 'pong', {
+    sockRef.current = io('http://localhost:3000/pong', {
       withCredentials: true,
     })
     setSocket(sockRef.current)
