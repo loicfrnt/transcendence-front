@@ -11,18 +11,18 @@ import { Socket } from 'socket.io-client'
 import { useNavigate } from 'react-router-dom'
 
 //TEMPORARY
-function isFriend(user: User, thisUser: User) {
+function isFriend(user: User, currUser: User) {
   if (user.username === 'mechant') return true
   return false
 }
 
 interface Props {
   channel: Channel
-  thisUser: User
+  currUser: User
   socket: Socket
 }
 
-export default function ConvInfoDm({ channel, thisUser, socket }: Props) {
+export default function ConvInfoDm({ channel, currUser, socket }: Props) {
   function dmButton(
     Svg: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
     content: string,
@@ -39,7 +39,7 @@ export default function ConvInfoDm({ channel, thisUser, socket }: Props) {
     )
   }
   const cUser = channel.channelUsers.find(
-    (cUser) => cUser.user.id !== thisUser.id
+    (cUser) => cUser.user.id !== currUser.id
   )
   let navigate = useNavigate()
   if (cUser === undefined) {
@@ -62,7 +62,7 @@ export default function ConvInfoDm({ channel, thisUser, socket }: Props) {
         {dmButton(SvgSpectate, 'Spectate', (e) =>
           navigate('/game/' + user.username)
         )}
-        {isFriend(user, thisUser)
+        {isFriend(user, currUser)
           ? dmButton(SvgRmFriend, 'Remove Friend', (e) => null)
           : dmButton(SvgAddFriend, 'Add Friend', (e) => null)}
         {dmButton(SvgBlock, 'Block User', (e) => null)}

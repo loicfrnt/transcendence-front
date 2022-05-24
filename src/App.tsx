@@ -104,7 +104,9 @@ export default function App() {
         <Route path="login" element={<Login setConnected={setConnected} />} />
         <Route
           path="chat/*"
-          element={<Chat user={currUser} socket={socket} />}
+          element={
+            <Chat user={currUser} setCurrUser={setCurrUser} socket={socket} />
+          }
         />
         <Route path="*" element={'404'} />
       </Route>

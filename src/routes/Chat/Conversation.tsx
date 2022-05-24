@@ -7,14 +7,14 @@ import { Message } from '../../types/chat'
 import { User } from '../../types/user'
 
 interface Props {
-  thisUser: User
+  currUser: User
   messages: Message[]
   channelId: number
   socket: Socket
 }
 
 export default function Conversation({
-  thisUser,
+  currUser,
   messages,
   channelId,
   socket,
@@ -27,12 +27,12 @@ export default function Conversation({
   }, [messages.length])
 
   function renderMessage(message: Message) {
-    const align = message.author.id === thisUser.id ? 'self-end' : ''
+    const align = message.author.id === currUser.id ? 'self-end' : ''
     const color =
-      message.author.id === thisUser.id ? 'bg-violet-light' : 'bg-gray-light'
+      message.author.id === currUser.id ? 'bg-violet-light' : 'bg-gray-light'
 
     function avatar() {
-      if (message.author.id !== thisUser.id) {
+      if (message.author.id !== currUser.id) {
         return (
           <Avatar
             avatarId={message.author.avatar_id}

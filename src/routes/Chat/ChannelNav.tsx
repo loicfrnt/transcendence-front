@@ -15,7 +15,7 @@ import Spinner from '../../components/Spinner'
 import SocialNoItem from '../Profile/SocialNoItem'
 
 interface Props {
-  thisUser: User
+  currUser: User
   channels: ProtoChannel[]
   channelsLoaded: boolean
   invitedChannels: ProtoChannel[]
@@ -23,7 +23,7 @@ interface Props {
   socket: Socket
 }
 export default function ChannelNav({
-  thisUser,
+  currUser,
   channels,
   channelsLoaded,
   invitedChannels,
@@ -45,7 +45,7 @@ export default function ChannelNav({
           }
         >
           <h2 className="font-semibold text-xl">
-            {channelName(channel, thisUser)}
+            {channelName(channel, currUser)}
           </h2>
         </NavLink>
       </div>
@@ -73,7 +73,7 @@ export default function ChannelNav({
               invitedChannels={invitedChannels}
               setChannels={setChannels}
               setIsOpen={setNewChanOpen}
-              thisUserId={thisUser.id}
+              currUserId={currUser.id}
               socket={socket}
             />
           ) : null}

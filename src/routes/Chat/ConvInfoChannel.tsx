@@ -23,12 +23,9 @@ import dmUser from '../../utils/dmUser'
 import userRelationshipService from '../../services/user-relationship.service'
 import sendGameInvite from '../../utils/sendGameInvite'
 import SocialNoItem from '../Profile/SocialNoItem'
-
-//TEMPORARY
-function isFriend(user: User, thisUser: User) {
-  if (user.username === 'mechant') return true
-  return false
-}
+import isFriend from '../../utils/isFriend'
+import authenticationService from '../../services/authentication.service'
+import isBlocked from '../../utils/isBlocked'
 
 interface UserButtonProps {
   Svg: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
@@ -67,13 +64,17 @@ function UserButton({ Svg, tooltip, handleClick, id }: UserButtonProps) {
 // Renders for each conversation member
 interface ConvMemberProps {
   cUser: ChannelUser
+  currUser: User
   thisCUser: ChannelUser
   socket: Socket
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
+  setCurrUser: React.Dispatch<React.SetStateAction<User>>
 }
 
 function ConvMember({
   cUser,
+  currUser,
+  setCurrUser,
   thisCUser,
   socket,
   setChannels,
@@ -83,12 +84,35 @@ function ConvMember({
   const isAdmin = cUser.role !== 3 && [2, 3].includes(thisCUser.role)
   const [adminPanelOpen, setAdminPanelOpen] = useState(false)
   let navigate = useNavigate()
+  const [friend, setFriend] = useState(isFriend(currUser, user))
 
   function addFriend() {
     userRelationshipService
       .add(cUser.user.id, RelStatus.Pending)
       .then((resp) => console.log(resp))
   }
+
+  function removeFriend() {
+    userRelationshipService.delete(user!.id).then((response) => {
+      localStorage.setItem('user', JSON.stringify(response.data))
+      setCurrUser(response.data)
+      setFriend(false)
+    })
+  }
+
+  async function blockUser() {
+    if (friend) {
+      await userRelationshipService.delete(user!.id)
+    }
+    await userRelationshipService
+      .add(user!.id, RelStatus.Blocked)
+      .then((response) => {
+        localStorage.setItem('user', JSON.stringify(response.data))
+        setCurrUser(response.data)
+      })
+  }
+
+  console.log(user, isFriend(thisCUser.user, user))
 
   return (
     <>
@@ -128,19 +152,19 @@ function ConvMember({
               handleClick={() => navigate('/game/' + cUser.user.username)}
             />
 
-            {isFriend(user, thisCUser.user) ? (
+            {friend ? (
               <UserButton
                 Svg={SvgRmFriend}
                 tooltip="Remove Friend"
                 id={`${cUser.id}rm`}
-                handleClick={addFriend}
+                handleClick={removeFriend}
               />
             ) : (
               <UserButton
                 Svg={SvgAddFriend}
                 tooltip="Add Friend"
                 id={`${cUser.id}add`}
-                handleClick={() => null}
+                handleClick={addFriend}
               />
             )}
 
@@ -165,7 +189,7 @@ function ConvMember({
               Svg={SvgBlock}
               tooltip="Block User"
               id={`${cUser.id}blck`}
-              handleClick={() => null}
+              handleClick={blockUser}
             />
           </div>
         </div>
@@ -176,7 +200,8 @@ function ConvMember({
 
 interface Props {
   channel: Channel
-  thisUser: User
+  currUser: User
+  setCurrUser: React.Dispatch<React.SetStateAction<User>>
   socket: Socket
   setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
@@ -184,15 +209,17 @@ interface Props {
 
 export function ConvInfoChannel({
   channel,
-  thisUser,
+  currUser,
+  setCurrUser,
   socket,
   setChannel,
   setChannels,
 }: Props) {
-  const thisCUser = getChannelUser(channel, thisUser)
+  const currCUser = getChannelUser(channel, currUser)
   const otherUsers = channel.channelUsers
-    .filter((user) => user !== thisCUser)
+    .filter((user) => user !== currCUser)
     .filter((cUser) => cUser.sanction !== 'ban')
+    .filter((cUser) => !isBlocked(currUser, cUser.user))
 
   const border = otherUsers.length ? 'border' : ''
   const [inviteOpen, setInviteOpen] = useState(false)
@@ -236,7 +263,7 @@ export function ConvInfoChannel({
     }
   }, [channel, setChannel, socket])
 
-  if (!thisCUser) {
+  if (!currCUser) {
     return <p>Something went wrong...</p>
   }
 
@@ -245,7 +272,7 @@ export function ConvInfoChannel({
       return (
         <PopUpBox open={inviteOpen} setOpen={setInviteOpen}>
           <InviteMembers
-            currUser={thisUser}
+            currUser={currUser}
             socket={socket}
             channel={channel}
           />
@@ -272,8 +299,10 @@ export function ConvInfoChannel({
           {otherUsers.map((cUser) => (
             <ConvMember
               setChannels={setChannels}
+              setCurrUser={setCurrUser}
               cUser={cUser}
-              thisCUser={thisCUser}
+              currUser={currUser}
+              thisCUser={currCUser}
               socket={socket}
               key={cUser.id}
             />

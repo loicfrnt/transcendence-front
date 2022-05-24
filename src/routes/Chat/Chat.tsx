@@ -11,10 +11,11 @@ import { Socket } from 'socket.io-client'
 
 interface Props {
   user: User
+  setCurrUser: React.Dispatch<React.SetStateAction<User>>
   socket: Socket
 }
 
-function Chat({ user, socket }: Props) {
+function Chat({ user, setCurrUser, socket }: Props) {
   const [channels, setChannels] = useState<ProtoChannel[]>([])
   const [channelsLoaded, setChannelsLoaded] = useState(false)
   const [invitedChannels, setInvitedChannels] = useState<ProtoChannel[]>([])
@@ -82,7 +83,7 @@ function Chat({ user, socket }: Props) {
         path="/"
         element={
           <ChannelNav
-            thisUser={user}
+            currUser={user}
             channels={channels}
             channelsLoaded={channelsLoaded}
             invitedChannels={invitedChannels}
@@ -96,7 +97,8 @@ function Chat({ user, socket }: Props) {
           path=":channelId"
           element={
             <ChatOpen
-              thisUser={user}
+              currUser={user}
+              setCurrUser={setCurrUser}
               channels={channels}
               socket={socket}
               setChannels={setChannels}

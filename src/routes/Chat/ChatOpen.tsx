@@ -37,7 +37,8 @@ const ChannelNotFound = () => {
 }
 
 interface Props {
-  thisUser: User
+  currUser: User
+  setCurrUser: React.Dispatch<React.SetStateAction<User>>
   socket: Socket
   setChannels: React.Dispatch<React.SetStateAction<ProtoChannel[]>>
   channels: ProtoChannel[] //Here to update when we remove a channel
@@ -45,7 +46,8 @@ interface Props {
 
 export default function ChatOpen({
   channels,
-  thisUser,
+  currUser,
+  setCurrUser,
   socket,
   setChannels,
 }: Props) {
@@ -90,7 +92,7 @@ export default function ChatOpen({
 
   // in a function, rendered conditionnaly
   function EditPopUp() {
-    if (channel !== undefined && isOwner(thisUser, channel)) {
+    if (channel !== undefined && isOwner(currUser, channel)) {
       return (
         <PopUpBox open={editChanOpen} setOpen={setEditChanOpen}>
           <EditChannel
@@ -110,7 +112,7 @@ export default function ChatOpen({
     if (channel && channel.status !== 'direct_message')
       return (
         <div className="flex justify-end gap-5">
-          {isOwner(thisUser, channel) ? (
+          {isOwner(currUser, channel) ? (
             <EditSvg
               className={svgClass}
               onClick={(e) => setEditChanOpen(true)}
@@ -146,13 +148,13 @@ export default function ChatOpen({
       <ContentBox className="w-[400px] sm:max-w-[836px] sm:grow">
         <div className="flex items-center justify-between gap-3 mb-4 px-2 flex-wrap">
           <h1 className={'text-[2rem] leading-[2.625rem] font-semibold'}>
-            {channelName(channel, thisUser)}
+            {channelName(channel, currUser)}
           </h1>
           {SvgButtons()}
         </div>
         <Conversation
           messages={channel.messages}
-          thisUser={thisUser}
+          currUser={currUser}
           channelId={channel.id}
           socket={socket}
         />
@@ -161,7 +163,8 @@ export default function ChatOpen({
         channel={channel}
         setChannel={setChannel}
         setChannels={setChannels}
-        thisUser={thisUser}
+        currUser={currUser}
+        setCurrUser={setCurrUser}
         socket={socket}
       />
     </>
