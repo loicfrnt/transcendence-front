@@ -5,6 +5,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { io, Socket } from 'socket.io-client'
 import Cookies from 'universal-cookie'
 import ConnectError from './components/ConnectError'
+import NotFoundErr from './components/NotFoundError'
 import Chat from './routes/Chat/Chat'
 import GameRoutes from './routes/Game/GameRoutes'
 import Home from './routes/Home/Home'
@@ -104,9 +105,11 @@ export default function App() {
         <Route path="login" element={<Login setConnected={setConnected} />} />
         <Route
           path="chat/*"
-          element={<Chat user={currUser} socket={socket} />}
+          element={
+            <Chat user={currUser} setCurrUser={setCurrUser} socket={socket} />
+          }
         />
-        <Route path="*" element={'404'} />
+        <Route path="*" element={<NotFoundErr />} />
       </Route>
     </Routes>
   )

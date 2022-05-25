@@ -72,13 +72,17 @@ export default function Avatar({
   if (!currUser) {
     if (!noLink) {
       return (
-        <Link to={'/profile/' + username} className="flex-shrink-0">
+        <Link
+          to={'/profile/' + username}
+          className="flex-shrink-0"
+          title={username}
+        >
           <img src={img} className={classes} alt="Profile pic" />{' '}
         </Link>
       )
     } else
       return (
-        <div className={`flex relative ${size} flex-shrink-0`}>
+        <div className={`flex relative ${size} flex-shrink-0`} title={username}>
           <img src={img} className={classes} alt="Profile pic" />
           {addStatus && (
             <span

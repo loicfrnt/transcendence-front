@@ -3,16 +3,17 @@ import { User } from '../../types/user'
 import SocialItemContainer from './SocialItemContainer'
 import SocialItemList from './SocialItemList'
 import SocialNoItem from './SocialNoItem'
-import { ReactComponent as Add } from '../../assets/add.svg'
+import { ReactComponent as Add } from '../../assets/block.svg'
 import { useEffect, useState } from 'react'
 import userRelationshipService from '../../services/user-relationship.service'
 import Spinner from '../../components/Spinner'
 
 interface Props {
   blocked?: User[] | null
+  setCurrUser: React.Dispatch<React.SetStateAction<User>>
 }
 
-export default function Blocked({ blocked }: Props) {
+export default function Blocked({ blocked, setCurrUser }: Props) {
   const [blockedUsrs, setBlockedUsers] = useState<User[] | null>()
   useEffect(() => {
     setBlockedUsers(blocked)
@@ -21,6 +22,7 @@ export default function Blocked({ blocked }: Props) {
     userRelationshipService.delete(id).then((response) => {
       if (response.data.id) {
         localStorage.setItem('user', JSON.stringify(response.data))
+        setCurrUser(response.data)
         const arr = blockedUsrs!.filter((request) => request.id !== id)
         setBlockedUsers(arr)
       }
@@ -47,6 +49,7 @@ export default function Blocked({ blocked }: Props) {
                 onClick={() => {
                   unblock(user.id)
                 }}
+                title="Unblock User"
               />
             </button>
           </div>

@@ -2,10 +2,12 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import authenticationService from '../../services/authentication.service'
 import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PopUpBox from '../../components/PopUpBox'
 import twoFactorsAuthenticationService from '../../services/two-factors-authentication.service'
 import MainContainer from '../../components/MainContainer'
+import Cookies from 'universal-cookie';
+import { Register } from '../Register/Register'
 
 export interface LoginProps {
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
@@ -35,7 +37,14 @@ export function Login({ setConnected }: LoginProps) {
     message: '',
   }
   let navigate = useNavigate()
-
+  const cookies = new Cookies();
+  const registered = cookies.get("registered");
+  useEffect(()=>{
+    if (registered)
+    {
+      cookies.remove("registered");
+    }
+  }, [registered])
   function validationSchema() {
     return Yup.object().shape({
       username: Yup.string().required('This field is required!'),
@@ -213,6 +222,27 @@ export function Login({ setConnected }: LoginProps) {
                   </span>
                 </div>
               )}
+              {registered && (
+                <div
+                  className="border border-green text-green px-4 py-3 rounded relative"
+                  role="alert"
+                >
+                  <strong className="font-bold">Successfully registered!</strong>
+                  <span className="block sm:inline">You may login now</span>
+                  <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    <svg
+                      className="fill-current h-6 w-6 text-green"
+                      role="button"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <title>Close</title>
+                      <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                    </svg>
+                  </span>
+                </div>
+              )}
+
             </Form>
           </Formik>
           <Link to="/ft_login">

@@ -10,9 +10,6 @@ export function Register() {
 
   const cookies = new Cookies();
   const userCookie = cookies.get("user");
-  useEffect(()=>{
-
-  },[])
 
   const [state, setState] = useState({
     username: userCookie ? userCookie.username : "",
@@ -35,7 +32,7 @@ export function Register() {
         .email('This is not a valid email.')
         .test('Unique Email', 'Email already in use', function (value) {
           return new Promise((resolve, reject) => {
-            UsersService.checkIfEmailExists(value).then(
+            UsersService.checkIfEmailExistsExtern(value).then(
               () => {
                 resolve(true)
               },
@@ -50,7 +47,7 @@ export function Register() {
         .max(20, 'This field must be less 20 characters!')
         .test('Unique Username', 'Username already in use', function (value) {
           return new Promise((resolve, reject) => {
-            UsersService.checkIfUsernameExists(value).then(
+            UsersService.checkIfUsernameExistsExtern(value).then(
               () => {
                 resolve(true)
               },
@@ -80,6 +77,9 @@ export function Register() {
       message: ""
     });
     authenticationService.register(username,email, password, state.intra_id).then(()=> {
+    cookies.set("registered", "true", {
+      maxAge: 5
+    })
     navigate("/login");
     setState({
       username: "",
