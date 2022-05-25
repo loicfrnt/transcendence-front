@@ -246,8 +246,8 @@ export function Login({ setConnected }: LoginProps) {
             </Form>
           </Formik>
           <Link to="/ft_login">
-            <button className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-white bg-zink">
-              <span className="object-cover h-7 w-7">
+            <button className="group relative w-full flex justify-center mt-1 py-2 px-4 border border-transparent text-md font-medium rounded-md text-white bg-zink">
+              <span className="object-cover h-7 w-7 mr-2">
                 <img src="/images/logo-42-square-reverse.png" alt="42" />
               </span>
               <span>Sign in with the intra</span>
