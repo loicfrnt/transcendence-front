@@ -184,14 +184,6 @@ export function Login({ setConnected }: LoginProps) {
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-violet hover:text-violet"
-                >
-                  Forgot your password?
-                </a>
-              </div>
               <button
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-white bg-violet"
